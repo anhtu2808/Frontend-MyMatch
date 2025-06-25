@@ -10,6 +10,8 @@ import Messages from './pages/Messages';
 import NotFound from './pages/NotFound';
 import AddTeacher from './pages/AddTeacher';
 import ClassSwapRequest from './pages/ClassSwapRequest';
+import TeacherDetail from './pages/TeacherDetail';
+import TeamFinder from './pages/TeamFinder';
 
 function App() {
   return (
@@ -20,14 +22,16 @@ function App() {
         <Route path="/teachers" element={<TeacherReview />} />
         <Route path="/teachers/add-teacher" element={<AddTeacher />} />
         <Route path="/teachers/add-review" element={<AddTeacherReview />} />
+        <Route path="/teachers/:teacherId" element={<TeacherDetail />} />
         <Route path="/exchange" element={<ClassExchange />} />
         <Route path="/exchange/swap-request" element={<ClassSwapRequest />} />
+        <Route path="/team-finder" element={<TeamFinder />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/settings" element={<Settings />} />
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </div>
+      </div>
   );
 }
 

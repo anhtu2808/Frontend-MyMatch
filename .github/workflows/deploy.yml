@@ -40,9 +40,12 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H 159.223.78.15 >> ~/.ssh/known_hosts
 
-        # Xóa nội dung cũ và upload nội dung mới
+        # Backup và xóa nội dung cũ, sau đó upload nội dung mới
         ssh root@159.223.78.15 "rm -rf /var/www/mymatch/*"
         scp -r dist/* root@159.223.78.15:/var/www/mymatch/
+        
+        # Set proper permissions
+        ssh root@159.223.78.15 "chown -R www-data:www-data /var/www/mymatch && chmod -R 755 /var/www/mymatch"
 
         # Reload Nginx
         ssh root@159.223.78.15 "sudo systemctl reload nginx"

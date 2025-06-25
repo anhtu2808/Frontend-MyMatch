@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { Input, Button, message } from 'antd';
+import { Input, Button, message, Select } from 'antd';
 import { ArrowLeftOutlined, BookOutlined, SwapOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 const ClassSwapRequest = () => {
   const navigate = useNavigate();
@@ -12,14 +13,18 @@ const ClassSwapRequest = () => {
     // Lớp hiện tại
     currentSubjectName: '',
     currentClassCode: '',
+    currentDayOfWeek: [],
     currentSlot: '',
     currentInstructor: '',
+    currentTeacherCode: '',
     
     // Lớp muốn đổi
-    desiredClassName: '',
+    desiredSubjectName: '',
     desiredClassCode: '',
+    desiredDayOfWeek: [],
     desiredSlot: '',
     desiredInstructor: '',
+    desiredTeacherCode: '',
     
     // Ghi chú
     additionalNotes: ''
@@ -34,9 +39,14 @@ const ClassSwapRequest = () => {
 
   const handleSubmit = () => {
     // Validate required fields
-    if (!formData.currentSubjectName || !formData.currentClassCode || 
-        !formData.desiredClassName || !formData.desiredClassCode) {
-      message.error('Vui lòng điền đầy đủ thông tin bắt buộc');
+    if (!formData.currentSubjectName || !formData.currentClassCode) {
+      message.error('Vui lòng điền đầy đủ thông tin lớp hiện tại');
+      return;
+    }
+
+    // Validate desired class - at least one of the fields must be filled
+    if (!formData.desiredClassCode && (!formData.desiredDayOfWeek || formData.desiredDayOfWeek.length === 0) && !formData.desiredSlot) {
+      message.error('Vui lòng điền ít nhất một trong các trường: Mã lớp, Thứ, hoặc Slot cho lớp mong muốn');
       return;
     }
 
@@ -80,153 +90,266 @@ const ClassSwapRequest = () => {
         </div>
 
         {/* Main Content */}
-        <div className="max-w-4xl mx-auto px-6 py-8">
+        <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="bg-white rounded-3xl shadow-xl p-8">
             <div className="space-y-8">
               
-              {/* Lớp hiện tại của bạn */}
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mr-3">
-                    <BookOutlined className="text-white text-sm" />
+              {/* Môn học chung */}
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mr-3">
+                    <BookOutlined className="text-white text-xs" />
                   </div>
-                  Lớp hiện tại của bạn
-                </h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Tên môn */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Tên môn *
-                    </label>
-                    <Input
-                      placeholder="e.g. Intro to Computer Science"
-                      value={formData.currentSubjectName}
-                      onChange={(e) => handleInputChange('currentSubjectName', e.target.value)}
-                      className="rounded-xl h-12"
-                      size="large"
-                    />
-                  </div>
-
-                  {/* Mã lớp */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Mã lớp *
-                    </label>
-                    <Input
-                      placeholder="e.g. CS101-01"
-                      value={formData.currentClassCode}
-                      onChange={(e) => handleInputChange('currentClassCode', e.target.value)}
-                      className="rounded-xl h-12"
-                      size="large"
-                    />
-                  </div>
-
-                  {/* Slot */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Slot
-                    </label>
-                    <Input
-                      placeholder="e.g. Mon 10:00 AM"
-                      value={formData.currentSlot}
-                      onChange={(e) => handleInputChange('currentSlot', e.target.value)}
-                      className="rounded-xl h-12"
-                      size="large"
-                    />
-                  </div>
-
-                  {/* Tên giảng viên */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Tên giảng viên
-                    </label>
-                    <Input
-                      placeholder="e.g. Dr. Emily Carter"
-                      value={formData.currentInstructor}
-                      onChange={(e) => handleInputChange('currentInstructor', e.target.value)}
-                      className="rounded-xl h-12"
-                      size="large"
-                    />
-                  </div>
+                  Môn học
+                </h3>
+                <div className="max-w-md">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tên môn *
+                  </label>
+                  <Select
+                    placeholder="Chọn môn học"
+                    value={formData.currentSubjectName}
+                    onChange={(value) => {
+                      handleInputChange('currentSubjectName', value);
+                      handleInputChange('desiredSubjectName', value);
+                    }}
+                    className="w-full rounded-xl"
+                    size="large"
+                  >
+                    <Option value="Software Engineering">Software Engineering</Option>
+                    <Option value="Data Structures">Data Structures</Option>
+                    <Option value="Database Systems">Database Systems</Option>
+                    <Option value="Web Development">Web Development</Option>
+                    <Option value="Computer Networks">Computer Networks</Option>
+                    <Option value="Object-Oriented Programming">Object-Oriented Programming</Option>
+                    <Option value="Machine Learning">Machine Learning</Option>
+                    <Option value="Mobile Development">Mobile Development</Option>
+                  </Select>
                 </div>
               </div>
 
-              {/* Divider with swap icon */}
-              <div className="flex items-center justify-center py-4">
-                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
-                <div className="mx-6 w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                  <SwapOutlined className="text-white text-lg" />
-                </div>
-                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
-              </div>
+              
 
-              {/* Lớp muốn đổi */}
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                  <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center mr-3">
-                    <BookOutlined className="text-white text-sm" />
+              {/* Two Column Layout */}
+              <div className="relative">
+                {/* Swap Icon - positioned between columns on desktop */}
+                <div className="hidden lg:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+                  <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-xl border-4 border-white">
+                    <SwapOutlined className="text-white text-xl" />
                   </div>
-                  Lớp muốn đổi
-                </h2>
+                </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Tên lớp */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Tên lớp *
-                    </label>
-                    <Input
-                      placeholder="e.g. Data Structures"
-                      value={formData.desiredClassName}
-                      onChange={(e) => handleInputChange('desiredClassName', e.target.value)}
-                      className="rounded-xl h-12"
-                      size="large"
-                    />
-                  </div>
-
-                  {/* Mã lớp */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Mã lớp *
-                    </label>
-                    <Input
-                      placeholder="e.g. CS102-02"
-                      value={formData.desiredClassCode}
-                      onChange={(e) => handleInputChange('desiredClassCode', e.target.value)}
-                      className="rounded-xl h-12"
-                      size="large"
-                    />
-                  </div>
-
-                  {/* Slot */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Slot
-                    </label>
-                    <Input
-                      placeholder="e.g. Tue 1:00 PM"
-                      value={formData.desiredSlot}
-                      onChange={(e) => handleInputChange('desiredSlot', e.target.value)}
-                      className="rounded-xl h-12"
-                      size="large"
-                    />
-                  </div>
-
-                  {/* Tên giảng viên */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Tên giảng viên
-                    </label>
-                    <Input
-                      placeholder="e.g. Dr. Mark Lee"
-                      value={formData.desiredInstructor}
-                      onChange={(e) => handleInputChange('desiredInstructor', e.target.value)}
-                      className="rounded-xl h-12"
-                      size="large"
-                    />
+                {/* Mobile Swap Icon */}
+                <div className="lg:hidden flex justify-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg">
+                    <SwapOutlined className="text-white text-lg" />
                   </div>
                 </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                
+                {/* Lớp hiện tại của bạn - Bên trái */}
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 border border-blue-200">
+                  <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mr-3">
+                      <BookOutlined className="text-white text-sm" />
+                    </div>
+                    Lớp hiện tại của bạn
+                  </h2>
+                  
+                  <div className="space-y-6">
+                    {/* Mã lớp */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Mã lớp *
+                      </label>
+                      <Input
+                        placeholder="e.g. SE1704"
+                        value={formData.currentClassCode}
+                        onChange={(e) => handleInputChange('currentClassCode', e.target.value)}
+                        className="rounded-xl h-12"
+                        size="large"
+                      />
+                    </div>
+
+                    {/* Thứ */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Thứ * (tối đa 2 thứ)
+                      </label>
+                      <Select
+                        mode="multiple"
+                        placeholder="Chọn thứ (tối đa 2)"
+                        value={formData.currentDayOfWeek}
+                        onChange={(value) => {
+                          if (value.length <= 2) {
+                            handleInputChange('currentDayOfWeek', value);
+                          }
+                        }}
+                        className="w-full rounded-xl"
+                        size="large"
+                        maxTagCount={2}
+                      >
+                        <Option value="2">Thứ 2</Option>
+                        <Option value="3">Thứ 3</Option>
+                        <Option value="4">Thứ 4</Option>
+                        <Option value="5">Thứ 5</Option>
+                        <Option value="6">Thứ 6</Option>
+                        <Option value="7">Thứ 7</Option>
+                        <Option value="CN">Chủ Nhật</Option>
+                      </Select>
+                    </div>
+
+                    {/* Slot */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Slot *
+                      </label>
+                      <Select
+                        placeholder="Chọn slot"
+                        value={formData.currentSlot}
+                        onChange={(value) => handleInputChange('currentSlot', value)}
+                        className="w-full rounded-xl"
+                        size="large"
+                      >
+                        <Option value="1">Slot 1 (7:00 - 9:00)</Option>
+                        <Option value="2">Slot 2 (9:30 - 11:45)</Option>
+                        <Option value="3">Slot 3 (12:30 - 15:00)</Option>
+                        <Option value="4">Slot 4 (15:00 - 17:15)</Option>
+                      </Select>
+                    </div>
+
+                    {/* Tên giảng viên */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Tên giảng viên
+                      </label>
+                      <Input
+                        placeholder="e.g. Dr. Emily Carter"
+                        value={formData.currentInstructor}
+                        onChange={(e) => handleInputChange('currentInstructor', e.target.value)}
+                        className="rounded-xl h-12"
+                        size="large"
+                      />
+                    </div>
+
+                    {/* Teacher Code */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Teacher Code
+                      </label>
+                      <Input
+                        placeholder="e.g. LamNN2"
+                        value={formData.currentTeacherCode}
+                        onChange={(e) => handleInputChange('currentTeacherCode', e.target.value)}
+                        className="rounded-xl h-12"
+                        size="large"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Lớp muốn đổi - Bên phải */}
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 border border-green-200">
+                  <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center mr-3">
+                      <BookOutlined className="text-white text-sm" />
+                    </div>
+                    Lớp muốn đổi
+                  </h2>
+                  
+                  <div className="space-y-6">
+                    {/* Mã lớp */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Mã lớp
+                      </label>
+                      <Input
+                        placeholder="e.g. SE1705"
+                        value={formData.desiredClassCode}
+                        onChange={(e) => handleInputChange('desiredClassCode', e.target.value)}
+                        className="rounded-xl h-12"
+                        size="large"
+                      />
+                    </div>
+
+                    {/* Thứ */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Thứ (tối đa 2 thứ)
+                      </label>
+                      <Select
+                        mode="multiple"
+                        placeholder="Chọn thứ (tối đa 2)"
+                        value={formData.desiredDayOfWeek}
+                        onChange={(value) => {
+                          if (value.length <= 2) {
+                            handleInputChange('desiredDayOfWeek', value);
+                          }
+                        }}
+                        className="w-full rounded-xl"
+                        size="large"
+                        maxTagCount={2}
+                      >
+                        <Option value="2">Thứ 2</Option>
+                        <Option value="3">Thứ 3</Option>
+                        <Option value="4">Thứ 4</Option>
+                        <Option value="5">Thứ 5</Option>
+                        <Option value="6">Thứ 6</Option>
+                        <Option value="7">Thứ 7</Option>
+                        <Option value="CN">Chủ Nhật</Option>
+                      </Select>
+                    </div>
+
+                    {/* Slot */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Slot
+                      </label>
+                      <Select
+                        placeholder="Chọn slot"
+                        value={formData.desiredSlot}
+                        onChange={(value) => handleInputChange('desiredSlot', value)}
+                        className="w-full rounded-xl"
+                        size="large"
+                      >
+                        <Option value="1">Slot 1 (7:00 - 9:00)</Option>
+                        <Option value="2">Slot 2 (9:30 - 11:45)</Option>
+                        <Option value="3">Slot 3 (12:30 - 15:00)</Option>
+                        <Option value="4">Slot 4 (15:00 - 17:15)</Option>
+                      </Select>
+                    </div>
+
+                    {/* Tên giảng viên */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Tên giảng viên
+                      </label>
+                      <Input
+                        placeholder="e.g. Dr. Mark Lee"
+                        value={formData.desiredInstructor}
+                        onChange={(e) => handleInputChange('desiredInstructor', e.target.value)}
+                        className="rounded-xl h-12"
+                        size="large"
+                      />
+                    </div>
+
+                    {/* Teacher Code */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Teacher Code
+                      </label>
+                      <Input
+                        placeholder="e.g. HuyNM"
+                        value={formData.desiredTeacherCode}
+                        onChange={(e) => handleInputChange('desiredTeacherCode', e.target.value)}
+                        className="rounded-xl h-12"
+                        size="large"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
               </div>
 
               {/* Ghi chú */}
@@ -243,16 +366,22 @@ const ClassSwapRequest = () => {
                 />
               </div>
 
+              {/* Lưu ý validation */}
+              <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="text-sm text-yellow-700">
+                  <span className="font-medium">Lưu ý:</span> Cần điền ít nhất một trong các trường: Mã lớp, Thứ, hoặc Slot cho lớp mong muốn
+                </p>
+              </div>
+
               {/* Action Buttons */}
               <div className="flex space-x-4 pt-6">
                 <Button 
                   type="primary"
                   onClick={handleSubmit}
                   className="bg-blue-600 hover:bg-blue-700 rounded-xl h-12 px-8 font-semibold"
-                  disabled={!formData.currentSubjectName || !formData.currentClassCode || 
-                           !formData.desiredClassName || !formData.desiredClassCode}
+                  disabled={!formData.currentSubjectName || !formData.currentClassCode}
                 >
-                  Nộp yêu cầu
+                  Gửi yêu cầu
                 </Button>
                 
                 <Button 

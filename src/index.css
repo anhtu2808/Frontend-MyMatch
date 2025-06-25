@@ -60,12 +60,12 @@ body {
 
 .ant-divider-horizontal.ant-divider-with-text {
   margin: 16px 0 !important;
-}
+  }
 
 .ant-divider-inner-text {
   font-weight: 500 !important;
   color: #6b7280 !important;
-}
+  }
 
 /* Hover effects for Ant Select */
 .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
