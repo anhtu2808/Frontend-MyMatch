@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AutoComplete, Select, Input, Divider } from 'antd';
 import { SearchOutlined, BookOutlined, UserOutlined } from '@ant-design/icons';
 import Layout from '../components/Layout';
 
 const AddTeacherReview = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     // Step 1: Teacher Selection
     teacherName: '',
     teacherId: '',
     teacherCode: '',
+    selectedSubjects: [], // Thêm field cho môn học đã chọn
 
     // Step 2: Course Information
     courseCode: '',
@@ -42,6 +44,36 @@ const AddTeacherReview = () => {
     // Anonymous posting
     anonymous: false
   });
+
+  // Xử lý dữ liệu môn học được chọn từ SubjectSelection
+  useEffect(() => {
+    // Kiểm tra dữ liệu từ navigation state
+    if (location.state?.selectedSubjects) {
+      setFormData(prev => ({
+        ...prev,
+        selectedSubjects: location.state.selectedSubjects
+      }));
+      if (location.state.step) {
+        setCurrentStep(location.state.step);
+      }
+    }
+
+    // Kiểm tra dữ liệu từ localStorage
+    const savedSubjects = localStorage.getItem('selectedSubjects');
+    if (savedSubjects) {
+      try {
+        const subjects = JSON.parse(savedSubjects);
+        setFormData(prev => ({
+          ...prev,
+          selectedSubjects: subjects
+        }));
+        // Xóa dữ liệu khỏi localStorage sau khi sử dụng
+        localStorage.removeItem('selectedSubjects');
+      } catch (error) {
+        console.error('Error parsing selected subjects:', error);
+      }
+    }
+  }, [location.state]);
 
   // Mock data
   const teachersData = [
@@ -159,8 +191,6 @@ const AddTeacherReview = () => {
   };
 
   const renderStep1 = () => {
-    const selectedTeacher = teachersData.find(t => t.value === formData.teacherName);
-
     return (
       <div className="bg-white rounded-2xl shadow-lg p-8">
         <div className="text-center mb-8">
@@ -197,72 +227,96 @@ const AddTeacherReview = () => {
             />
           </div>
 
-          {/* Select Teacher Code */}
-          <div className="mt-6">
+          {/* Search by Teacher Code */}
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center">
-              Mã giảng viên *
+              <svg className="w-4 h-4 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+              </svg>
+              Hoặc tìm kiếm bằng mã giảng viên
             </label>
-            <Select
+            <AutoComplete
               size="large"
               style={{ width: '100%' }}
-              placeholder="Chọn mã giảng viên"
+              options={teachersData.map(teacher => ({
+                value: teacher.code,
+                label: `${teacher.code} - ${teacher.value}`,
+                id: teacher.id,
+                teacherName: teacher.value
+              }))}
+              placeholder="Nhập mã giảng viên (VD: LamNN2, HuyNM...)"
               value={formData.teacherCode}
               onChange={(value) => handleInputChange('teacherCode', value)}
-              options={teachersData.filter(t => t.code).map(t => ({ value: t.code, label: t.code }))}
-              showSearch
-              filterOption={(input, option) =>
-                option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              onSelect={(value, option) => {
+                handleInputChange('teacherCode', value);
+                handleInputChange('teacherName', option.teacherName);
+                handleInputChange('teacherId', option.id);
+              }}
+              filterOption={(inputValue, option) =>
+                option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
               }
+              className="custom-autocomplete"
             />
           </div>
 
-          {/* Display selected teacher info */}
-          {selectedTeacher && (
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-xl p-6">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-lg font-bold">
-                  {selectedTeacher.value.charAt(selectedTeacher.value.indexOf('.') + 2)}
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-blue-800 text-lg">{selectedTeacher.value}</h3>
-                  <p className="text-blue-600 text-sm">Mã GV: {selectedTeacher.id}</p>
-                  <p className="text-blue-500 text-sm">{selectedTeacher.department}</p>
-                </div>
-                <div className="text-green-500">
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+          {/* Display selected teacher info if selected */}
+          {formData.teacherName && (
+            <div className="mt-6">
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-xl p-6">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                    {formData.teacherName.charAt(0)}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-blue-800 text-lg">{formData.teacherName}</h3>
+                    <p className="text-blue-600 text-sm">Giảng viên đã chọn</p>
+                  </div>
+                  <div className="text-green-500">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Add New Teacher */}
-          <div>
+
+
+          {/* Help us grow section */}
+          <div className="mt-8">
             <Divider orientation="left" orientationMargin="0">
-              <span className="text-sm text-gray-500">Không tìm thấy giảng viên?</span>
+              <span className="text-sm text-gray-500 font-medium">Không tìm thấy giảng viên?</span>
             </Divider>
-            <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 space-y-4">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center text-white text-xl">
+            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-xl p-6">
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full flex items-center justify-center text-white text-xl flex-shrink-0">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800 text-lg">Thêm giảng viên mới</h3>
-                  <p className="text-gray-600 text-sm">Giúp chúng tôi mở rộng danh sách giảng viên</p>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-orange-800 text-lg mb-2">Giúp chúng tôi mở rộng cơ sở dữ liệu! 🚀</h3>
+                  <p className="text-orange-700 text-sm leading-relaxed mb-4">
+                    Không tìm thấy giảng viên bạn muốn đánh giá? Hãy giúp cộng đồng sinh viên bằng cách thêm thông tin giảng viên mới. 
+                    Mỗi thông tin bạn đóng góp sẽ giúp hàng nghìn sinh viên khác có được những lựa chọn môn học tốt nhất! 
+                  </p>
+                  <div className="flex flex-wrap gap-2 text-xs">
+                    <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-medium">📚 Thêm giảng viên mới</span>
+                    <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-medium">⭐ Chia sẻ trải nghiệm</span>
+                    <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">🤝 Giúp đỡ cộng đồng</span>
+                  </div>
+                  <button
+                    onClick={() => navigate('/teachers/add-teacher')}
+                    className="mt-4 w-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white py-3 px-4 rounded-xl font-medium hover:from-orange-600 hover:to-yellow-600 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    <span>Thêm giảng viên</span>
+                  </button>
                 </div>
               </div>
-              <button
-                onClick={() => navigate('/add-teacher')}
-                className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 px-4 rounded-xl font-medium hover:from-yellow-600 hover:to-orange-600 transition-all duration-200 flex items-center justify-center space-x-2"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                <span>Thêm giảng viên</span>
-              </button>
             </div>
           </div>
         </div>

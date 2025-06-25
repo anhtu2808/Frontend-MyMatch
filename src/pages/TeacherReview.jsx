@@ -6,6 +6,9 @@ import TeacherCard from '../components/TeacherCard';
 
 const TeacherReview = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('all'); // 'all', 'bookmarked', 'reviewed'
+  const [bookmarkedTeachers, setBookmarkedTeachers] = useState(new Set([1, 3])); // Sample bookmarked teachers
+  const [reviewedTeachers] = useState(new Set([2, 4])); // Sample reviewed teachers
   const [searchFilters, setSearchFilters] = useState({
     search: '',
     teacherCode: '',
@@ -98,11 +101,35 @@ const TeacherReview = () => {
     setSearchFilters(prev => ({ ...prev, sortBy: value }));
   };
 
-  // Filter teachers based on search criteria
-  const filteredTeachers = teachers.filter(teacher => {
-    // Tạo mã giáo viên mới nếu cần sử dụng qua hàm generateTeacherCode
-    // const teacherCode = generateTeacherCode(teacher.name, teacher.id);
+  // Bookmark handler
+  const handleBookmarkToggle = (teacherId) => {
+    setBookmarkedTeachers(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(teacherId)) {
+        newSet.delete(teacherId);
+      } else {
+        newSet.add(teacherId);
+      }
+      return newSet;
+    });
+  };
 
+  // Tab change handler
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  // Filter teachers based on search criteria and active tab
+  const filteredTeachers = teachers.filter(teacher => {
+    // Tab filtering
+    if (activeTab === 'bookmarked' && !bookmarkedTeachers.has(teacher.id)) {
+      return false;
+    }
+    if (activeTab === 'reviewed' && !reviewedTeachers.has(teacher.id)) {
+      return false;
+    }
+
+    // Search filtering
     const matchSearch = searchFilters.search === '' ||
       teacher.name.toLowerCase().includes(searchFilters.search.toLowerCase());
 
@@ -219,6 +246,8 @@ const TeacherReview = () => {
           </div>
         </div>
 
+
+
         {/* Search and Filters với improved design */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <SearchFilters
@@ -227,6 +256,11 @@ const TeacherReview = () => {
             onSubjectNameChange={handleSubjectNameChange}
             onSubjectCodeChange={handleSubjectCodeChange}
             onSortChange={handleSortChange}
+            activeTab={activeTab}
+            onTabChange={handleTabChange}
+            bookmarkedCount={bookmarkedTeachers.size}
+            reviewedCount={reviewedTeachers.size}
+            totalCount={teachers.length}
           />
         </div>
 
@@ -245,7 +279,12 @@ const TeacherReview = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedTeachers.map((teacher) => (
               <div key={teacher.id} className="transform hover:scale-105 transition-all duration-300">
-                <TeacherCard teacher={teacher} />
+                <TeacherCard 
+                  teacher={teacher}
+                  isBookmarked={bookmarkedTeachers.has(teacher.id)}
+                  onBookmarkToggle={handleBookmarkToggle}
+                  hasReviewed={reviewedTeachers.has(teacher.id)}
+                />
               </div>
             ))}
           </div>
@@ -272,10 +311,33 @@ const TeacherReview = () => {
           </button>
         </div>
 
+        {/* Empty State for filtered results */}
+        {sortedTeachers.length === 0 && (
+          <div className="text-center py-16">
+            <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+              <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              {activeTab === 'bookmarked' ? 'Chưa có giảng viên nào được đánh dấu' : 
+               activeTab === 'reviewed' ? 'Chưa đánh giá giảng viên nào' : 'Không tìm thấy giảng viên'}
+            </h3>
+            <p className="text-gray-500">
+              {activeTab === 'bookmarked' ? 'Hãy đánh dấu các giảng viên yêu thích để xem lại sau.' : 
+               activeTab === 'reviewed' ? 'Hãy chia sẻ đánh giá về giảng viên bạn đã học.' : 'Thử điều chỉnh bộ lọc tìm kiếm.'}
+            </p>
+          </div>
+        )}
+
         {/* Quick Add Review Button */}
         <div className="fixed bottom-8 right-8">
           <button
-            onClick={() => navigate('/teachers/add-review')}
+            onClick={() => {
+              // This would typically be handled when user completes a review
+              // For demo purposes, we can add a teacher to reviewed list
+              navigate('/teachers/add-review');
+            }}
             className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold p-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110"
           >
             <svg className="w-6 h-6 group-hover:rotate-45 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

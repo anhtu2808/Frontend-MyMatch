@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TeacherCard = ({ teacher }) => {
+const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasReviewed = false }) => {
   const getRatingColor = (rating) => {
     if (rating >= 4.5) return 'from-emerald-500 to-emerald-600';
     if (rating >= 4.0) return 'from-blue-500 to-blue-600';
@@ -13,6 +13,13 @@ const TeacherCard = ({ teacher }) => {
     if (rating >= 4.0) return 'text-blue-600';
     if (rating >= 3.5) return 'text-yellow-600';
     return 'text-red-600';
+  };
+
+  const handleBookmarkClick = (e) => {
+    e.stopPropagation(); // Prevent card click when clicking bookmark
+    if (onBookmarkToggle) {
+      onBookmarkToggle(teacher.id);
+    }
   };
 
   const renderStars = (rating) => {
@@ -54,13 +61,25 @@ const TeacherCard = ({ teacher }) => {
   };
 
   return (
-    <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer">
+    <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer relative">
+
+
+      {/* Reviewed Badge - Top left positioning */}
+      {hasReviewed && (
+        <div className="absolute top-3 left-3 z-20 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg">
+          <svg className="w-3 h-3 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+          </svg>
+          Đã đánh giá
+        </div>
+      )}
+
       {/* Card Header với gradient overlay */}
       <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 p-6">
         <div className="absolute top-0 right-0 w-24 h-24 bg-white/20 rounded-full -translate-y-12 translate-x-12"></div>
         <div className="relative z-10">
           {/* Avatar và Rating Badge */}
-          <div className="flex items-start justify-between mb-4">
+          <div className="flex items-start justify-between mb-4 relative">
             <div className="relative">
               <div className="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center overflow-hidden shadow-lg">
                 {teacher.image ? (
@@ -82,8 +101,8 @@ const TeacherCard = ({ teacher }) => {
               <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 border-2 border-white rounded-full"></div>
             </div>
             
-            {/* Rating Badge */}
-            <div className={`bg-gradient-to-r ${getRatingColor(teacher.rating)} text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg`}>
+            {/* Rating Badge - Positioned to avoid overlap */}
+            <div className={`bg-gradient-to-r ${getRatingColor(teacher.rating)} text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg self-start`}>
               ⭐ {teacher.rating}
             </div>
           </div>
@@ -186,6 +205,20 @@ const TeacherCard = ({ teacher }) => {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          </button>
+
+          {/* Bookmark Button */}
+          <button 
+            onClick={handleBookmarkClick}
+            className={`font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 flex items-center justify-center ${
+              isBookmarked 
+                ? 'bg-yellow-500 hover:bg-yellow-600 text-white' 
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-yellow-600'
+            }`}
+          >
+            <svg className="w-4 h-4" fill={isBookmarked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
             </svg>
           </button>
         </div>

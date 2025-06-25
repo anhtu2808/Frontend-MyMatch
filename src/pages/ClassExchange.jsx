@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 
 const exchangeRequests = [
@@ -185,6 +186,7 @@ const marketplaceRequests = [
 ];
 
 const ClassExchange = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('my-requests');
   const [filters, setFilters] = useState({
     subject: '',
@@ -301,7 +303,8 @@ const ClassExchange = () => {
 
   const handleContactStudent = (contactInfo) => {
     console.log('Contact info:', contactInfo);
-    alert(`Thông tin liên lạc: ${contactInfo}`);
+    // Navigate to messages page to start conversation
+    navigate('/messages');
   };
 
   const getRequestStatusBadge = (status) => {
@@ -906,7 +909,10 @@ const ClassExchange = () => {
 
         {/* Add New Request Button với improved design */}
         <div className="flex justify-center pt-8">
-          <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-12 py-4 rounded-2xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex items-center space-x-3">
+          <button 
+            onClick={() => navigate('/exchange/swap-request')}
+            className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-12 py-4 rounded-2xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex items-center space-x-3"
+          >
             <svg className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>

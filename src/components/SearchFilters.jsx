@@ -7,7 +7,12 @@ const SearchFilters = ({
   onTeacherCodeChange,
   onSubjectNameChange,
   onSubjectCodeChange,
-  onSortChange
+  onSortChange,
+  activeTab = 'all',
+  onTabChange,
+  bookmarkedCount = 0,
+  reviewedCount = 0,
+  totalCount = 0
 }) => {
   const [filters, setFilters] = useState({
     search: '',
@@ -17,7 +22,7 @@ const SearchFilters = ({
     sortBy: 'Highest Rating'
   });
 
-  const [activeTab, setActiveTab] = useState('all');
+
 
   const handleFilterChange = (field, value) => {
     const newFilters = { ...filters, [field]: value };
@@ -44,9 +49,9 @@ const SearchFilters = ({
   };
 
   const tabItems = [
-    { key: 'all', label: 'Tất cả' },
-    { key: 'rated', label: 'Đã đánh giá' },
-    { key: 'bookmarked', label: 'Đã đánh dấu' }
+    { key: 'all', label: `Tất cả (${totalCount})` },
+    { key: 'reviewed', label: `Đã đánh giá (${reviewedCount})` },
+    { key: 'bookmarked', label: `Đã đánh dấu (${bookmarkedCount})` }
   ];
 
   const sortOptions = [
@@ -62,7 +67,7 @@ const SearchFilters = ({
       <div className="mb-8">
         <Tabs
           activeKey={activeTab}
-          onChange={setActiveTab}
+          onChange={onTabChange}
           items={tabItems}
         />
       </div>

@@ -6,7 +6,10 @@ import AddTeacherReview from './pages/AddTeacherReview';
 import Dashboard from './pages/Dashboard';
 import Settings from './pages/Settings';
 import ClassExchange from './pages/ClassExchange';
+import Messages from './pages/Messages';
 import NotFound from './pages/NotFound';
+import AddTeacher from './pages/AddTeacher';
+import ClassSwapRequest from './pages/ClassSwapRequest';
 
 function App() {
   return (
@@ -15,8 +18,11 @@ function App() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/teachers" element={<TeacherReview />} />
+        <Route path="/teachers/add-teacher" element={<AddTeacher />} />
         <Route path="/teachers/add-review" element={<AddTeacherReview />} />
         <Route path="/exchange" element={<ClassExchange />} />
+        <Route path="/exchange/swap-request" element={<ClassSwapRequest />} />
+        <Route path="/messages" element={<Messages />} />
         <Route path="/settings" element={<Settings />} />
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
