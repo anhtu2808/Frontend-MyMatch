@@ -14,6 +14,7 @@ import TeacherDetail from './pages/TeacherDetail';
 import TeamFinder from './pages/TeamFinder';
 import ProfileDetail from './pages/ProfileDetail';
 import AiRecommendation from './pages/AiRecommendation';
+import PremiumStudyPlan from './pages/PremiumStudyPlan';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/profile-detail" element={<ProfileDetail />} />
         <Route path="/ai-recommendation" element={<AiRecommendation />} />
+        <Route path="/premium/study-plan" element={<PremiumStudyPlan />} />
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
