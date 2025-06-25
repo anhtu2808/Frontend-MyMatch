@@ -4,27 +4,6 @@ import Layout from '../components/Layout';
 import SearchFilters from '../components/SearchFilters';
 import TeacherCard from '../components/TeacherCard';
 
-// Hàm tạo mã giảng viên từ tên
-const generateTeacherCode = (name, id) => {
-  if (!name) return `T${id}`;
-  
-  // Tách tên thành các phần
-  const parts = name.split(' ');
-  if (parts.length === 0) return `T${id}`;
-  
-  // Lấy chữ cái đầu tiên của tên (phần cuối cùng)
-  const firstName = parts[parts.length - 1];
-  const firstNameInitial = firstName.charAt(0).toUpperCase();
-  
-  // Lấy chữ cái đầu tiên của họ và tên đệm
-  const lastNameInitials = parts.slice(0, parts.length - 1).map(part => 
-    part.charAt(0).toUpperCase()
-  ).join('');
-  
-  // Kết hợp và thêm số ID
-  return `${firstNameInitial}${lastNameInitials}${id.toString().padStart(2, '0')}`;
-};
-
 const TeacherReview = () => {
   const navigate = useNavigate();
   const [searchFilters, setSearchFilters] = useState({
@@ -34,13 +13,13 @@ const TeacherReview = () => {
     subjectCode: '',
     sortBy: 'Highest Rating'
   });
-  
+
   const teachers = [
     {
       id: 1,
-      name: 'Nguyễn Văn A',
-      code: 'TCH001',
-      department: 'Khoa Công nghệ thông tin',
+      name: 'Nguyễn Văn Thăng Long',
+      code: 'LongNVT',
+      department: 'Quản trị Marketing',
       rating: 4.8,
       ratingColor: 'bg-green-500',
       reviews: 45,
@@ -48,29 +27,29 @@ const TeacherReview = () => {
     },
     {
       id: 2,
-      name: 'Trần Thị B',
-      code: 'TCH002',
-      department: 'Khoa Kinh tế',
-      rating: 4.5,
-      ratingColor: 'bg-blue-500',
+      name: 'Đoàn Thị Thanh Hương',
+      code: 'HuongDTT',
+      department: 'Marketing',
+      rating: 4.7,
+      ratingColor: 'bg-green-500',
       reviews: 32,
       image: '/src/assets/figma/avatar.png'
     },
     {
       id: 3,
-      name: 'Lê Văn C',
-      code: 'TCH003',
-      department: 'Khoa Kỹ thuật',
-      rating: 4.2,
-      ratingColor: 'bg-yellow-500',
+      name: 'Đào Phương Bắc',
+      code: 'BacDP',
+      department: 'Quản trị Dự án',
+      rating: 4.6,
+      ratingColor: 'bg-green-500',
       reviews: 28,
       image: '/src/assets/figma/avatar.png'
     },
     {
       id: 4,
-      name: 'Phạm Thị D',
-      code: 'TCH004',
-      department: 'Khoa Ngoại ngữ',
+      name: 'Ngô Văn Cẩm',
+      code: 'CamNVC',
+      department: 'Lãnh đạo chuyển đổi số',
       rating: 4.9,
       ratingColor: 'bg-green-500',
       reviews: 56,
@@ -78,20 +57,20 @@ const TeacherReview = () => {
     },
     {
       id: 5,
-      name: 'Hoàng Văn E',
-      code: 'TCH005',
-      department: 'Khoa Toán học',
-      rating: 4.3,
+      name: 'Nguyễn Chí Bình',
+      code: 'BinhNC',
+      department: 'Quản trị doanh nghiệp',
+      rating: 4.5,
       ratingColor: 'bg-blue-500',
       reviews: 19,
       image: '/src/assets/figma/avatar.png'
     },
     {
       id: 6,
-      name: 'Võ Thị F',
-      code: 'TCH006',
-      department: 'Khoa Vật lý',
-      rating: 4.7,
+      name: 'Hoàng Việt Hà',
+      code: 'HaHV',
+      department: 'Khởi nghiệp & Đổi mới sáng tạo',
+      rating: 4.8,
       ratingColor: 'bg-green-500',
       reviews: 41,
       image: '/src/assets/figma/avatar.png'
@@ -121,16 +100,19 @@ const TeacherReview = () => {
 
   // Filter teachers based on search criteria
   const filteredTeachers = teachers.filter(teacher => {
-    const matchSearch = searchFilters.search === '' || 
+    // Tạo mã giáo viên mới nếu cần sử dụng qua hàm generateTeacherCode
+    // const teacherCode = generateTeacherCode(teacher.name, teacher.id);
+
+    const matchSearch = searchFilters.search === '' ||
       teacher.name.toLowerCase().includes(searchFilters.search.toLowerCase());
-    
+
     const matchTeacherCode = searchFilters.teacherCode === '' ||
       teacher.code.toLowerCase().includes(searchFilters.teacherCode.toLowerCase());
-    
+
     // Add more filters for subject code and name if needed
     const matchSubjectName = searchFilters.subjectName === '' || true; // Placeholder for subject filtering
     const matchSubjectCode = searchFilters.subjectCode === '' || true; // Placeholder for subject filtering
-    
+
     return matchSearch && matchTeacherCode && matchSubjectName && matchSubjectCode;
   });
 
@@ -151,7 +133,7 @@ const TeacherReview = () => {
   });
 
   return (
-    <Layout 
+    <Layout
       title="Đánh giá giảng viên"
       description="Chia sẻ đánh giá và tìm hiểu về giảng viên"
     >
@@ -239,7 +221,7 @@ const TeacherReview = () => {
 
         {/* Search and Filters với improved design */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <SearchFilters 
+          <SearchFilters
             onSearchChange={handleSearchChange}
             onTeacherCodeChange={handleTeacherCodeChange}
             onSubjectNameChange={handleSubjectNameChange}
@@ -259,7 +241,7 @@ const TeacherReview = () => {
               <span>Hiển thị {sortedTeachers.length} kết quả</span>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedTeachers.map((teacher) => (
               <div key={teacher.id} className="transform hover:scale-105 transition-all duration-300">
@@ -276,13 +258,13 @@ const TeacherReview = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          
+
           <button className="px-4 py-2 rounded-xl bg-blue-600 text-white font-medium">1</button>
           <button className="px-4 py-2 rounded-xl text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors duration-200">2</button>
           <button className="px-4 py-2 rounded-xl text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors duration-200">3</button>
           <span className="px-2 text-gray-400">...</span>
           <button className="px-4 py-2 rounded-xl text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors duration-200">10</button>
-          
+
           <button className="px-4 py-2 rounded-xl text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors duration-200">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -292,7 +274,7 @@ const TeacherReview = () => {
 
         {/* Quick Add Review Button */}
         <div className="fixed bottom-8 right-8">
-          <button 
+          <button
             onClick={() => navigate('/teachers/add-review')}
             className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold p-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110"
           >

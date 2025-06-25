@@ -105,11 +105,11 @@ const TeacherCard = ({ teacher }) => {
             </h3>
             <div className="flex flex-col space-y-1.5">
               <div className="flex items-center">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors duration-200">
                   {teacher.code}
                 </span>
               </div>
-              <p className="text-sm text-gray-600 font-medium">
+              <p className="text-sm text-gray-600 font-medium mt-1">
                 {teacher.department}
               </p>
             </div>
