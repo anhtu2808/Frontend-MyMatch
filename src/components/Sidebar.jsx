@@ -126,7 +126,7 @@ const Sidebar = () => {
             Khám phá các giảng viên được đánh giá cao
           </p>
           <NavLink 
-            to="/teachers" 
+            to="/profile-detail" 
             className="text-xs font-medium text-blue-700 hover:text-blue-800 underline"
           >
             Xem ngay →

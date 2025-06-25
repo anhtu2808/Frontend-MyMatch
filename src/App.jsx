@@ -12,6 +12,8 @@ import AddTeacher from './pages/AddTeacher';
 import ClassSwapRequest from './pages/ClassSwapRequest';
 import TeacherDetail from './pages/TeacherDetail';
 import TeamFinder from './pages/TeamFinder';
+import ProfileDetail from './pages/ProfileDetail';
+import AiRecommendation from './pages/AiRecommendation';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
         <Route path="/team-finder" element={<TeamFinder />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/profile-detail" element={<ProfileDetail />} />
+        <Route path="/ai-recommendation" element={<AiRecommendation />} />
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
