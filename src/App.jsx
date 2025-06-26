@@ -12,6 +12,8 @@ import AddTeacher from './pages/AddTeacher';
 import ClassSwapRequest from './pages/ClassSwapRequest';
 import TeacherDetail from './pages/TeacherDetail';
 import TeamFinder from './pages/TeamFinder';
+import Materials from './pages/Materials';
+import MaterialDetail from './pages/MaterialDetail';
 
 function App() {
   return (
@@ -27,7 +29,10 @@ function App() {
         <Route path="/exchange/swap-request" element={<ClassSwapRequest />} />
         <Route path="/team-finder" element={<TeamFinder />} />
         <Route path="/messages" element={<Messages />} />
+        <Route path="/materials" element={<Materials />} />
+        <Route path="/materials/:id" element={<MaterialDetail/>} />
         <Route path="/settings" element={<Settings />} />
+        
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
