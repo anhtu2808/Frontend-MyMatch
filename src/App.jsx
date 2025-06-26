@@ -17,6 +17,7 @@ import MaterialDetail from './pages/MaterialDetail';
 import ProfileDetail from './pages/ProfileDetail';
 import AiRecommendation from './pages/AiRecommendation';
 import PremiumStudyPlan from './pages/PremiumStudyPlan';
+import StudyMaterialDetail from './pages/StudyMaterialDetail';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route path="/profile-detail" element={<ProfileDetail />} />
         <Route path="/ai-recommendation" element={<AiRecommendation />} />
         <Route path="/premium/study-plan" element={<PremiumStudyPlan />} />
+        <Route path="/study-material-detail" element={<StudyMaterialDetail />} />
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>

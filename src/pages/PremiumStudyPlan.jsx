@@ -15,6 +15,7 @@ import {
   FileTextOutlined,
 } from '@ant-design/icons';
 import Layout from '../components/Layout';
+import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 
@@ -66,6 +67,7 @@ const lifehacks = [
 ];
 
 const PremiumStudyPlan = () => {
+  const navigate = useNavigate(); 
   return (
     <Layout title="Kế hoạch học tập cá nhân">
       <div className="max-w-4xl mx-auto py-10 px-4 space-y-6">
@@ -174,6 +176,7 @@ const PremiumStudyPlan = () => {
                     padding: '0 16px',
                     border: 'none',
                   }}
+                  onClick={() => navigate('/study-material-detail')} // Thêm dòng này
                   onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0056b3'}
                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#007BFF'}
                 >
