@@ -1,6 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
+import { Modal, Form, Input, Select, Button, message } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
+
+const { TextArea } = Input;
+const { Option } = Select;
 
 const exchangeRequests = [
   {
@@ -187,6 +192,9 @@ const marketplaceRequests = [
 
 const ClassExchange = () => {
   const navigate = useNavigate();
+  const [form] = Form.useForm();
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingRequest, setEditingRequest] = useState(null);
   const [activeTab, setActiveTab] = useState('my-requests');
   const [filters, setFilters] = useState({
     subject: '',
@@ -305,6 +313,44 @@ const ClassExchange = () => {
     console.log('Contact info:', contactInfo);
     // Navigate to messages page to start conversation
     navigate('/messages');
+  };
+
+  // Handle edit modal
+  const handleEditRequest = (request) => {
+    setEditingRequest(request);
+    form.setFieldsValue({
+      fromClass: request.fromClass,
+      toClass: request.toClass,
+      fromLecturer: request.fromLecturer,
+      toLecturer: request.toLecturer,
+      fromTime: request.fromTime,
+      toTime: request.toTime,
+      tags: request.tags.join(', '),
+      priority: request.priority
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const handleSaveEdit = (values) => {
+    // Update the request in exchangeRequests array
+    console.log('Saving edited request:', values);
+    setIsEditModalOpen(false);
+    setEditingRequest(null);
+    message.success('Yêu cầu đã được cập nhật thành công!');
+  };
+
+  const handleDeleteRequest = (requestId) => {
+    Modal.confirm({
+      title: 'Xác nhận xóa yêu cầu',
+      content: 'Bạn có chắc chắn muốn xóa yêu cầu đổi chéo lớp này không?',
+      okText: 'Xóa',
+      cancelText: 'Hủy',
+      okType: 'danger',
+      onOk() {
+        console.log('Deleting request:', requestId);
+        message.success('Yêu cầu đã được xóa thành công!');
+      }
+    });
   };
 
   const getRequestStatusBadge = (status) => {
@@ -614,16 +660,20 @@ const ClassExchange = () => {
 
                 {/* Action Buttons */}
                 <div className="flex flex-col space-y-3 ml-8">
-                  <button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2">
+                  <button 
+                    onClick={() => handleDeleteRequest(request.id)}
+                    className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2"
+                  >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
                     <span>Xóa yêu cầu</span>
                   </button>
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
+                  <button 
+                    onClick={() => handleEditRequest(request)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2"
+                  >
+                    <EditOutlined className="w-4 h-4" />
                     <span>Chỉnh sửa</span>
                   </button>
                 </div>
@@ -919,6 +969,128 @@ const ClassExchange = () => {
             <span>Thêm Yêu cầu chuyển Lớp</span>
           </button>
         </div>
+
+        {/* Edit Request Modal */}
+        <Modal
+          title={`Chỉnh sửa yêu cầu đổi chéo lớp ${editingRequest ? `(ID: ${editingRequest.id})` : ''}`}
+          open={isEditModalOpen}
+          onCancel={() => {
+            setIsEditModalOpen(false);
+            setEditingRequest(null);
+          }}
+          footer={null}
+          width={800}
+          destroyOnClose
+        >
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={handleSaveEdit}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* From Class Section */}
+              <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                <h3 className="text-lg font-semibold text-blue-900 mb-4">Lớp hiện tại</h3>
+                
+                <Form.Item
+                  label="Tên lớp"
+                  name="fromClass"
+                  rules={[{ required: true, message: 'Vui lòng nhập tên lớp!' }]}
+                >
+                  <Input placeholder="e.g. SE1305" size="large" />
+                </Form.Item>
+
+                <Form.Item
+                  label="Giảng viên"
+                  name="fromLecturer"
+                  rules={[{ required: true, message: 'Vui lòng nhập tên giảng viên!' }]}
+                >
+                  <Input placeholder="e.g. Dr. Smith" size="large" />
+                </Form.Item>
+
+                <Form.Item
+                  label="Thời gian"
+                  name="fromTime"
+                  rules={[{ required: true, message: 'Vui lòng nhập thời gian!' }]}
+                >
+                  <Input placeholder="e.g. Mon 8AM" size="large" />
+                </Form.Item>
+              </div>
+
+              {/* To Class Section */}
+              <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                <h3 className="text-lg font-semibold text-green-900 mb-4">Lớp muốn đổi</h3>
+                
+                <Form.Item
+                  label="Tên lớp"
+                  name="toClass"
+                  rules={[{ required: true, message: 'Vui lòng nhập tên lớp!' }]}
+                >
+                  <Input placeholder="e.g. SE1326" size="large" />
+                </Form.Item>
+
+                <Form.Item
+                  label="Giảng viên"
+                  name="toLecturer"
+                  rules={[{ required: true, message: 'Vui lòng nhập tên giảng viên!' }]}
+                >
+                  <Input placeholder="e.g. Dr. Taylor" size="large" />
+                </Form.Item>
+
+                <Form.Item
+                  label="Thời gian"
+                  name="toTime"
+                  rules={[{ required: true, message: 'Vui lòng nhập thời gian!' }]}
+                >
+                  <Input placeholder="e.g. Tue 10AM" size="large" />
+                </Form.Item>
+              </div>
+            </div>
+
+            {/* Tags */}
+            <Form.Item
+              label="Tags (phân cách bằng dấu phẩy)"
+              name="tags"
+            >
+              <Input placeholder="e.g. Morning Slot, Theory Focused" size="large" />
+            </Form.Item>
+
+            {/* Priority */}
+            <Form.Item
+              label="Độ ưu tiên"
+              name="priority"
+              rules={[{ required: true, message: 'Vui lòng chọn độ ưu tiên!' }]}
+            >
+              <Select placeholder="Chọn độ ưu tiên" size="large">
+                <Option value="high">Cao</Option>
+                <Option value="medium">Trung bình</Option>
+                <Option value="low">Thấp</Option>
+              </Select>
+            </Form.Item>
+
+            {/* Modal Actions */}
+            <div className="flex justify-end space-x-3 pt-4">
+              <Button 
+                onClick={() => {
+                  setIsEditModalOpen(false);
+                  setEditingRequest(null);
+                }}
+                className="rounded-xl px-6"
+                size="large"
+              >
+                Hủy
+              </Button>
+              <Button 
+                type="primary"
+                htmlType="submit"
+                className="bg-blue-600 hover:bg-blue-700 rounded-xl px-6"
+                size="large"
+              >
+                Lưu thay đổi
+              </Button>
+            </div>
+          </Form>
+        </Modal>
       </div>
     </Layout>
   );
