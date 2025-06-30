@@ -30,18 +30,27 @@ const teacher = {
 
 const studyPlan = [
   {
-    title: 'Thời gian',
-    content: 'Ưu tiên học buổi sáng hoặc tối, slot trước 10h hoặc sau 19h để đạt hiệu quả cao.'
+    title: 'Chia nhỏ bài tập lớn theo ngày',
+    content: 'Đối với assignment hoặc project dài hạn (1–2 tuần), hãy chia nhỏ công việc thành các bước như: tìm hiểu đề bài (ngày 1), lập kế hoạch/flowchart (ngày 2), viết phần 1 (ngày 3–4), kiểm tra + sửa lỗi (ngày 5), chuẩn bị nộp (ngày 6–7). Mỗi ngày chỉ cần hoàn thành 1 bước để tránh bị quá tải sát deadline.'
   },
   {
-    title: 'Chiến lược học tập',
-    content: 'Quản lý thời gian bằng cách chia bài tập lớn thành phần nhỏ, hoàn thành hàng ngày.'
+    title: 'Ưu tiên bài tập theo deadline & độ khó',
+    content: 'Tạo danh sách các bài tập cần làm mỗi tuần. Sắp xếp theo thứ tự ưu tiên: (1) gần deadline, (2) khó hiểu, (3) quan trọng (nhiều điểm). Áp dụng nguyên tắc Eisenhower hoặc bảng Kanban để theo dõi tiến độ.'
   },
   {
-    title: 'Tư vấn giảng dạy',
-    content: 'Khai thác office hours để hỏi thầy về vấn đề còn thắc mắc.'
+    title: 'Tái sử dụng kiến thức từ bài giảng',
+    content: 'Ngay sau buổi học, cố gắng áp dụng ngay kiến thức vừa học vào bài tập. Điều này giúp hiểu sâu và tiết kiệm thời gian. Có thể dùng slide, ví dụ minh họa của thầy cô làm nền tảng để phát triển thêm.'
   },
+  {
+    title: 'Giải đề mẫu và đề cũ trước kiểm tra',
+    content: '1 tuần trước khi kiểm tra giữa kỳ/cuối kỳ, hãy luyện đề mẫu hoặc đề thi cũ ít nhất 2–3 lần. Ghi lại lỗi sai, rà lại lý thuyết. Dùng Flashcard (Quizlet, Anki) để ôn lại các định nghĩa, công thức, key points.'
+  },
+  {
+    title: 'Học nhóm để xử lý bài tập khó',
+    content: 'Nếu gặp bài tập khó, hãy chia sẻ với nhóm học. Có thể phân công mỗi người làm phần riêng, sau đó cùng review và giải thích lại cho nhau. Học nhóm giúp phát hiện lỗ hổng kiến thức nhanh hơn.'
+  }
 ];
+
 
 const testTips = [
   {
@@ -188,7 +197,7 @@ const PremiumStudyPlan = () => {
         </Card>
 
         {/* Lifehacks */}
-        <Card title={<span style={{ color: '#ff9800' }}><BulbOutlined /> Lifehacks</span>} className="rounded-xl shadow">
+        <Card title={<span style={{ color: '#ff9800' }}><BulbOutlined /> Tips</span>} className="rounded-xl shadow">
           <List
             dataSource={lifehacks}
             renderItem={(item) => (

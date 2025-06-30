@@ -250,16 +250,16 @@ const AddTeacherReview = () => {
 
   // Available tags for selection
   const availableTags = [
-    'Điểm thưởng',
-    'Bài giảng tuyệt vời', 
-    'Nhiệt huyết',
-    'Nhiều bài giảng',
-    'Truyền cảm hứng',
-    'Đưa ra phản hồi tốt',
-    'Tiêu chuẩn chấm điểm rõ ràng',
-    'Nhiều bài tập về nhà',
-    'Nhiều bài kiểm tra'
-  ];
+  'Giảng dạy dễ hiểu',
+  'Thân thiện với sinh viên',
+  'Sẵn sàng hỗ trợ',
+  'Chấm điểm công bằng',
+  'Tạo động lực học',
+  'Phản hồi nhanh chóng',
+  'Bài giảng sinh động',
+  'Ứng dụng thực tế cao',
+  'Tổ chức lớp học tốt'
+];
 
   const handleTagToggle = (tag) => {
     setFormData(prev => {
