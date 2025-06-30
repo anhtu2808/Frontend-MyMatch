@@ -225,10 +225,10 @@ const Materials = () => {
             {/* Search Input */}
             <div>
               <Text strong className="block mb-2 text-gray-700">
-                Tìm cả tài liệu
+                Tên tài liệu
               </Text>
               <Input
-                placeholder="Tìm cả tài liệu"
+                placeholder="Tên tài liệu"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 suffix={<SearchOutlined className="text-gray-400" />}

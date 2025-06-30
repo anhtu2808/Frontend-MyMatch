@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Form, Input, Button, Select, Tag, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import Layout from '../components/Layout';
+import { useNavigate } from 'react-router-dom'; // Thêm dòng này ở đầu file
 
 const TeamFinder = () => {
   const [activeTab, setActiveTab] = useState('looking-for-team');
@@ -10,7 +11,14 @@ const TeamFinder = () => {
   const [isTeamEditModalOpen, setIsTeamEditModalOpen] = useState(false);
   const [editingTeam, setEditingTeam] = useState(null);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [viewProfileModalOpen, setViewProfileModalOpen] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [viewTeamModalOpen, setViewTeamModalOpen] = useState(false);
+  const [isCreateTeamModalOpen, setIsCreateTeamModalOpen] = useState(false);
+  const [createTeamForm] = Form.useForm();
+  const [selectedTeam, setSelectedTeam] = useState(null);
   const [subjectGoalsForm, setSubjectGoalsForm] = useState({});
+  const navigate = useNavigate(); // Thêm dòng này
   const [filters, setFilters] = useState({
     major: '',
     class: '',
@@ -20,77 +28,141 @@ const TeamFinder = () => {
 
   // Mock data for teams looking for members
   const teamsLookingForMembers = [
-    {
-      id: 1,
-      name: 'SE1326 Dự án nhóm',
-      status: 'Mở',
-      match: '82% match • Software Engineering',
-      description: 'Tìm thành viên có kinh nghiệm backend development'
-    },
-    {
-      id: 2,
-      name: 'Nhóm nghiên cứu AI',
-      status: 'Đã đóng',
-      match: '76% match • Artificial Intelligence',
-      description: 'Nghiên cứu machine learning và deep learning'
-    },
-    {
-      id: 3,
-      name: 'Nhóm dev',
-      status: 'Mở',
-      match: '79% match • Web Development',
-      description: 'Phát triển ứng dụng web fullstack'
-    }
-  ];
+  {
+    id: 1,
+    name: 'SE1326 Dự án nhóm',
+    status: 'Mở',
+    match: '82% match • Software Engineering',
+    subject: 'EXE101',
+    description: 'Tìm thành viên có kinh nghiệm backend development',
+    maxMembers: 5,
+    memberCount: 2,
+    skills: ['Node.js', 'Express', 'MongoDB'],
+    members: ['Nguyễn Văn A', 'Trần Thị B'],
+    lookingFor: ['Backend Developer', 'Tester'],
+    deadline: '2024-07-01',
+    createdDate: '2024-05-01'
+  },
+  {
+    id: 2,
+    name: 'Nhóm nghiên cứu AI',
+    status: 'Đã đóng',
+    match: '76% match • Artificial Intelligence',
+    subject: 'PRN212',
+    description: 'Nghiên cứu machine learning và deep learning',
+    maxMembers: 4,
+    memberCount: 4,
+    skills: ['Python', 'TensorFlow', 'Data Analysis'],
+    members: ['Phạm Thị D', 'Nguyễn Văn C', 'Lê Văn E', 'Trần Thị F'],
+    lookingFor: [],
+    deadline: '2024-06-20',
+    createdDate: '2024-04-10'
+  },
+  {
+    id: 3,
+    name: 'Nhóm dev',
+    status: 'Mở',
+    match: '79% match • Web Development',
+    subject: 'WED201',
+    description: 'Phát triển ứng dụng web fullstack',
+    maxMembers: 6,
+    memberCount: 3,
+    skills: ['React', 'Node.js', 'UI/UX'],
+    members: ['Nguyễn Văn G', 'Hoàng Thị H', 'Võ Văn I'],
+    lookingFor: ['UI/UX Designer', 'Frontend Developer'],
+    deadline: '2024-08-15',
+    createdDate: '2024-05-20'
+  }
+];
 
   // Mock data for students looking for teams
   const studentsLookingForTeams = [
-    {
-      id: 1,
-      name: 'Jamie Lee',
-      description: 'Backend Developer • Night Owl • Available evenings',
-      avatar: '/src/assets/figma/avatar1.svg',
-      matchPercentage: 92,
-      skills: ['Node.js', 'Python', 'MongoDB'],
-      availability: 'Tối và cuối tuần'
+  {
+    id: 1,
+    name: 'Jamie Lee',
+    major: 'Software Engineering',
+    class: 'SE1704',
+    workStyle: 'Night Owl • Team Player',
+    bio: 'Backend developer, thích học hỏi và làm việc nhóm.',
+    contact: {
+      email: 'jamie.lee@example.com',
+      discord: 'jamielee#1234'
     },
-    {
-      id: 2,
-      name: 'Priya Patel',
-      description: 'UI/UX Designer • Punctual • Presentation expert',
-      avatar: '/src/assets/figma/avatar2.svg',
-      matchPercentage: 87,
-      skills: ['Figma', 'Adobe XD', 'Prototyping'],
-      availability: 'Linh hoạt'
+    description: 'Backend Developer • Night Owl • Available evenings',
+    avatar: '/src/assets/figma/avatar1.svg',
+    matchPercentage: 92,
+    skills: ['Node.js', 'Python', 'MongoDB'],
+    availability: 'Tối và cuối tuần'
+  },
+  {
+    id: 2,
+    name: 'Priya Patel',
+    major: 'UI/UX Design',
+    class: 'SE1705',
+    workStyle: 'Punctual • Presentation expert',
+    bio: 'Đam mê thiết kế giao diện và trải nghiệm người dùng.',
+    contact: {
+      email: 'priya.patel@example.com',
+      discord: 'priyapatel#5678'
     },
-    {
-      id: 3,
-      name: 'Carlos Mendez',
-      description: 'Frontend Developer • Early Bird • Creative problem solver',
-      avatar: '/src/assets/figma/avatar.png',
-      matchPercentage: 78,
-      skills: ['React', 'TypeScript', 'CSS'],
-      availability: 'Sáng và trưa'
+    description: 'UI/UX Designer • Punctual • Presentation expert',
+    avatar: '/src/assets/figma/avatar2.svg',
+    matchPercentage: 87,
+    skills: ['Figma', 'Adobe XD', 'Prototyping'],
+    availability: 'Linh hoạt'
+  },
+  {
+    id: 3,
+    name: 'Carlos Mendez',
+    major: 'Web Development',
+    class: 'SE1706',
+    workStyle: 'Early Bird • Creative problem solver',
+    bio: 'Yêu thích phát triển frontend và giải quyết vấn đề sáng tạo.',
+    contact: {
+      email: 'carlos.mendez@example.com',
+      discord: 'carlosm#9999'
     },
-    {
-      id: 4,
-      name: 'Phạm Thị Lan',
-      description: 'Full-stack Developer • Team leader • Experienced',
-      avatar: '/src/assets/figma/avatar1.svg',
-      matchPercentage: 95,
-      skills: ['React', 'Node.js', 'PostgreSQL'],
-      availability: 'Linh hoạt'
+    description: 'Frontend Developer • Early Bird • Creative problem solver',
+    avatar: '/src/assets/figma/avatar.png',
+    matchPercentage: 78,
+    skills: ['React', 'TypeScript', 'CSS'],
+    availability: 'Sáng và trưa'
+  },
+  {
+    id: 4,
+    name: 'Phạm Thị Lan',
+    major: 'Full-stack Development',
+    class: 'SE1707',
+    workStyle: 'Team leader • Experienced',
+    bio: 'Có kinh nghiệm dẫn dắt nhóm và phát triển full-stack.',
+    contact: {
+      email: 'pham.lan@example.com',
+      discord: 'phamlan#8888'
     },
-    {
-      id: 5,
-      name: 'Nguyễn Minh Tuấn',
-      description: 'Mobile Developer • Detail-oriented • Fast learner',
-      avatar: '/src/assets/figma/avatar2.svg',
-      matchPercentage: 73,
-      skills: ['React Native', 'Flutter', 'Firebase'],
-      availability: 'Tối các ngày trong tuần'
-    }
-  ];
+    description: 'Full-stack Developer • Team leader • Experienced',
+    avatar: '/src/assets/figma/avatar1.svg',
+    matchPercentage: 95,
+    skills: ['React', 'Node.js', 'PostgreSQL'],
+    availability: 'Linh hoạt'
+  },
+  {
+    id: 5,
+    name: 'Nguyễn Minh Tuấn',
+    major: 'Mobile Development',
+    class: 'SE1708',
+    workStyle: 'Detail-oriented • Fast learner',
+    bio: 'Đam mê phát triển ứng dụng di động, học hỏi nhanh.',
+    contact: {
+      email: 'tuan.nguyen@example.com',
+      discord: 'tuannguyen#7777'
+    },
+    description: 'Mobile Developer • Detail-oriented • Fast learner',
+    avatar: '/src/assets/figma/avatar2.svg',
+    matchPercentage: 73,
+    skills: ['React Native', 'Flutter', 'Firebase'],
+    availability: 'Tối các ngày trong tuần'
+  }
+];
 
   // Mock data for user's teams
   const myTeams = [
@@ -373,7 +445,10 @@ const TeamFinder = () => {
                   <h3 className="text-xl font-semibold text-gray-900">Profile nhóm của tôi</h3>
                   <p className="text-gray-600 mt-1">Quản lý các nhóm bạn đã tham gia và tạo</p>
                 </div>
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center space-x-2">
+                <button
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center space-x-2"
+                  onClick={() => setIsCreateTeamModalOpen(true)}
+                >
                   <PlusOutlined />
                   <span>Tạo nhóm mới</span>
                 </button>
@@ -481,9 +556,16 @@ const TeamFinder = () => {
                           <DeleteOutlined />
                           <span>Xóa nhóm</span>
                         </button>
-                        <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
+                        <button
+                          onClick={() => {
+                            setSelectedTeam(team);
+                            setViewTeamModalOpen(true);
+                          }}
+                          className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 whitespace-nowrap"
+                        >
                           Xem chi tiết
                         </button>
+
                       </div>
                     </div>
                   </div>
@@ -590,12 +672,22 @@ const TeamFinder = () => {
                       <span>EXE101</span>
                     </div>
                     <div className="flex space-x-2">
-                      <button className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
-                        Xin gia nhập
+                      <button
+                        className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700"
+                        onClick={() => navigate('/messages')}
+                      >
+                        Liên hệ
                       </button>
-                      <button className="flex-1 bg-blue-100 text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-200">
+                      <button
+                        onClick={() => {
+                          setSelectedTeam(team);
+                          setViewTeamModalOpen(true);
+                        }}
+                        className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 whitespace-nowrap"
+                      >
                         Xem chi tiết
                       </button>
+
                     </div>
                   </div>
                 ))}
@@ -646,12 +738,22 @@ const TeamFinder = () => {
                       </div>
                       
                       <div className="flex flex-col space-y-2 ml-4">
-                        <button className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 whitespace-nowrap">
-                          Mời vào nhóm
-                        </button>
-                        <button className="bg-gray-100 text-gray-700 px-6 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 whitespace-nowrap">
-                          Xem profile
-                        </button>
+                        <button
+                        className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 whitespace-nowrap"
+                        onClick={() => navigate('/messages')}
+                      >
+                        Liên hệ
+                      </button>
+                        <button
+                            onClick={() => {
+                              setSelectedProfile(student);
+                              setViewProfileModalOpen(true);
+                            }}
+                            className="bg-gray-100 text-gray-700 px-6 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 whitespace-nowrap"
+                          >
+                            Xem profile
+                          </button>
+
                       </div>
                     </div>
                   </div>
@@ -855,6 +957,87 @@ const TeamFinder = () => {
         )}
 
         {/* Edit Profile Modal - Ant Design */}
+        <Modal
+  title="Chi tiết hồ sơ thành viên"
+  open={viewProfileModalOpen}
+  onCancel={() => setViewProfileModalOpen(false)}
+  footer={null}
+  width={800}
+>
+  {selectedProfile && (
+    <div className="space-y-4">
+      <h3 className="text-xl font-semibold">{selectedProfile.name}</h3>
+      <p>{selectedProfile.major} • {selectedProfile.class}</p>
+      <p className="text-sm text-gray-500">{selectedProfile.workStyle}</p>
+
+      <div>
+        <h4 className="font-medium">Giới thiệu</h4>
+        <p>{selectedProfile.bio}</p>
+      </div>
+
+      <div>
+        <h4 className="font-medium">Kỹ năng</h4>
+        <div className="flex flex-wrap gap-2">
+          {selectedProfile.skills?.map((skill, i) => (
+            <span key={i} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h4 className="font-medium">Liên hệ</h4>
+        <p>Email: {selectedProfile.contact?.email}</p>
+        <p>Discord: {selectedProfile.contact?.discord}</p>
+      </div>
+    </div>
+  )}
+</Modal>
+<Modal
+  title="Chi tiết nhóm"
+  open={viewTeamModalOpen}
+  onCancel={() => setViewTeamModalOpen(false)}
+  footer={null}
+  width={800}
+>
+  {selectedTeam && (
+    <div className="space-y-4">
+      <h3 className="text-xl font-semibold">{selectedTeam.name}</h3>
+      <p className="text-sm text-gray-600">{selectedTeam.subject}</p>
+      <p>Trạng thái: <strong>{selectedTeam.status}</strong></p>
+      <p>Số thành viên tối đa: {selectedTeam.maxMembers}</p>
+
+      <div>
+        <h4 className="font-medium">Mô tả nhóm</h4>
+        <p>{selectedTeam.description}</p>
+      </div>
+
+      <div>
+        <h4 className="font-medium">Kỹ năng nhóm</h4>
+        <div className="flex flex-wrap gap-2">
+          {selectedTeam.skills?.map((skill, i) => (
+            <span key={i} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h4 className="font-medium">Đang tìm kiếm</h4>
+        <div className="flex flex-wrap gap-2">
+          {selectedTeam.lookingFor?.map((role, i) => (
+            <span key={i} className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+              {role}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )}
+</Modal>
+
         <Modal
           title="Chỉnh sửa thông tin profile"
           open={isEditModalOpen}
@@ -1080,6 +1263,93 @@ const TeamFinder = () => {
             </div>
           </Form>
         </Modal>
+        <Modal
+  title="Tạo nhóm mới"
+  open={isCreateTeamModalOpen}
+  onCancel={() => setIsCreateTeamModalOpen(false)}
+  footer={null}
+  width={700}
+>
+  <Form
+    form={createTeamForm}
+    layout="vertical"
+    onFinish={(values) => {
+      // Xử lý tạo nhóm mới ở đây (ví dụ: gọi API hoặc cập nhật state)
+      console.log('Tạo nhóm mới:', values);
+      setIsCreateTeamModalOpen(false);
+      createTeamForm.resetFields();
+      message.success('Tạo nhóm mới thành công!');
+      // Nếu muốn cập nhật danh sách nhóm, hãy thêm vào myTeams ở đây
+    }}
+  >
+    <Form.Item
+      label="Tên nhóm"
+      name="name"
+      rules={[{ required: true, message: 'Vui lòng nhập tên nhóm!' }]}
+    >
+      <Input placeholder="e.g. Team Alpha" />
+    </Form.Item>
+    <Form.Item
+      label="Môn học"
+      name="subject"
+      rules={[{ required: true, message: 'Vui lòng chọn môn học!' }]}
+    >
+      <Select
+        placeholder="Chọn môn học"
+        options={subjectOptions}
+        showSearch
+        filterOption={(input, option) =>
+          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+        }
+      />
+    </Form.Item>
+    <Form.Item
+      label="Mô tả nhóm"
+      name="description"
+      rules={[{ required: true, message: 'Vui lòng nhập mô tả nhóm!' }]}
+    >
+      <Input.TextArea rows={3} placeholder="Mô tả về mục tiêu, dự án và yêu cầu của nhóm..." />
+    </Form.Item>
+    <Form.Item
+      label="Số thành viên tối đa"
+      name="maxMembers"
+      rules={[{ required: true, message: 'Vui lòng nhập số thành viên!' }]}
+    >
+      <Select
+        placeholder="Chọn số thành viên"
+        options={[
+          { label: '2 thành viên', value: 2 },
+          { label: '3 thành viên', value: 3 },
+          { label: '4 thành viên', value: 4 },
+          { label: '5 thành viên', value: 5 },
+          { label: '6 thành viên', value: 6 },
+          { label: '7 thành viên', value: 7 },
+          { label: '8 thành viên', value: 8 }
+        ]}
+      />
+    </Form.Item>
+    <Form.Item
+      label="Kỹ năng nhóm (phân cách bằng dấu phẩy)"
+      name="skills"
+    >
+      <Input placeholder="e.g. React, Node.js, MongoDB" />
+    </Form.Item>
+    <Form.Item
+      label="Đang tìm kiếm (phân cách bằng dấu phẩy)"
+      name="lookingFor"
+    >
+      <Input placeholder="e.g. Backend Developer, UI/UX Designer" />
+    </Form.Item>
+    <div className="flex justify-end space-x-3 mt-8 pt-6 border-t">
+      <Button onClick={() => setIsCreateTeamModalOpen(false)}>
+        Hủy
+      </Button>
+      <Button type="primary" htmlType="submit">
+        Tạo nhóm
+      </Button>
+    </div>
+  </Form>
+</Modal>
 
         {/* Team Edit Modal */}
         <Modal
