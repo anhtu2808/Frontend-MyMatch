@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { AutoComplete, Select, Input, Divider } from 'antd';
 import { SearchOutlined, BookOutlined, UserOutlined } from '@ant-design/icons';
+import { updateTeacher } from '../store/slices/teachersSlice';
 import Layout from '../components/Layout';
 
 const AddTeacherReview = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
+  
+  // Get teachers from Redux store
+  const teachers = useSelector(state => state.teachers.teachers);
+  
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     // Step 1: Teacher Selection
@@ -45,8 +52,22 @@ const AddTeacherReview = () => {
     anonymous: false
   });
 
-  // Xử lý dữ liệu môn học được chọn từ SubjectSelection
+  // Xử lý dữ liệu môn học được chọn từ SubjectSelection và load saved form data
   useEffect(() => {
+    // Load saved form data from localStorage
+    const savedFormData = localStorage.getItem('reviewFormData');
+    if (savedFormData) {
+      try {
+        const formData = JSON.parse(savedFormData);
+        setFormData(prev => ({
+          ...prev,
+          ...formData
+        }));
+      } catch (error) {
+        console.error('Error parsing saved form data:', error);
+      }
+    }
+
     // Kiểm tra dữ liệu từ navigation state
     if (location.state?.selectedSubjects) {
       setFormData(prev => ({
@@ -75,34 +96,69 @@ const AddTeacherReview = () => {
     }
   }, [location.state]);
 
-  // Mock data
-  const teachersData = [
-    { value: 'TS. Nguyễn Văn A', label: 'TS. Nguyễn Văn A', id: 'GV001', code: 'LamNN2', department: 'Khoa CNTT' },
-    { value: 'PGS. Trần Thị B', label: 'PGS. Trần Thị B', id: 'GV002', code: 'HuyNM', department: 'Khoa Kinh tế' },
-    { value: 'ThS. Lê Văn C', label: 'ThS. Lê Văn C', id: 'GV003', code: 'TuanVM', department: 'Khoa Kỹ thuật' },
-    { value: 'TS. Phạm Thị D', label: 'TS. Phạm Thị D', id: 'GV004', code: '', department: 'Khoa Ngoại ngữ' },
-    { value: 'PGS. Hoàng Văn E', label: 'PGS. Hoàng Văn E', id: 'GV005', code: '', department: 'Khoa Toán học' },
-    { value: 'ThS. Võ Thị F', label: 'ThS. Võ Thị F', id: 'GV006', code: '', department: 'Khoa Vật lý' },
-  ];
+  // Transform teachers data from Redux store for AutoComplete component
+  const teachersData = teachers.map(teacher => ({
+    value: teacher.name,
+    label: teacher.name + ' - ' + teacher.code ,
+    id: teacher.id,
+    code: teacher.code,
+    department: teacher.department
+  }));
 
   const semesterCourses = {
     '1': [
-      { value: 'CSE101', label: 'CSE101 - Nhập môn lập trình' },
-      { value: 'MAT101', label: 'MAT101 - Toán cao cấp 1' },
-      { value: 'ENG101', label: 'ENG101 - Tiếng Anh 1' },
-      { value: 'PHY101', label: 'PHY101 - Vật lý đại cương' },
+      { value: 'PRF192', label: 'PRF192 - Programming Fundamentals' },
+      { value: 'MAD101', label: 'MAD101 - Discrete Mathematics' },
+      { value: 'CEA201', label: 'CEA201 - Computer Organization and Architecture' },
+      { value: 'SSL101c', label: 'SSL101c - Academic Skills for University Success' },
     ],
     '2': [
-      { value: 'CSE201', label: 'CSE201 - Cấu trúc dữ liệu' },
-      { value: 'MAT201', label: 'MAT201 - Toán cao cấp 2' },
-      { value: 'ENG201', label: 'ENG201 - Tiếng Anh 2' },
-      { value: 'CSE202', label: 'CSE202 - Lập trình hướng đối tượng' },
+      { value: 'PRO192', label: 'PRO192 - Object-Oriented Programming' },
+      { value: 'OSG202', label: 'OSG202 - Operating Systems' },
+      { value: 'CSI104', label: 'CSI104 - Introduction to Computer Science' },
+      { value: 'MAE101', label: 'MAE101 - Mathematics for Engineering' },
     ],
     '3': [
-      { value: 'CSE301', label: 'CSE301 - Cơ sở dữ liệu' },
-      { value: 'CSE302', label: 'CSE302 - Mạng máy tính' },
-      { value: 'BUS301', label: 'BUS301 - Quản trị doanh nghiệp' },
-      { value: 'CSE303', label: 'CSE303 - Phần mềm hệ thống' },
+      { value: 'DBI202', label: 'DBI202 - Introduction to Databases' },
+      { value: 'CSD201', label: 'CSD201 - Data Structures and Algorithms' },
+      { value: 'LAB211', label: 'LAB211 - OOP with Java Lab' },
+      { value: 'JPD113', label: 'JPD113 - Elementary Japanese 1-A1.1' },
+    ],
+    '4': [
+      { value: 'PRJ301', label: 'PRJ301 - Java Web Application Development' },
+      { value: 'SWE201c', label: 'SWE201c - Introduction to Software Engineering' },
+      { value: 'NWC203c', label: 'NWC203c - Computer Networking' },
+      { value: 'JPD123', label: 'JPD123 - Elementary Japanese 1-A1.2' },
+    ],
+    '5': [
+      { value: 'SWP391', label: 'SWP391 - Application Development Project' },
+      { value: 'SWT301', label: 'SWT301 - Software Testing' },
+      { value: 'ITE302c', label: 'ITE302c - Ethics in IT' },
+      { value: 'JPD213', label: 'JPD213 - Elementary Japanese 2-A1.3' },
+    ],
+    '6': [
+      { value: 'SWR302', label: 'SWR302 - Software Requirement' },
+      { value: 'PMG202c', label: 'PMG202c - Project Management' },
+      { value: 'MLN122', label: 'MLN122 - Marxist-Leninist Philosophy' },
+      { value: 'JPD223', label: 'JPD223 - Elementary Japanese 2-A1.4' },
+    ],
+    '7': [
+      { value: 'SWD392', label: 'SWD392 - SW Architecture and Design' },
+      { value: 'MLN131', label: 'MLN131 - Marxist-Leninist Political Economics' },
+      { value: 'MKT205', label: 'MKT205 - Marketing Principles' },
+      { value: 'Elective1', label: 'Elective Course 1' },
+    ],
+    '8': [
+      { value: 'SWP490', label: 'SWP490 - Capstone Project' },
+      { value: 'MLN141', label: 'MLN141 - Scientific Socialism' },
+      { value: 'ENW492c', label: 'ENW492c - Advanced English' },
+      { value: 'Elective2', label: 'Elective Course 2' },
+    ],
+    '9': [
+      { value: 'MLN151', label: 'MLN151 - Ho Chi Minh Ideology' },
+      { value: 'VNR202c', label: 'VNR202c - History of Vietnamese Communist Party' },
+      { value: 'Internship', label: 'Internship Program' },
+      { value: 'Elective3', label: 'Elective Course 3' },
     ]
   };
 
@@ -133,6 +189,8 @@ const AddTeacherReview = () => {
 
   const nextStep = () => {
     if (currentStep < 3) {
+      // Save current form data to localStorage
+      localStorage.setItem('reviewFormData', JSON.stringify(formData));
       setCurrentStep(currentStep + 1);
     }
   };
@@ -144,9 +202,50 @@ const AddTeacherReview = () => {
   };
 
   const handleSubmit = () => {
-    // Handle form submission
-    console.log('Form submitted:', formData);
-    navigate('/teachers');
+    // Find the selected teacher
+    const selectedTeacher = teachers.find(t => t.id === formData.teacherId);
+    
+    if (selectedTeacher) {
+      // Create new review object
+      const newReview = {
+        id: selectedTeacher.reviewData.length + 1,
+        title: `Review về ${formData.courseCode}`,
+        content: formData.reviewText || "No additional comments provided.",
+        teachingCriteria: formData.teachingAbility,
+        teachingQuality: formData.lectureStructure,
+        structure: formData.lectureStructure,
+        communication: formData.studentInteraction,
+        score: (formData.teachingAbility + formData.lectureStructure + formData.studentInteraction + formData.workloadRequirement + formData.gradingDifficulty) / 5,
+        tags: formData.selectedTags,
+        helpful: 0,
+        notHelpful: 0,
+        date: new Date().toISOString().split('T')[0],
+        verified: true, // Assuming verified if file was uploaded
+        rating: Math.round((formData.teachingAbility + formData.lectureStructure + formData.studentInteraction + formData.workloadRequirement + formData.gradingDifficulty) / 5)
+      };
+
+      // Calculate new average rating
+      const allReviews = [...selectedTeacher.reviewData, newReview];
+      const newAverageRating = allReviews.reduce((sum, review) => sum + review.rating, 0) / allReviews.length;
+
+      // Update teacher with new review and rating
+      const updatedTeacher = {
+        ...selectedTeacher,
+        reviewData: allReviews,
+        rating: parseFloat(newAverageRating.toFixed(1)),
+        totalReviews: allReviews.length,
+        reviews: allReviews.length
+      };
+
+      // Dispatch update to store
+      dispatch(updateTeacher(updatedTeacher));
+      
+      // Clear saved form data from localStorage
+      localStorage.removeItem('reviewFormData');
+      
+      console.log('Review submitted successfully:', newReview);
+      navigate('/teachers');
+    }
   };
 
   // Available tags for selection
@@ -325,7 +424,7 @@ const AddTeacherReview = () => {
   };
 
   const renderStep2 = () => {
-    const selectedTeacher = teachersData.find(t => t.value === formData.teacherName);
+    const selectedTeacher = teachers.find(t => t.id === formData.teacherId);
     const availableCourses = formData.semester ? semesterCourses[formData.semester] || [] : [];
     const selectedCourse = availableCourses.find(c => c.value === formData.courseCode);
 
@@ -361,6 +460,12 @@ const AddTeacherReview = () => {
                 { value: '1', label: ' Học kỳ 1 ' },
                 { value: '2', label: ' Học kỳ 2 ' },
                 { value: '3', label: ' Học kỳ 3 ' },
+                { value: '4', label: ' Học kỳ 4 ' },
+                { value: '5', label: ' Học kỳ 5 ' },
+                { value: '6', label: ' Học kỳ 6 ' },
+                { value: '7', label: ' Học kỳ 7 ' },
+                { value: '8', label: ' Học kỳ 8 ' },
+                { value: '9', label: ' Học kỳ 9 ' },
               ]}
             />
           </div>
@@ -423,11 +528,11 @@ const AddTeacherReview = () => {
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-xl p-4">
                 <div className="flex items-center space-x-4">
                   <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                    {selectedTeacher.value.charAt(selectedTeacher.value.indexOf('.') + 2)}
+                    {selectedTeacher.name.charAt(0)}
                   </div>
                   <div>
-                    <h3 className="font-medium text-blue-800">{selectedTeacher.value}</h3>
-                    <p className="text-sm text-blue-600">{selectedTeacher.id} • {selectedTeacher.department}</p>
+                    <h3 className="font-medium text-blue-800">{selectedTeacher.name}</h3>
+                    <p className="text-sm text-blue-600">{selectedTeacher.code} • {selectedTeacher.department}</p>
                   </div>
                 </div>
               </div>

@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { Modal, Form, Input, Select, Button, message } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, PhoneOutlined, MessageOutlined, CheckOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -204,6 +204,7 @@ const ClassExchange = () => {
     dayOfWeek: '',
     sortBy: 'Most Recent'
   });
+  const [acceptedRequests, setAcceptedRequests] = useState(new Set());
 
   const handleFilterChange = (field, value) => {
     setFilters(prev => ({ ...prev, [field]: value }));
@@ -294,8 +295,8 @@ const ClassExchange = () => {
   };
 
   const handleAcceptRequest = (requestId) => {
-    // Handle accept request logic
-    console.log('Accepting request:', requestId);
+    setAcceptedRequests(prev => new Set([...prev, requestId]));
+    message.success('Đã chấp nhận yêu cầu đổi chéo!');
   };
 
   const handleDeclineRequest = (requestId) => {
@@ -435,7 +436,7 @@ const ClassExchange = () => {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
-                <span>Chợ chuyển lớp</span>
+                <span>Bản tin chuyển lớp</span>
               </div>
             </button>
           </nav>
@@ -587,7 +588,7 @@ const ClassExchange = () => {
             <h3 className="text-2xl font-bold text-gray-900">
               {activeTab === 'my-requests' && 'Yêu cầu của tôi'}
               {activeTab === 'requests-to-me' && 'Yêu cầu gửi tới tôi'}
-              {activeTab === 'marketplace' && 'Chợ chuyển lớp'}
+              {activeTab === 'marketplace' && 'Bản tin chuyển lớp'}
             </h3>
             <div className="text-sm text-gray-500">
               {activeTab === 'my-requests' && `Hiển thị ${filteredAndSortedRequests.length} yêu cầu`}
@@ -760,24 +761,40 @@ const ClassExchange = () => {
                   {/* Action Buttons */}
                   {request.status === 'pending' && (
                     <div className="flex space-x-4">
-                      <button 
-                        onClick={() => handleAcceptRequest(request.id)}
-                        className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Chấp nhận đổi</span>
-                      </button>
-                      <button 
-                        onClick={() => handleDeclineRequest(request.id)}
-                        className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        <span>Từ chối</span>
-                      </button>
+                      {!acceptedRequests.has(request.id) ? (
+                        <>
+                          <button 
+                            onClick={() => handleAcceptRequest(request.id)}
+                            className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
+                          >
+                            <CheckOutlined />
+                            <span>Chấp nhận đổi</span>
+                          </button>
+                          <button 
+                            onClick={() => handleDeclineRequest(request.id)}
+                            className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
+                          >
+                            <span>Từ chối</span>
+                          </button>
+                        </>
+                      ) : (
+                        <div className="flex w-full space-x-4">
+                          <button 
+                            onClick={() => window.open(`tel:${request.phone}`)}
+                            className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
+                          >
+                            <PhoneOutlined />
+                            <span>Gọi điện</span>
+                          </button>
+                          <button 
+                            onClick={() => navigate(`/messages`)}
+                            className="flex-1 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
+                          >
+                            <MessageOutlined />
+                            <span>Nhắn tin</span>
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -903,15 +920,7 @@ const ClassExchange = () => {
                       </svg>
                       <span>Gửi yêu cầu đổi</span>
                     </button>
-                    <button 
-                      onClick={() => handleContactStudent(request.contactPreference)}
-                      className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                      </svg>
-                      <span>Liên hệ trực tiếp</span>
-                    </button>
+                    
                   </div>
 
                   {/* Additional Info */}

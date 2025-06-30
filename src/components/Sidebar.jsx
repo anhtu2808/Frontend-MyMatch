@@ -1,7 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectCoinsBalance, selectCurrentUser } from '../store/slices/userSlice';
 
 const Sidebar = () => {
+  const coinsBalance = useSelector(selectCoinsBalance);
+  const currentUser = useSelector(selectCurrentUser);
+  
   const navItems = [
     {
       id: 'dashboard',
@@ -146,20 +151,32 @@ const Sidebar = () => {
 
       {/* User Profile */}
       <div className="p-4 border-t border-gray-100 flex-shrink-0">
-                 <div className="flex items-center space-x-3 px-4 py-3">
-           <img 
-             src="/src/assets/figma/avatar.png" 
-             alt="User Avatar" 
-             className="w-10 h-10 rounded-full object-cover"
-             onError={(e) => {
-               e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4PSI4IiB5PSI4Ij4KPHBhdGggZD0iTTEyIDEyQzE0LjIwOTEgMTIgMTYgMTAuMjA5MSAxNiA4QzE2IDUuNzkwODYgMTQuMjA5MSA0IDEyIDRDOS43OTA4NiA0IDggNS43OTA4NiA4IDhDOCAxMC4yMDkxIDkuNzkwODYgMTIgMTIgMTJaIiBmaWxsPSIjOUI5Qjk5Ii8+CjxwYXRoIGQ9Ik0xMiAxNEM5LjMzIDIwIDQgMTguNjcgNCAxNkM0IDEzLjMzIDYuNjcgMTIgMTIgMTJDMTcuMzMgMTIgMjAgMTMuMzMgMjAgMTZDMjAgMTguNjcgMTcuMzMgMjAgMTIgMjBaIiBmaWxsPSIjOUI5Qjk5Ii8+Cjwvc3ZnPgo8L3N2Zz4K';
-             }}
-           />
-           <div className="flex-1 min-w-0">
-             <p className="text-sm font-medium text-gray-900 truncate">Nguyễn Văn A</p>
-             <p className="text-xs text-gray-500 truncate">nguyenvana@fpt.edu.vn</p>
-           </div>
-         </div>
+        <div className="flex items-center px-4 py-2">
+          <img 
+            src="/src/assets/figma/avatar.png" 
+            alt="User Avatar" 
+            className="w-10 h-10 rounded-full object-cover"
+            onError={(e) => {
+              e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4PSI4IiB5PSI4Ij4KPHBhdGggZD0iTTEyIDEyQzE0LjIwOTEgMTIgMTYgMTAuMjA5MSAxNiA4QzE2IDUuNzkwODYgMTQuMjA5MSA0IDEyIDRDOS43OTA4NiA0IDggNS43OTA4NiA4IDhDOCAxMC4yMDkxIDkuNzkwODYgMTIgMTIgMTJaIiBmaWxsPSIjOUI5Qjk5Ii8+CjxwYXRoIGQ9Ik0xMiAxNEM5LjMzIDIwIDQgMTguNjcgNCAxNkM0IDEzLjMzIDYuNjcgMTIgMTIgMTJDMTcuMzMgMTIgMjAgMTMuMzMgMjAgMTZDMjAgMTguNjcgMTcuMzMgMjAgMTIgMjBaIiBmaWxsPSIjOUI5Qjk5Ii8+Cjwvc3ZnPgo8L3N2Zz4K';
+            }}
+          />
+          <div className="ml-3 flex-1 min-w-0">
+            <div className="flex items-center space-x-2">
+              <span className="text-sm font-medium text-gray-900">
+                {currentUser?.name || 'Alex Johnson'}
+              </span>
+              <div className="flex items-center space-x-1 bg-yellow-50/50 px-2 py-0.5 rounded-full">
+                <span className="text-yellow-600 text-xs">¥</span>
+                <span className="text-sm text-gray-600">
+                  {(typeof coinsBalance === 'number' ? coinsBalance : 0).toLocaleString()}
+                </span>
+              </div>
+            </div>
+            <p className="text-xs text-gray-500 truncate mt-0.5">
+              {currentUser?.email || 'alex.johnson@student.university.edu'}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

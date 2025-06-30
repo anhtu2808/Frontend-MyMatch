@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Layout from '../components/Layout';
 import SearchFilters from '../components/SearchFilters';
 import TeacherCard from '../components/TeacherCard';
 
 const TeacherReview = () => {
   const navigate = useNavigate();
+  
+  // Get teachers from Redux store
+  const teachers = useSelector(state => state.teachers.teachers);
+  
   const [activeTab, setActiveTab] = useState('all'); // 'all', 'bookmarked', 'reviewed'
   const [bookmarkedTeachers, setBookmarkedTeachers] = useState(new Set([1, 3])); // Sample bookmarked teachers
   const [reviewedTeachers] = useState(new Set([2, 4])); // Sample reviewed teachers
@@ -17,68 +22,17 @@ const TeacherReview = () => {
     sortBy: 'Highest Rating'
   });
 
-  const teachers = [
-    {
-      id: 1,
-      name: 'Nguyễn Văn Thăng Long',
-      code: 'LongNVT',
-      department: 'Quản trị Marketing',
-      rating: 4.8,
-      ratingColor: 'bg-green-500',
-      reviews: 45,
-      image: '/src/assets/figma/avatar.png'
-    },
-    {
-      id: 2,
-      name: 'Đoàn Thị Thanh Hương',
-      code: 'HuongDTT',
-      department: 'Marketing',
-      rating: 4.7,
-      ratingColor: 'bg-green-500',
-      reviews: 32,
-      image: '/src/assets/figma/avatar.png'
-    },
-    {
-      id: 3,
-      name: 'Đào Phương Bắc',
-      code: 'BacDP',
-      department: 'Quản trị Dự án',
-      rating: 4.6,
-      ratingColor: 'bg-green-500',
-      reviews: 28,
-      image: '/src/assets/figma/avatar.png'
-    },
-    {
-      id: 4,
-      name: 'Ngô Văn Cẩm',
-      code: 'CamNVC',
-      department: 'Lãnh đạo chuyển đổi số',
-      rating: 4.9,
-      ratingColor: 'bg-green-500',
-      reviews: 56,
-      image: '/src/assets/figma/avatar.png'
-    },
-    {
-      id: 5,
-      name: 'Nguyễn Chí Bình',
-      code: 'BinhNC',
-      department: 'Quản trị doanh nghiệp',
-      rating: 4.5,
-      ratingColor: 'bg-blue-500',
-      reviews: 19,
-      image: '/src/assets/figma/avatar.png'
-    },
-    {
-      id: 6,
-      name: 'Hoàng Việt Hà',
-      code: 'HaHV',
-      department: 'Khởi nghiệp & Đổi mới sáng tạo',
-      rating: 4.8,
-      ratingColor: 'bg-green-500',
-      reviews: 41,
-      image: '/src/assets/figma/avatar.png'
-    }
-  ];
+  // Transform teachers data to match TeacherCard component expectations
+  const transformedTeachers = teachers.map(teacher => ({
+    id: teacher.id,
+    name: teacher.name,
+    code: teacher.code,
+    department: teacher.department,
+    rating: teacher.rating,
+    ratingColor: teacher.rating >= 4.5 ? 'bg-green-500' : 'bg-blue-500',
+    reviews: teacher.totalReviews,
+    image: teacher.avatar
+  }));
 
   // Handlers for search filter changes
   const handleSearchChange = (value) => {
@@ -120,7 +74,7 @@ const TeacherReview = () => {
   };
 
   // Filter teachers based on search criteria and active tab
-  const filteredTeachers = teachers.filter(teacher => {
+  const filteredTeachers = transformedTeachers.filter(teacher => {
     // Tab filtering
     if (activeTab === 'bookmarked' && !bookmarkedTeachers.has(teacher.id)) {
       return false;
@@ -197,7 +151,7 @@ const TeacherReview = () => {
                 </svg>
               </div>
               <div>
-                <div className="text-2xl font-bold text-gray-900">{teachers.length}</div>
+                <div className="text-2xl font-bold text-gray-900">{transformedTeachers.length}</div>
                 <div className="text-sm text-gray-500">Tổng giảng viên</div>
               </div>
             </div>
@@ -225,7 +179,7 @@ const TeacherReview = () => {
                 </svg>
               </div>
               <div>
-                <div className="text-2xl font-bold text-gray-900">{teachers.reduce((sum, teacher) => sum + teacher.reviews, 0)}</div>
+                <div className="text-2xl font-bold text-gray-900">{transformedTeachers.reduce((sum, teacher) => sum + teacher.reviews, 0)}</div>
                 <div className="text-sm text-gray-500">Tổng đánh giá</div>
               </div>
             </div>
@@ -260,7 +214,7 @@ const TeacherReview = () => {
             onTabChange={handleTabChange}
             bookmarkedCount={bookmarkedTeachers.size}
             reviewedCount={reviewedTeachers.size}
-            totalCount={teachers.length}
+            totalCount={transformedTeachers.length}
           />
         </div>
 
