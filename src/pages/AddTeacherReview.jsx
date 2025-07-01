@@ -42,6 +42,9 @@ const AddTeacherReview = () => {
     
     // Personal tags (max 3)
     selectedTags: [],
+    quizReview: '',      // Đánh giá về quiz
+  testReview: '',      // Đánh giá về bài kiểm tra
+  examReview: '',  // Đánh giá về kỳ thi
     
     // Review text
     reviewText: '',
@@ -801,6 +804,59 @@ const AddTeacherReview = () => {
         </div>
       </div>
 
+      {/* Thêm đánh giá về quiz, kiểm tra, bài thi */}
+    <div className="bg-white rounded-3xl shadow-lg p-8">
+      <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+        <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg flex items-center justify-center mr-3">
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+        Đánh giá về Quiz, Assignment, Bài thi
+      </h3>
+      <div className="space-y-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Đánh giá về Quiz <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            value={formData.quizReview}
+            onChange={e => handleInputChange('quizReview', e.target.value)}
+            placeholder="Nhận xét về quiz: mức độ khó, số lượng, cách chấm điểm, v.v."
+            className="w-full p-4 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            rows={2}
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Đánh giá về Bài Assignment <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            value={formData.testReview}
+            onChange={e => handleInputChange('testReview', e.target.value)}
+            placeholder="Nhận xét về Bài Assignment giữa kỳ, quiz, v.v."
+            className="w-full p-4 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            rows={2}
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Đánh giá về Bài thi <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            value={formData.examReview}
+            onChange={e => handleInputChange('examReview', e.target.value)}
+            placeholder="Nhận xét về bài thi cuối kỳ: cấu trúc đề, độ khó, thời gian, v.v."
+            className="w-full p-4 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            rows={2}
+            required
+          />
+        </div>
+      </div>
+    </div>
+
       {/* File Upload with enhanced design */}
       <div className="bg-white rounded-3xl shadow-lg p-8">
         <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
@@ -1001,31 +1057,37 @@ const AddTeacherReview = () => {
               </button>
             ) : (
               <button
-                onClick={handleSubmit}
-                disabled={
-                  !formData.teachingAbility ||
-                  !formData.lectureStructure ||
-                  !formData.studentInteraction ||
-                  !formData.workloadRequirement ||
-                  !formData.gradingDifficulty ||
-                  formData.wouldRetake === null ||
-                  formData.adequateMaterials === null ||
-                  formData.fairTesting === null
-                }
-                className={`px-8 py-3 rounded-xl font-medium transition-all ${!formData.teachingAbility ||
-                  !formData.lectureStructure ||
-                  !formData.studentInteraction ||
-                  !formData.workloadRequirement ||
-                  !formData.gradingDifficulty ||
-                  formData.wouldRetake === null ||
-                  formData.adequateMaterials === null ||
-                  formData.fairTesting === null
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-green-600 text-white hover:bg-green-700 shadow-lg'
-                  }`}
-              >
-                Submit Review
-              </button>
+  onClick={handleSubmit}
+  disabled={
+    !formData.teachingAbility ||
+    !formData.lectureStructure ||
+    !formData.studentInteraction ||
+    !formData.workloadRequirement ||
+    !formData.gradingDifficulty ||
+    formData.wouldRetake === null ||
+    formData.adequateMaterials === null ||
+    formData.fairTesting === null ||
+    !formData.quizReview.trim() ||
+    !formData.testReview.trim() ||
+    !formData.examReview.trim()
+  }
+  className={`px-8 py-3 rounded-xl font-medium transition-all ${!formData.teachingAbility ||
+    !formData.lectureStructure ||
+    !formData.studentInteraction ||
+    !formData.workloadRequirement ||
+    !formData.gradingDifficulty ||
+    formData.wouldRetake === null ||
+    formData.adequateMaterials === null ||
+    formData.fairTesting === null ||
+    !formData.quizReview.trim() ||
+    !formData.testReview.trim() ||
+    !formData.examReview.trim()
+    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+    : 'bg-green-600 text-white hover:bg-green-700 shadow-lg'
+    }`}
+>
+  Submit Review
+</button>
             )}
           </div>
         </div>
