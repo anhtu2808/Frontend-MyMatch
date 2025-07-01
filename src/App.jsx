@@ -18,6 +18,7 @@ import ProfileDetail from './pages/ProfileDetail';
 import AiRecommendation from './pages/AiRecommendation';
 import PremiumStudyPlan from './pages/PremiumStudyPlan';
 import StudyMaterialDetail from './pages/StudyMaterialDetail';
+import ReviewSubmissionSuccess from './pages/ReviewSubmissionSuccess';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/teachers" element={<TeacherReview />} />
         <Route path="/teachers/add-teacher" element={<AddTeacher />} />
         <Route path="/teachers/add-review" element={<AddTeacherReview />} />
+        <Route path="/teachers/review-success" element={<ReviewSubmissionSuccess />} />
         <Route path="/teachers/:teacherId" element={<TeacherDetail />} />
         <Route path="/exchange" element={<ClassExchange />} />
         <Route path="/exchange/swap-request" element={<ClassSwapRequest />} />

@@ -4,7 +4,7 @@ const initialState = {
   currentUser: {
     id: 1,
     name: "Alex Johnson",
-    email: "alex.johnson@student.university.edu",
+    email: "alex.johnson@fpt.edu.vn",
     avatar: "/src/assets/figma/avatar.png",
     studentId: "2021123456",
     major: "Computer Science",

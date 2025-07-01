@@ -30,6 +30,8 @@ const ClassSwapRequest = () => {
     additionalNotes: ''
   });
 
+  const [marketplaceRequests, setMarketplaceRequests] = useState([]);
+
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
@@ -49,6 +51,34 @@ const ClassSwapRequest = () => {
       message.error('Vui lòng điền ít nhất một trong các trường: Mã lớp, Thứ, hoặc Slot cho lớp mong muốn');
       return;
     }
+
+    // Create new request object
+    const newRequest = {
+      id: Date.now(), // Unique ID
+      subjectCode: formData.currentSubjectName,
+      subjectName: formData.currentSubjectName,
+      studentName: 'Your Name', // Replace with actual user name
+      studentEmail: 'your.email@example.com', // Replace with actual user email
+      studentAvatar: '👨‍🎓', // Replace with actual user avatar
+      currentClass: formData.currentClassCode,
+      currentLecturer: formData.currentInstructor,
+      currentLecturerCode: formData.currentTeacherCode,
+      currentDay: formData.currentDayOfWeek.join(', '),
+      currentSlot: formData.currentSlot,
+      wantedClass: formData.desiredClassCode,
+      wantedLecturer: formData.desiredInstructor,
+      wantedLecturerCode: formData.desiredTeacherCode,
+      wantedDay: formData.desiredDayOfWeek.join(', '),
+      wantedSlot: formData.desiredSlot,
+      reason: formData.additionalNotes,
+      postedDate: 'Vừa xong',
+      tags: ['New Request'],
+      priority: 'medium',
+      contactPreference: 'Email'
+    };
+
+    // Add new request to marketplaceRequests
+    setMarketplaceRequests(prev => [...prev, newRequest]);
 
     // Process form submission
     console.log('Class swap request:', formData);
@@ -371,6 +401,22 @@ const ClassSwapRequest = () => {
                 <p className="text-sm text-yellow-700">
                   <span className="font-medium">Lưu ý:</span> Cần điền ít nhất một trong các trường: Mã lớp, Thứ, hoặc Slot cho lớp mong muốn
                 </p>
+              </div>
+
+              {/* Display marketplace requests */}
+              <div className="mt-8">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Yêu cầu trên thị trường</h3>
+                <ul className="space-y-4">
+                  {marketplaceRequests.map(request => (
+                    <li key={request.id} className="bg-gray-100 p-4 rounded-lg shadow">
+                      <div className="flex justify-between">
+                        <span className="font-semibold">{request.subjectName}</span>
+                        <span className="text-sm text-gray-600">{request.postedDate}</span>
+                      </div>
+                      <p className="text-sm text-gray-700">{request.reason}</p>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               {/* Action Buttons */}

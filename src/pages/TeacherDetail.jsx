@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Card, Tag, Input, Typography, Avatar, Rate, Progress, Badge, Select, Modal, Form, Radio, Dropdown, Menu } from 'antd';
 import { ArrowLeftOutlined, BookOutlined, ShareAltOutlined, ThunderboltOutlined, UserOutlined, StarFilled, EyeOutlined, MessageOutlined, EditOutlined, FilterOutlined, SortAscendingOutlined, FlagOutlined, CrownOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
+import { useSelector } from 'react-redux';
 
 const { Title, Text, Paragraph } = Typography;
 // Mock data - in real app, this would come from API
-const teacherData = {
+const teacherData2 = {
   id: 1,
   name: "Nguyễn Văn An",
   university: "FPT University",
@@ -161,10 +162,28 @@ const TeacherDetail = () => {
   const [filterBy, setFilterBy] = useState('all');
   const [isReportModalVisible, setIsReportModalVisible] = useState(false);
   const [filteredReviews, setFilteredReviews] = useState([]);
-
+  const [teacherData, setTeacherData] = useState(teacherData2);
+  const { teacherId } = useParams();
+  const teachers = useSelector(state => state.teachers.teachers);
   const [reportForm] = Form.useForm();
 
-
+  useEffect(() => {
+    const teacher = teachers.find(t => t.id === Number(teacherId));
+    console.log(teacher);
+    if (teacher) {
+      setTeacherData({
+        ...teacherData,                       // copy toàn bộ field gốc
+       name: teacher.name,
+       avatar: teacher.avatar,
+       department: teacher.department,
+       university: teacher.university,
+       subjects: teacher.subjects,
+       code: teacher.code,
+       subjectCode: teacher.subjectCode,
+       email: teacher.email,
+      });
+    }
+  }, [teacherId, teachers]);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -180,10 +199,20 @@ const TeacherDetail = () => {
     navigate('/premium/study-plan', { state: { teacherId: teacherData.id, teacherName: teacherData.name } });
   };
 
-  const handleReviewTeacher = () => {
-    // Navigate to step 2 of review process
-    navigate('/teachers/add-review', { state: { teacherId: teacherData.id, step: 2 } });
-  };
+  const handleReviewTeacher = useCallback(() => {
+    navigate('/teachers/add-review', {
+      state: {
+        preSelectedTeacher: {
+          id: teacherData.id,
+          name: teacherData.name,
+          code: teacherData.code,
+          department: teacherData.department
+          
+        },
+        step: 2
+      }
+    });
+  }, [navigate, teacherData.id, teacherData.name, teacherData.code, teacherData.department]);
 
   const handleReportReview = (reviewId) => {
     console.log('Reporting review:', reviewId);
@@ -498,7 +527,7 @@ const TeacherDetail = () => {
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                   <Tag color="#284CFF" style={{ fontSize: '14px', padding: '4px 12px' }}>
-                    {teacherData.subjectCode}
+                    {teacherData.code}
                   </Tag>
                   <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: '16px' }}>
                     {teacherData.department}
@@ -511,7 +540,7 @@ const TeacherDetail = () => {
                   display: 'block',
                   marginBottom: '1rem'
                 }}>
-                  {teacherData.university} • {teacherData.experience} kinh nghiệm • {teacherData.degree}
+                  {teacherData.university} • {teacherData.experience} kinh nghiệm 
                 </Text>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>

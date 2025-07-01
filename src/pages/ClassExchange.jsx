@@ -10,42 +10,87 @@ const { Option } = Select;
 const exchangeRequests = [
   {
     id: 1,
-    fromClass: 'SE1305',
-    toClass: 'SE1326',
-    fromLecturer: 'Dr. Smith',
-    toLecturer: 'Dr. Taylor',
-    fromTime: 'Mon 8AM',
-    toTime: 'Tue 10AM',
-    tags: ['Morning Slot', 'Theory Focused'],
-    createdBy: 'Abc@fpt.edu.vn',
+    subjectCode: 'SWE201',
+    subjectName: 'Software Engineering',
+    fromClass: 'SWE201-01',
+    toClass: 'SWE201-02',
+    fromLecturer: 'Nguyễn Văn An',
+    fromLecturerCode: 'AnNV23',
+    toLecturer: 'Lê Văn Cường',
+    toLecturerCode: 'CuongLV22',
+    fromDay: 'Thứ 2',
+    fromSlot: 1,
+    fromTime: 'Thứ 2 8:00',
+    toDay: 'Thứ 3',
+    toSlot: 2,
+    toTime: 'Thứ 3 10:00',
+    tags: ['Buổi sáng', 'Lý thuyết'],
+    createdBy: 'alex.johnson@fpt.edu.vn',
     status: 'active',
     priority: 'high'
   },
   {
     id: 2,
-    fromClass: 'MA1102',
-    toClass: 'MA1104',
-    fromLecturer: 'Dr. Lee',
-    toLecturer: 'Dr. Chen',
-    fromTime: 'Wed 10AM',
-    toTime: 'Fri 2PM',
-    tags: ['Afternoon', 'Calculus'],
-    createdBy: 'Abc@fpt.edu.vn',
+    subjectCode: 'MLN122',
+    subjectName: 'Kinh tế chính trị',
+    fromClass: 'POL301-01',
+    toClass: 'POL301-02',
+    fromLecturer: 'Trần Thị Bình',
+    fromLecturerCode: 'BinhTT24',
+    toLecturer: 'Phạm Thị Dung',
+    toLecturerCode: 'DungPT23',
+    fromDay: 'Thứ 4',
+    fromSlot: 2,
+    fromTime: 'Thứ 4 10:00',
+    toDay: 'Thứ 6',
+    toSlot: 3,
+    toTime: 'Thứ 6 14:00',
+    tags: ['Buổi chiều', 'Kinh tế'],
+    createdBy: 'alex.johnson@fpt.edu.vn',
     status: 'pending',
     priority: 'medium'
   },
   {
     id: 3,
-    fromClass: 'CS2201',
-    toClass: 'CS2203',
-    fromLecturer: 'Dr. Patel',
-    toLecturer: 'Dr. Brown',
-    fromTime: 'Thu 1PM',
-    toTime: 'Mon 9AM',
-    tags: ['Early Slot', 'Project-Based'],
-    createdBy: 'Abc@fpt.edu.vn',
-    status: 'completed',
+    subjectCode: 'IOT201',
+    subjectName: 'Internet of Things',
+    fromClass: 'IOT201-01',
+    toClass: 'IOT201-02',
+    fromLecturer: 'Phạm Thị Dung',
+    fromLecturerCode: 'DungPT23',
+    toLecturer: 'Phạm Thị Dung',
+    toLecturerCode: 'DungPT23',
+    fromDay: 'Thứ 5',
+    fromSlot: 3,
+    fromTime: 'Thứ 5 13:00',
+    toDay: 'Thứ 2',
+    toSlot: 1,
+    toTime: 'Thứ 2 9:00',
+    tags: ['Buổi sáng', 'Thực hành'],
+    createdBy: 'alex.johnson@fpt.edu.vn',
+    status: 'accepted',
     priority: 'low'
+  },
+  {
+    id: 4,
+    subjectCode: 'SEC302',
+    subjectName: 'Network Security',
+    fromClass: 'SEC302-01',
+    toClass: 'SEC302-02',
+    fromLecturer: 'Lê Văn Cường',
+    fromLecturerCode: 'CuongLV22',
+    toLecturer: 'Nguyễn Văn An',
+    toLecturerCode: 'AnNV23',
+    fromDay: 'Thứ 3',
+    fromSlot: 4,
+    fromTime: 'Thứ 3 15:00',
+    toDay: 'Thứ 6',
+    toSlot: 2,
+    toTime: 'Thứ 6 10:00',
+    tags: ['An toàn thông tin', 'Buổi sáng'],
+    createdBy: 'alex.johnson@fpt.edu.vn',
+    status: 'accepted',
+    priority: 'high'
   }
 ];
 
@@ -53,51 +98,75 @@ const exchangeRequests = [
 const requestsToMe = [
   {
     id: 101,
+    subjectCode: 'SWE201',
+    subjectName: 'Software Engineering',
     requesterName: 'Nguyễn Văn A',
     requesterEmail: 'NguyenVanA@fpt.edu.vn',
     requesterAvatar: '👨‍💼',
-    myClass: 'SE1326',
-    myLecturer: 'Dr. Taylor', 
-    myTime: 'Tue 10AM',
-    theirClass: 'SE1305',
-    theirLecturer: 'Dr. Smith',
-    theirTime: 'Mon 8AM',
+    myClass: 'SWE201-02',
+    myLecturer: 'Lê Văn Cường',
+    myLecturerCode: 'CuongLV22', 
+    myDay: 'Thứ 3',
+    mySlot: 2,
+    myTime: 'Thứ 3 10:00',
+    theirClass: 'SWE201-01',
+    theirLecturer: 'Nguyễn Văn An',
+    theirLecturerCode: 'AnNV23',
+    theirDay: 'Thứ 2',
+    theirSlot: 1,
+    theirTime: 'Thứ 2 8:00',
     reason: 'Tôi muốn đổi sang buổi sáng để có thể tham gia thực tập buổi chiều',
     requestDate: '2 giờ trước',
     status: 'pending',
-    tags: ['Morning Preferred', 'Internship Conflict']
+    tags: ['Buổi sáng ưu tiên', 'Xung đột thực tập']
   },
   {
     id: 102,
+    subjectCode: 'POL301',
+    subjectName: 'Kinh tế chính trị',
     requesterName: 'Trần Thị B',
     requesterEmail: 'TranThiB@fpt.edu.vn',
     requesterAvatar: '👩‍💻',
-    myClass: 'MA1104',
-    myLecturer: 'Dr. Chen',
-    myTime: 'Fri 2PM',
-    theirClass: 'MA1102',
-    theirLecturer: 'Dr. Lee',
-    theirTime: 'Wed 10AM',
+    myClass: 'POL301-02',
+    myLecturer: 'Phạm Thị Dung',
+    myLecturerCode: 'DungPT23',
+    myDay: 'Thứ 6',
+    mySlot: 3,
+    myTime: 'Thứ 6 14:00',
+    theirClass: 'POL301-01',
+    theirLecturer: 'Trần Thị Bình',
+    theirLecturerCode: 'BinhTT24',
+    theirDay: 'Thứ 4',
+    theirSlot: 2,
+    theirTime: 'Thứ 4 10:00',
     reason: 'Tôi có môn học khác vào thứ 6, muốn đổi sang thứ 4 để tránh xung đột lịch học',
     requestDate: '1 ngày trước',
     status: 'pending',
-    tags: ['Schedule Conflict', 'Wednesday Slot']
+    tags: ['Xung đột lịch học', 'Thứ 4 ưu tiên']
   },
   {
     id: 103,
+    subjectCode: 'MOB401',
+    subjectName: 'Cross-platform Development',
     requesterName: 'Lê Văn C',
     requesterEmail: 'LeVanC@fpt.edu.vn',
     requesterAvatar: '👨‍🎓',
-    myClass: 'CS2203',
-    myLecturer: 'Dr. Brown',
-    myTime: 'Mon 9AM',
-    theirClass: 'CS2201',
-    theirLecturer: 'Dr. Patel',
-    theirTime: 'Thu 1PM',
+    myClass: 'MOB401-01',
+    myLecturer: 'Hoàng Văn Em',
+    myLecturerCode: 'EmHV24',
+    myDay: 'Thứ 2',
+    mySlot: 1,
+    myTime: 'Thứ 2 9:00',
+    theirClass: 'MOB401-02',
+    theirLecturer: 'Hoàng Văn Em',
+    theirLecturerCode: 'EmHV24',
+    theirDay: 'Thứ 5',
+    theirSlot: 3,
+    theirTime: 'Thứ 5 13:00',
     reason: 'Tôi ở xa nên muốn có lịch học tập trung vào thứ 2 để tiết kiệm thời gian di chuyển',
     requestDate: '3 ngày trước',
     status: 'accepted',
-    tags: ['Distance Learning', 'Monday Preferred']
+    tags: ['Học từ xa', 'Thứ 2 ưu tiên']
   }
 ];
 
@@ -105,86 +174,126 @@ const requestsToMe = [
 const marketplaceRequests = [
   {
     id: 201,
+    subjectCode: 'SWE201',
+    subjectName: 'Software Engineering',
     studentName: 'Phạm Minh D',
     studentEmail: 'PhamMinhD@fpt.edu.vn',
     studentAvatar: '👨‍💻',
-    currentClass: 'SE1305',
-    currentLecturer: 'Dr. Smith',
-    currentTime: 'Mon 8AM',
-    wantedClass: 'SE1326',
-    wantedLecturer: 'Dr. Taylor',
-    wantedTime: 'Tue 10AM',
+    currentClass: 'SWE201-01',
+    currentLecturer: 'Nguyễn Văn An',
+    currentLecturerCode: 'AnNV23',
+    currentDay: 'Thứ 2',
+    currentSlot: 1,
+    currentTime: 'Thứ 2 8:00',
+    wantedClass: 'SWE201-02',
+    wantedLecturer: 'Lê Văn Cường',
+    wantedLecturerCode: 'CuongLV22',
+    wantedDay: 'Thứ 3',
+    wantedSlot: 2,
+    wantedTime: 'Thứ 3 10:00',
     reason: 'Muốn đổi sang buổi chiều để có thời gian làm part-time',
     postedDate: '30 phút trước',
-    tags: ['Afternoon Preferred', 'Part-time Job'],
+    tags: ['Buổi chiều ưu tiên', 'Làm thêm'],
     priority: 'high',
     contactPreference: 'Email hoặc Facebook Messenger'
   },
   {
     id: 202,
+    subjectCode: 'POL301',
+    subjectName: 'Kinh tế chính trị',
     studentName: 'Vũ Thị E',
     studentEmail: 'VuThiE@fpt.edu.vn',
     studentAvatar: '👩‍🎓',
-    currentClass: 'MA1104',
-    currentLecturer: 'Dr. Chen',
-    currentTime: 'Fri 2PM',
-    wantedClass: 'MA1102',
-    wantedLecturer: 'Dr. Lee',
-    wantedTime: 'Wed 10AM',
+    currentClass: 'POL301-02',
+    currentLecturer: 'Phạm Thị Dung',
+    currentLecturerCode: 'DungPT23',
+    currentDay: 'Thứ 6',
+    currentSlot: 3,
+    currentTime: 'Thứ 6 14:00',
+    wantedClass: 'POL301-01',
+    wantedLecturer: 'Trần Thị Bình',
+    wantedLecturerCode: 'BinhTT24',
+    wantedDay: 'Thứ 4',
+    wantedSlot: 2,
+    wantedTime: 'Thứ 4 10:00',
     reason: 'Lịch học bị trùng với môn khác, cần đổi sang thứ 4',
     postedDate: '2 giờ trước',
-    tags: ['Schedule Conflict', 'Wednesday Preferred'],
+    tags: ['Xung đột lịch học', 'Thứ 4 ưu tiên'],
     priority: 'medium',
     contactPreference: 'Zalo: 0123456789'
   },
   {
     id: 203,
+    subjectCode: 'IOT201',
+    subjectName: 'Internet of Things',
     studentName: 'Hoàng Văn F',
     studentEmail: 'HoangVanF@fpt.edu.vn',
     studentAvatar: '👨‍🎓',
-    currentClass: 'CS2203',
-    currentLecturer: 'Dr. Brown',
-    currentTime: 'Mon 9AM',
-    wantedClass: 'CS2201',
-    wantedLecturer: 'Dr. Patel',
-    wantedTime: 'Thu 1PM',
+    currentClass: 'IOT201-01',
+    currentLecturer: 'Phạm Thị Dung',
+    currentLecturerCode: 'DungPT23',
+    currentDay: 'Thứ 2',
+    currentSlot: 1,
+    currentTime: 'Thứ 2 9:00',
+    wantedClass: 'IOT201-02',
+    wantedLecturer: 'Phạm Thị Dung',
+    wantedLecturerCode: 'DungPT23',
+    wantedDay: 'Thứ 5',
+    wantedSlot: 3,
+    wantedTime: 'Thứ 5 13:00',
     reason: 'Thích học vào buổi chiều hơn, tập trung tốt hơn',
     postedDate: '1 ngày trước',
-    tags: ['Afternoon Learning', 'Better Focus'],
+    tags: ['Học buổi chiều', 'Tập trung tốt hơn'],
     priority: 'low',
     contactPreference: 'Facebook: Hoàng Văn F'
   },
   {
     id: 204,
+    subjectCode: 'SEC302',
+    subjectName: 'Network Security',
     studentName: 'Ngô Thị G',
     studentEmail: 'NgoThiG@fpt.edu.vn',
     studentAvatar: '👩‍💼',
-    currentClass: 'BU1234',
-    currentLecturer: 'Dr. Wilson',
-    currentTime: 'Tue 3PM',
-    wantedClass: 'BU1235',
-    wantedLecturer: 'Dr. Johnson',
-    wantedTime: 'Mon 10AM',
+    currentClass: 'SEC302-01',
+    currentLecturer: 'Lê Văn Cường',
+    currentLecturerCode: 'CuongLV22',
+    currentDay: 'Thứ 3',
+    currentSlot: 4,
+    currentTime: 'Thứ 3 15:00',
+    wantedClass: 'SEC302-02',
+    wantedLecturer: 'Nguyễn Văn An',
+    wantedLecturerCode: 'AnNV23',
+    wantedDay: 'Thứ 2',
+    wantedSlot: 2,
+    wantedTime: 'Thứ 2 10:00',
     reason: 'Muốn có lịch học tập trung vào đầu tuần',
     postedDate: '2 ngày trước',
-    tags: ['Monday Focus', 'Week Planning'],
+    tags: ['Tập trung thứ 2', 'Kế hoạch tuần'],
     priority: 'medium',
     contactPreference: 'Email chính'
   },
   {
     id: 205,
+    subjectCode: 'IOT201',
+    subjectName: 'Internet of Things',
     studentName: 'Đặng Văn H',
     studentEmail: 'DangVanH@fpt.edu.vn',
     studentAvatar: '👨‍🔬',
-    currentClass: 'PH1101',
-    currentLecturer: 'Dr. Clark',
-    currentTime: 'Wed 11AM',
-    wantedClass: 'PH1102',
-    wantedLecturer: 'Dr. Davis',
-    wantedTime: 'Fri 9AM',
+    currentClass: 'IOT201-02',
+    currentLecturer: 'Phạm Thị Dung',
+    currentLecturerCode: 'DungPT23',
+    currentDay: 'Thứ 4',
+    currentSlot: 2,
+    currentTime: 'Thứ 4 11:00',
+    wantedClass: 'IOT201-01',
+    wantedLecturer: 'Phạm Thị Dung',
+    wantedLecturerCode: 'DungPT23',
+    wantedDay: 'Thứ 6',
+    wantedSlot: 1,
+    wantedTime: 'Thứ 6 9:00',
     reason: 'Lab session vào thứ 6 thuận tiện cho việc thực hành',
     postedDate: '3 ngày trước',
-    tags: ['Lab Session', 'Friday Convenience'],
+    tags: ['Lab session', 'Thứ 6 thuận tiện'],
     priority: 'high',
     contactPreference: 'Điện thoại: 0987654321'
   }
@@ -221,55 +330,133 @@ const ClassExchange = () => {
     });
   };
 
-  const filteredAndSortedRequests = useMemo(() => {
+  // Filter function for all data types
+  const applyFilters = (data, dataType) => {
     const dayMapping = {
-      monday: 'mon',
-      tuesday: 'tue',
-      wednesday: 'wed',
-      thursday: 'thu',
-      friday: 'fri',
-      saturday: 'sat',
-      sunday: 'sun',
+      monday: 'Thứ 2',
+      tuesday: 'Thứ 3',
+      wednesday: 'Thứ 4',
+      thursday: 'Thứ 5',
+      friday: 'Thứ 6',
+      saturday: 'Thứ 7',
+      sunday: 'Chủ nhật',
     };
 
-    let filtered = exchangeRequests.filter(request => {
-      const subjectMatch = filters.subject === '' ||
-        request.fromClass.toLowerCase().includes(filters.subject.toLowerCase()) ||
-        request.toClass.toLowerCase().includes(filters.subject.toLowerCase()) ||
-        request.tags.some(tag => tag.toLowerCase().includes(filters.subject.toLowerCase()));
+    return data.filter(item => {
+      let subjectMatch, classMatch, lecturerMatch, timeSlotMatch, dayOfWeekMatch;
 
-      const classMatch = filters.className === '' ||
-        request.fromClass.toLowerCase().includes(filters.className.toLowerCase()) ||
-        request.toClass.toLowerCase().includes(filters.className.toLowerCase());
+      if (dataType === 'exchangeRequests') {
+        subjectMatch = filters.subject === '' ||
+          item.fromClass.toLowerCase().includes(filters.subject.toLowerCase()) ||
+          item.toClass.toLowerCase().includes(filters.subject.toLowerCase()) ||
+          item.tags.some(tag => tag.toLowerCase().includes(filters.subject.toLowerCase()));
 
-      const lecturerMatch = filters.lecturer === '' ||
-        request.fromLecturer.toLowerCase().includes(filters.lecturer.toLowerCase()) ||
-        request.toLecturer.toLowerCase().includes(filters.lecturer.toLowerCase());
+        classMatch = filters.className === '' ||
+          item.fromClass.toLowerCase().includes(filters.className.toLowerCase()) ||
+          item.toClass.toLowerCase().includes(filters.className.toLowerCase());
 
-      const timeSlotMatch = filters.timeSlot === '' ||
-        request.fromTime.toLowerCase().includes(filters.timeSlot.toLowerCase()) ||
-        request.toTime.toLowerCase().includes(filters.timeSlot.toLowerCase());
+        lecturerMatch = filters.lecturer === '' ||
+          item.fromLecturer.toLowerCase().includes(filters.lecturer.toLowerCase()) ||
+          item.toLecturer.toLowerCase().includes(filters.lecturer.toLowerCase());
 
-      const dayOfWeekMatch = filters.dayOfWeek === '' ||
-        (dayMapping[filters.dayOfWeek] && (request.fromTime.toLowerCase().startsWith(dayMapping[filters.dayOfWeek]) ||
-        request.toTime.toLowerCase().startsWith(dayMapping[filters.dayOfWeek])));
+        timeSlotMatch = filters.timeSlot === '' ||
+          item.fromSlot === parseInt(filters.timeSlot) ||
+          item.toSlot === parseInt(filters.timeSlot);
+
+        dayOfWeekMatch = filters.dayOfWeek === '' ||
+          (dayMapping[filters.dayOfWeek] && (item.fromDay === dayMapping[filters.dayOfWeek] ||
+          item.toDay === dayMapping[filters.dayOfWeek]));
+      } else if (dataType === 'requestsToMe') {
+        subjectMatch = filters.subject === '' ||
+          item.myClass.toLowerCase().includes(filters.subject.toLowerCase()) ||
+          item.theirClass.toLowerCase().includes(filters.subject.toLowerCase()) ||
+          item.tags.some(tag => tag.toLowerCase().includes(filters.subject.toLowerCase()));
+
+        classMatch = filters.className === '' ||
+          item.myClass.toLowerCase().includes(filters.className.toLowerCase()) ||
+          item.theirClass.toLowerCase().includes(filters.className.toLowerCase());
+
+        lecturerMatch = filters.lecturer === '' ||
+          item.myLecturer.toLowerCase().includes(filters.lecturer.toLowerCase()) ||
+          item.theirLecturer.toLowerCase().includes(filters.lecturer.toLowerCase());
+
+        timeSlotMatch = filters.timeSlot === '' ||
+          item.mySlot === parseInt(filters.timeSlot) ||
+          item.theirSlot === parseInt(filters.timeSlot);
+
+        dayOfWeekMatch = filters.dayOfWeek === '' ||
+          (dayMapping[filters.dayOfWeek] && (item.myDay === dayMapping[filters.dayOfWeek] ||
+          item.theirDay === dayMapping[filters.dayOfWeek]));
+      } else if (dataType === 'marketplaceRequests') {
+        subjectMatch = filters.subject === '' ||
+          item.currentClass.toLowerCase().includes(filters.subject.toLowerCase()) ||
+          item.wantedClass.toLowerCase().includes(filters.subject.toLowerCase()) ||
+          item.tags.some(tag => tag.toLowerCase().includes(filters.subject.toLowerCase()));
+
+        classMatch = filters.className === '' ||
+          item.currentClass.toLowerCase().includes(filters.className.toLowerCase()) ||
+          item.wantedClass.toLowerCase().includes(filters.className.toLowerCase());
+
+        lecturerMatch = filters.lecturer === '' ||
+          item.currentLecturer.toLowerCase().includes(filters.lecturer.toLowerCase()) ||
+          item.wantedLecturer.toLowerCase().includes(filters.lecturer.toLowerCase());
+
+        timeSlotMatch = filters.timeSlot === '' ||
+          item.currentSlot === parseInt(filters.timeSlot) ||
+          item.wantedSlot === parseInt(filters.timeSlot);
+
+        dayOfWeekMatch = filters.dayOfWeek === '' ||
+          (dayMapping[filters.dayOfWeek] && (item.currentDay === dayMapping[filters.dayOfWeek] ||
+          item.wantedDay === dayMapping[filters.dayOfWeek]));
+      }
 
       return subjectMatch && classMatch && lecturerMatch && timeSlotMatch && dayOfWeekMatch;
     });
+  };
 
-    return filtered.sort((a, b) => {
+  const sortData = (data, dataType) => {
+    return data.sort((a, b) => {
       switch (filters.sortBy) {
         case 'Oldest':
           return a.id - b.id;
         case 'Subject':
-          return a.fromClass.localeCompare(b.fromClass);
+          if (dataType === 'exchangeRequests') {
+            return a.fromClass.localeCompare(b.fromClass);
+          } else if (dataType === 'requestsToMe') {
+            return a.myClass.localeCompare(b.myClass);
+          } else if (dataType === 'marketplaceRequests') {
+            return a.currentClass.localeCompare(b.currentClass);
+          }
+          return 0;
         case 'Lecturer':
-          return a.fromLecturer.localeCompare(b.fromLecturer);
+          if (dataType === 'exchangeRequests') {
+            return a.fromLecturer.localeCompare(b.fromLecturer);
+          } else if (dataType === 'requestsToMe') {
+            return a.myLecturer.localeCompare(b.myLecturer);
+          } else if (dataType === 'marketplaceRequests') {
+            return a.currentLecturer.localeCompare(b.currentLecturer);
+          }
+          return 0;
         case 'Most Recent':
         default:
           return b.id - a.id;
       }
     });
+  };
+
+  const filteredAndSortedRequests = useMemo(() => {
+    const filtered = applyFilters(exchangeRequests, 'exchangeRequests');
+    return sortData(filtered, 'exchangeRequests');
+  }, [filters]);
+
+  const filteredRequestsToMe = useMemo(() => {
+    const filtered = applyFilters(requestsToMe, 'requestsToMe');
+    return sortData(filtered, 'requestsToMe');
+  }, [filters]);
+
+  const filteredMarketplaceRequests = useMemo(() => {
+    const filtered = applyFilters(marketplaceRequests, 'marketplaceRequests');
+    return sortData(filtered, 'marketplaceRequests');
   }, [filters]);
 
   const getPriorityColor = (priority) => {
@@ -287,8 +474,10 @@ const ClassExchange = () => {
         return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Đang hoạt động</span>;
       case 'pending':
         return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Đang chờ</span>;
+      case 'accepted':
+        return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Đã được chấp nhận</span>;
       case 'completed':
-        return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Hoàn thành</span>;
+        return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Hoàn thành</span>;
       default:
         return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Không xác định</span>;
     }
@@ -310,11 +499,11 @@ const ClassExchange = () => {
     alert(`Gửi yêu cầu đổi lớp tới ${studentName}`);
   };
 
-  const handleContactStudent = (contactInfo) => {
-    console.log('Contact info:', contactInfo);
-    // Navigate to messages page to start conversation
-    navigate('/messages');
-  };
+  // const handleContactStudent = (contactInfo) => {
+  //   console.log('Contact info:', contactInfo);
+  //   // Navigate to messages page to start conversation
+  //   navigate('/messages');
+  // };
 
   // Handle edit modal
   const handleEditRequest = (request) => {
@@ -365,6 +554,17 @@ const ClassExchange = () => {
       default:
         return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Không xác định</span>;
     }
+  };
+
+  const getSlotDisplay = (slot, day) => {
+    const slotTimes = {
+      1: '7:00 - 9:00',
+      2: '9:30 - 11:45', 
+      3: '12:30 - 15:00',
+      4: '15:00 - 17:15'
+    };
+    
+    return `${day} - Slot ${slot} (${slotTimes[slot]})`;
   };
 
   return (
@@ -515,20 +715,21 @@ const ClassExchange = () => {
             {/* Time Slot Filter */}
             <div className="space-y-2">
               <label className="block text-sm font-semibold text-gray-700">
-                Khung giờ học
+                Slot *
               </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="e.g. Mon 8AM"
-                  value={filters.timeSlot}
-                  onChange={(e) => handleFilterChange('timeSlot', e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 hover:bg-white transition-colors duration-200"
-                />
-                <svg className="absolute right-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
+              <Select 
+                placeholder="Chọn slot" 
+                value={filters.timeSlot} 
+                onChange={(value) => handleFilterChange('timeSlot', value)} 
+                className="w-full"
+                size="large"
+                allowClear
+              >
+                <Option value="1">Slot 1 (7:00 - 9:00)</Option>
+                <Option value="2">Slot 2 (9:30 - 11:45)</Option>
+                <Option value="3">Slot 3 (12:30 - 15:00)</Option>
+                <Option value="4">Slot 4 (15:00 - 17:15)</Option>
+              </Select>
             </div>
 
             {/* Day of Week Filter */}
@@ -592,8 +793,8 @@ const ClassExchange = () => {
             </h3>
             <div className="text-sm text-gray-500">
               {activeTab === 'my-requests' && `Hiển thị ${filteredAndSortedRequests.length} yêu cầu`}
-              {activeTab === 'requests-to-me' && `Hiển thị ${requestsToMe.length} yêu cầu`}
-              {activeTab === 'marketplace' && `Hiển thị ${marketplaceRequests.length} yêu cầu`}
+              {activeTab === 'requests-to-me' && `Hiển thị ${filteredRequestsToMe.length} yêu cầu`}
+              {activeTab === 'marketplace' && `Hiển thị ${filteredMarketplaceRequests.length} yêu cầu`}
             </div>
           </div>
           
@@ -618,9 +819,10 @@ const ClassExchange = () => {
                   <div className="space-y-4">
                     <div className="flex items-center justify-center">
                       <div className="text-center">
+                        <div className="text-xs text-blue-600 font-medium">{request.subjectCode} - {request.subjectName}</div>
                         <div className="text-lg font-bold text-gray-900">{request.fromClass}</div>
-                        <div className="text-sm text-gray-600">{request.fromLecturer}</div>
-                        <div className="text-sm text-blue-600 font-medium">{request.fromTime}</div>
+                        <div className="text-sm text-gray-600">{request.fromLecturer} - {request.fromLecturerCode}</div>
+                        <div className="text-sm text-blue-600 font-medium">{getSlotDisplay(request.fromSlot, request.fromDay)}</div>
                       </div>
                       
                       <div className="mx-8 flex items-center">
@@ -634,9 +836,10 @@ const ClassExchange = () => {
                       </div>
                       
                       <div className="text-center">
+                        <div className="text-xs text-green-600 font-medium">{request.subjectCode} - {request.subjectName}</div>
                         <div className="text-lg font-bold text-gray-900">{request.toClass}</div>
-                        <div className="text-sm text-gray-600">{request.toLecturer}</div>
-                        <div className="text-sm text-green-600 font-medium">{request.toTime}</div>
+                        <div className="text-sm text-gray-600">{request.toLecturer} - {request.toLecturerCode}</div>
+                        <div className="text-sm text-green-600 font-medium">{getSlotDisplay(request.toSlot, request.toDay)}</div>
                       </div>
                     </div>
 
@@ -661,29 +864,42 @@ const ClassExchange = () => {
 
                 {/* Action Buttons */}
                 <div className="flex flex-col space-y-3 ml-8">
-                  <button 
-                    onClick={() => handleDeleteRequest(request.id)}
-                    className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                    <span>Xóa yêu cầu</span>
-                  </button>
-                  <button 
-                    onClick={() => handleEditRequest(request)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2"
-                  >
-                    <EditOutlined className="w-4 h-4" />
-                    <span>Chỉnh sửa</span>
-                  </button>
+                  {request.status !== 'accepted' && (
+                    <button 
+                      onClick={() => handleDeleteRequest(request.id)}
+                      className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                      <span>Xóa yêu cầu</span>
+                    </button>
+                  )}
+                  
+                  {request.status === 'accepted' ? (
+                    <button 
+                      onClick={() => navigate('/messages')}
+                      className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2"
+                    >
+                      <MessageOutlined className="w-4 h-4" />
+                      <span>Nhắn tin</span>
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={() => handleEditRequest(request)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2"
+                    >
+                      <EditOutlined className="w-4 h-4" />
+                      <span>Chỉnh sửa</span>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
           ))}
 
           {/* Requests To Me Tab */}
-          {activeTab === 'requests-to-me' && requestsToMe.map((request) => (
+          {activeTab === 'requests-to-me' && filteredRequestsToMe.map((request) => (
             <div key={request.id} className="group bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
               <div className="flex items-start space-x-6">
                 {/* Requester Avatar */}
@@ -702,7 +918,14 @@ const ClassExchange = () => {
                       <p className="text-sm text-gray-600">{request.requesterEmail}</p>
                       <p className="text-xs text-gray-500 mt-1">{request.requestDate}</p>
                     </div>
+                    
                     {getRequestStatusBadge(request.status)}
+                    <div className="text-right">
+                      <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
+                        <div className="text-xs text-blue-600 font-medium">Môn học</div>
+                        <div className="text-sm text-blue-800 font-semibold">{request.subjectCode} - {request.subjectName}</div>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Class Exchange Visualization */}
@@ -713,8 +936,8 @@ const ClassExchange = () => {
                         <div className="text-sm text-gray-600 mb-2">Họ muốn đổi</div>
                         <div className="bg-white rounded-xl p-4 shadow-sm">
                           <div className="text-lg font-bold text-gray-900">{request.theirClass}</div>
-                          <div className="text-sm text-gray-600">{request.theirLecturer}</div>
-                          <div className="text-sm text-orange-600 font-medium">{request.theirTime}</div>
+                          <div className="text-sm text-gray-600">{request.theirLecturer} - {request.theirLecturerCode}</div>
+                          <div className="text-sm text-orange-600 font-medium">{getSlotDisplay(request.theirSlot, request.theirDay)}</div>
                         </div>
                       </div>
 
@@ -733,9 +956,10 @@ const ClassExchange = () => {
                       <div className="text-center">
                         <div className="text-sm text-gray-600 mb-2">Lớp của bạn</div>
                         <div className="bg-white rounded-xl p-4 shadow-sm border-2 border-green-200">
+                          <div className="text-xs text-green-600 font-medium">{request.subjectCode} - {request.subjectName}</div>
                           <div className="text-lg font-bold text-gray-900">{request.myClass}</div>
-                          <div className="text-sm text-gray-600">{request.myLecturer}</div>
-                          <div className="text-sm text-green-600 font-medium">{request.myTime}</div>
+                          <div className="text-sm text-gray-600">{request.myLecturer} - {request.myLecturerCode}</div>
+                          <div className="text-sm text-green-600 font-medium">{getSlotDisplay(request.mySlot, request.myDay)}</div>
                         </div>
                       </div>
                     </div>
@@ -814,7 +1038,7 @@ const ClassExchange = () => {
           ))}
 
           {/* Marketplace Tab */}
-          {activeTab === 'marketplace' && marketplaceRequests.map((request) => (
+          {activeTab === 'marketplace' && filteredMarketplaceRequests.map((request) => (
             <div key={request.id} className="group bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
               <div className="flex items-start space-x-6">
                 {/* Student Avatar & Info */}
@@ -845,8 +1069,8 @@ const ClassExchange = () => {
                     </div>
                     <div className="text-right">
                       <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
-                        <div className="text-xs text-blue-600 font-medium">Liên lạc</div>
-                        <div className="text-sm text-blue-800 font-semibold">{request.contactPreference}</div>
+                        <div className="text-xs text-blue-600 font-medium">Môn học</div>
+                        <div className="text-sm text-blue-800 font-semibold">{request.subjectCode} - {request.subjectName}</div>
                       </div>
                     </div>
                   </div>
@@ -859,8 +1083,8 @@ const ClassExchange = () => {
                         <div className="text-sm text-orange-600 font-semibold mb-2">💼 Họ có</div>
                         <div className="bg-white rounded-xl p-4 shadow-sm border-2 border-orange-200">
                           <div className="text-lg font-bold text-gray-900">{request.currentClass}</div>
-                          <div className="text-sm text-gray-600">{request.currentLecturer}</div>
-                          <div className="text-sm text-orange-600 font-medium">{request.currentTime}</div>
+                          <div className="text-sm text-gray-600">{request.currentLecturer} - {request.currentLecturerCode}</div>
+                          <div className="text-sm text-orange-600 font-medium">{getSlotDisplay(request.currentSlot, request.currentDay)}</div>
                         </div>
                       </div>
 
@@ -880,8 +1104,8 @@ const ClassExchange = () => {
                         <div className="text-sm text-red-600 font-semibold mb-2">❤️ Họ muốn</div>
                         <div className="bg-white rounded-xl p-4 shadow-sm border-2 border-red-200">
                           <div className="text-lg font-bold text-gray-900">{request.wantedClass}</div>
-                          <div className="text-sm text-gray-600">{request.wantedLecturer}</div>
-                          <div className="text-sm text-red-600 font-medium">{request.wantedTime}</div>
+                          <div className="text-sm text-gray-600">{request.wantedLecturer} - {request.wantedLecturerCode}</div>
+                          <div className="text-sm text-red-600 font-medium">{getSlotDisplay(request.wantedSlot, request.wantedDay)}</div>
                         </div>
                       </div>
                     </div>

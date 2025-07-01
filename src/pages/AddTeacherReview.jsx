@@ -10,6 +10,7 @@ const AddTeacherReview = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+
   
   // Get teachers from Redux store
   const teachers = useSelector(state => state.teachers.teachers);
@@ -68,13 +69,27 @@ const AddTeacherReview = () => {
       }
     }
 
+    // Kiểm tra teacher được chọn từ TeacherCard
+    if (location.state?.preSelectedTeacher) {
+      const teacher = location.state.preSelectedTeacher;
+      setFormData(prev => ({
+        ...prev,
+        teacherName: teacher.name,
+        teacherId: teacher.id,
+        teacherCode: teacher.code
+      }));
+      if (location.state.step) {
+        setCurrentStep(location.state.step);
+      }
+    }
+
     // Kiểm tra dữ liệu từ navigation state
     if (location.state?.selectedSubjects) {
       setFormData(prev => ({
         ...prev,
         selectedSubjects: location.state.selectedSubjects
       }));
-      if (location.state.step) {
+      if (location.state.step && !location.state.preSelectedTeacher) {
         setCurrentStep(location.state.step);
       }
     }
@@ -244,7 +259,7 @@ const AddTeacherReview = () => {
       localStorage.removeItem('reviewFormData');
       
       console.log('Review submitted successfully:', newReview);
-      navigate('/teachers');
+      navigate('/teachers/review-success');
     }
   };
 

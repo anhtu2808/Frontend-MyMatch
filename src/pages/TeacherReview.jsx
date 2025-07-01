@@ -28,6 +28,8 @@ const TeacherReview = () => {
     name: teacher.name,
     code: teacher.code,
     department: teacher.department,
+    subjectCodes: teacher.subjectCodeArray || [],
+    subjects: teacher.subjects || teacher.specializations || [],
     rating: teacher.rating,
     ratingColor: teacher.rating >= 4.5 ? 'bg-green-500' : 'bg-blue-500',
     reviews: teacher.totalReviews,
@@ -83,16 +85,36 @@ const TeacherReview = () => {
       return false;
     }
 
-    // Search filtering
+    // Search filtering - Tìm kiếm tên giảng viên
     const matchSearch = searchFilters.search === '' ||
       teacher.name.toLowerCase().includes(searchFilters.search.toLowerCase());
 
+    // Tìm kiếm mã giảng viên
     const matchTeacherCode = searchFilters.teacherCode === '' ||
       teacher.code.toLowerCase().includes(searchFilters.teacherCode.toLowerCase());
 
-    // Add more filters for subject code and name if needed
-    const matchSubjectName = searchFilters.subjectName === '' || true; // Placeholder for subject filtering
-    const matchSubjectCode = searchFilters.subjectCode === '' || true; // Placeholder for subject filtering
+    // Tìm kiếm trong mã môn học (array subjectCodes)
+    const matchSubjectCode = searchFilters.subjectCode === '' ||
+      (teacher.subjectCodes && teacher.subjectCodes.length > 0 && 
+       teacher.subjectCodes.some(code => 
+         code.toLowerCase().includes(searchFilters.subjectCode.toLowerCase())
+      ));
+
+    // Tìm kiếm tên môn học (trong subjects array)
+    const matchSubjectName = searchFilters.subjectName === '' ||
+      (teacher.subjects && teacher.subjects.length > 0 && 
+       teacher.subjects.some(subject => 
+         subject.toLowerCase().includes(searchFilters.subjectName.toLowerCase())
+      ));
+
+    // Debug logs (có thể xóa sau khi test xong)
+    if (searchFilters.search || searchFilters.teacherCode || searchFilters.subjectCode || searchFilters.subjectName) {
+      console.log(`Teacher: ${teacher.name}`);
+      console.log(`Search filters:`, searchFilters);
+      console.log(`Matches - Search: ${matchSearch}, TeacherCode: ${matchTeacherCode}, SubjectCode: ${matchSubjectCode}, SubjectName: ${matchSubjectName}`);
+      console.log(`Teacher subjectCodes:`, teacher.subjectCodes);
+      console.log(`Teacher subjects:`, teacher.subjects);
+    }
 
     return matchSearch && matchTeacherCode && matchSubjectName && matchSubjectCode;
   });
