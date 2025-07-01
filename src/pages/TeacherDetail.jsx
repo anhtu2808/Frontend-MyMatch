@@ -13,6 +13,7 @@ const teacherData2 = {
   university: "FPT University",
   subject: "Software Engineering",
   subjectCode: "SE",
+  subjectCodeArray: ["EXE101", "EXE201"],
   department: "Công nghệ phần mềm",
   email: "anv@fpt.edu.vn",
   phone: "+84 901 234 567",
@@ -33,6 +34,7 @@ const teacherData2 = {
       teachingCriteria: 5.0,
       teachingQuality: 4.5,
       structure: 5,
+      subjectCode: "EXE101",
       communication: 4,
       score: 9.0,
       tags: ["Truyền cảm hứng", "Giảng hay", "Nhiệt huyết"],
@@ -49,6 +51,7 @@ const teacherData2 = {
       teachingCriteria: 4.2,
       teachingQuality: 4.0,
       structure: 4,
+      subjectCode: "EXE201",
       communication: 4,
       score: 8.0,
       tags: ["Nhiều bài tập", "Điểm công bằng", "Điểm cộng"],
@@ -67,6 +70,7 @@ const teacherData2 = {
       structure: 3,
       communication: 2,
       score: 5.5,
+      subjectCode: "EXE301",
       tags: ["Khó hiểu", "Cần cải thiện", "Kiến thức sâu"],
       helpful: 8,
       notHelpful: 5,
@@ -81,6 +85,7 @@ const teacherData2 = {
       teachingCriteria: 4.8,
       teachingQuality: 4.5,
       structure: 5,
+      subjectCode: "EXE101",
       communication: 5,
       score: 9.2,
       tags: ["Tận tâm", "Chi tiết", "Chuẩn bị kỹ"],
@@ -98,6 +103,7 @@ const teacherData2 = {
       teachingQuality: 3.0,
       structure: 3,
       communication: 3,
+      subjectCode: "EXE101",
       score: 6.0,
       tags: ["Bình thường", "Theo sách", "Không nổi bật"],
       helpful: 12,
@@ -114,6 +120,7 @@ const teacherData2 = {
       teachingQuality: 4.8,
       structure: 5,
       communication: 5,
+      subjectCode: "EXE101",
       score: 9.5,
       tags: ["Xuất sắc", "Hiện đại", "Hiệu quả"],
       helpful: 45,
@@ -131,6 +138,7 @@ const teacherData2 = {
       structure: 4,
       communication: 2,
       score: 6.5,
+      subjectCode: "EXE101",
       tags: ["Cần cải thiện", "Khó tính", "Thiếu kiên nhẫn"],
       helpful: 15,
       notHelpful: 12,
@@ -146,6 +154,7 @@ const teacherData2 = {
       teachingQuality: 4.6,
       structure: 5,
       communication: 4,
+      subjectCode: "EXE101",
       score: 8.8,
       tags: ["Sáng tạo", "Cập nhật", "Đáng học hỏi"],
       helpful: 28,
@@ -156,9 +165,18 @@ const teacherData2 = {
     }
   ]
 };
+const randomAddSubjectCode = (subjectCodeArray, reviews) => {
+  return reviews.map(review => {
+    return {
+      ...review,
+      subjectCode: subjectCodeArray[Math.floor(Math.random() * subjectCodeArray.length)]
+    }
+  })
+};
 const TeacherDetail = () => {
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState('newest');
+  const [subjectCode, setSubjectCode] = useState('');
   const [filterBy, setFilterBy] = useState('all');
   const [isReportModalVisible, setIsReportModalVisible] = useState(false);
   const [filteredReviews, setFilteredReviews] = useState([]);
@@ -173,14 +191,16 @@ const TeacherDetail = () => {
     if (teacher) {
       setTeacherData({
         ...teacherData,                       // copy toàn bộ field gốc
-       name: teacher.name,
-       avatar: teacher.avatar,
-       department: teacher.department,
-       university: teacher.university,
-       subjects: teacher.subjects,
-       code: teacher.code,
-       subjectCode: teacher.subjectCode,
-       email: teacher.email,
+        name: teacher.name,
+        avatar: teacher.avatar,
+        department: teacher.department,
+        university: teacher.university,
+        subjects: teacher.subjects,
+        code: teacher.code,
+        subjectCode: teacher.subjectCode,
+        subjectCodeArray: teacher.subjectCodeArray,
+        reviews: randomAddSubjectCode(teacher.subjectCodeArray, teacherData.reviews),
+        email: teacher.email,
       });
     }
   }, [teacherId, teachers]);
@@ -207,7 +227,7 @@ const TeacherDetail = () => {
           name: teacherData.name,
           code: teacherData.code,
           department: teacherData.department
-          
+
         },
         step: 2
       }
@@ -247,6 +267,9 @@ const TeacherDetail = () => {
         // 'all' - no filtering
         break;
     }
+    if (subjectCode) {
+      filtered = filtered.filter(review => review.subjectCode === subjectCode);
+    }
 
     // Apply sort
     switch (sortBy) {
@@ -268,7 +291,11 @@ const TeacherDetail = () => {
     }
 
     setFilteredReviews(filtered);
-  }, [sortBy, filterBy, teacherData.reviews]);
+  }, [sortBy, filterBy, teacherData.reviews, subjectCode]);
+
+  const handleSubjectCodeChange = (value) => {
+    setSubjectCode(value);
+  };
 
   const handleSortChange = (value) => {
     setSortBy(value);
@@ -316,6 +343,12 @@ const TeacherDetail = () => {
               defaultValue={review.teachingCriteria}
               style={{ fontSize: '14px' }}
             />
+            <div>
+              <Tag color="blue" size="small" style={{ marginLeft: '8px' }}>
+                {review.subjectCode}
+              </Tag>
+
+            </div>
           </div>
           <Text style={{ color: '#64748b', fontSize: '14px', display: 'block', marginBottom: '4px' }}>
             Sinh viên K17 • {new Date(review.date).toLocaleDateString('vi-VN')}
@@ -328,6 +361,7 @@ const TeacherDetail = () => {
       </div>
 
       {/* Rating Metrics */}
+
       <div style={{
         background: '#f8fafc',
         borderRadius: '12px',
@@ -540,7 +574,7 @@ const TeacherDetail = () => {
                   display: 'block',
                   marginBottom: '1rem'
                 }}>
-                  {teacherData.university} • {teacherData.experience} kinh nghiệm 
+                  {teacherData.university} • {teacherData.experience} kinh nghiệm
                 </Text>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
@@ -780,8 +814,21 @@ const TeacherDetail = () => {
               {/* Sort and Filter Controls */}
               <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <SortAscendingOutlined style={{ color: '#64748b' }} />
-                  <Text style={{ color: '#64748b', fontSize: '14px' }}>Sắp xếp:</Text>
+                  <FilterOutlined style={{ color: '#64748b' }} />
+                  <Text style={{ color: '#64748b', fontSize: '14px' }}>Môn học:</Text>
+                  <div>
+                    <Select
+                      value={subjectCode}
+                      onChange={handleSubjectCodeChange}
+                      style={{ width: '160px' }}
+                      size="small"
+                    >
+                      {teacherData.subjectCodeArray.map((subjectCode, index) => (
+                        <Select.Option key={index} value={subjectCode}>{subjectCode}</Select.Option>
+                      ))}
+                    </Select>
+
+                  </div>
                   <Select
                     value={sortBy}
                     onChange={handleSortChange}
