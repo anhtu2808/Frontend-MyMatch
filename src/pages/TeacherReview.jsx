@@ -266,26 +266,28 @@ const TeacherReview = () => {
           </div>
         </div>
 
-        {/* Pagination với modern design */}
-        <div className="flex items-center justify-center space-x-2 pt-8">
-          <button className="px-4 py-2 rounded-xl text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+        {/* Pagination với modern design - chỉ hiển thị khi có kết quả */}
+        {sortedTeachers.length > 0 && (
+          <div className="flex items-center justify-center space-x-2 pt-8">
+            <button className="px-4 py-2 rounded-xl text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
 
-          <button className="px-4 py-2 rounded-xl bg-blue-600 text-white font-medium">1</button>
-          <button className="px-4 py-2 rounded-xl text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors duration-200">2</button>
-          <button className="px-4 py-2 rounded-xl text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors duration-200">3</button>
-          <span className="px-2 text-gray-400">...</span>
-          <button className="px-4 py-2 rounded-xl text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors duration-200">10</button>
+            <button className="px-4 py-2 rounded-xl bg-blue-600 text-white font-medium">1</button>
+            <button className="px-4 py-2 rounded-xl text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors duration-200">2</button>
+            <button className="px-4 py-2 rounded-xl text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors duration-200">3</button>
+            <span className="px-2 text-gray-400">...</span>
+            <button className="px-4 py-2 rounded-xl text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors duration-200">10</button>
 
-          <button className="px-4 py-2 rounded-xl text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
+            <button className="px-4 py-2 rounded-xl text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        )}
 
         {/* Empty State for filtered results */}
         {sortedTeachers.length === 0 && (
@@ -299,10 +301,28 @@ const TeacherReview = () => {
               {activeTab === 'bookmarked' ? 'Chưa có giảng viên nào được đánh dấu' : 
                activeTab === 'reviewed' ? 'Chưa đánh giá giảng viên nào' : 'Không tìm thấy giảng viên'}
             </h3>
-            <p className="text-gray-500">
+            <p className="text-gray-500 mb-6">
               {activeTab === 'bookmarked' ? 'Hãy đánh dấu các giảng viên yêu thích để xem lại sau.' : 
                activeTab === 'reviewed' ? 'Hãy chia sẻ đánh giá về giảng viên bạn đã học.' : 'Thử điều chỉnh bộ lọc tìm kiếm.'}
             </p>
+            
+            {/* Show add teacher button only when no search results and not in bookmarked/reviewed tabs */}
+            {activeTab === 'all' && (searchFilters.search || searchFilters.teacherCode || searchFilters.subjectName || searchFilters.subjectCode) && (
+              <div className="mt-6">
+                <p className="text-gray-600 mb-4">
+                  Không tìm thấy review về giảng viên bạn muốn?
+                </p>
+                <button
+                  onClick={() => navigate('/teachers/add-teacher')}
+                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Thêm giảng viên tại đây
+                </button>
+              </div>
+            )}
           </div>
         )}
 
