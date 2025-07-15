@@ -16,14 +16,12 @@ export default {
         },
         white: 'var(--color-white)',
         black: 'var(--color-black)',
-        // Add semantic colors
         success: 'var(--color-success)',
         warning: 'var(--color-warning)',
         error: 'var(--color-error)',
         info: 'var(--color-info)',
-        // Add gray scale
         gray: {
-          50: 'var(--color-gray-50)',
+          50:  'var(--color-gray-50)',
           100: 'var(--color-gray-100)',
           200: 'var(--color-gray-200)',
           300: 'var(--color-gray-300)',
@@ -33,13 +31,27 @@ export default {
           700: 'var(--color-gray-700)',
           800: 'var(--color-gray-800)',
           900: 'var(--color-gray-900)',
-        }
+        },
       },
+      backgroundImage: theme => ({
+        // Gradient từ accent sang primary
+        'gradient-accent-primary': `linear-gradient(
+          to right,
+          ${theme('colors.accent.DEFAULT')},
+          ${theme('colors.primary.DEFAULT')}
+        )`,
+        // Nếu muốn góc 45°, bỏ comment dưới đây:
+        // 'gradient-accent-primary-45': `linear-gradient(
+        //   45deg,
+        //   ${theme('colors.accent.DEFAULT')},
+        //   ${theme('colors.primary.DEFAULT')}
+        // )`,
+      }),
       fontFamily: {
-        'inter': ['Inter', 'sans-serif'],
-        'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
     },
   },
   plugins: [],
-} 
+}

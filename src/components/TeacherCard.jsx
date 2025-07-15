@@ -3,22 +3,30 @@ import { useNavigate } from 'react-router-dom';
 
 const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasReviewed = false }) => {
   const navigate = useNavigate();
+  
   const getRatingColor = (rating) => {
-    if (rating >= 4.5) return 'from-emerald-500 to-emerald-600';
-    if (rating >= 4.0) return 'from-blue-500 to-blue-600';
-    if (rating >= 3.5) return 'from-yellow-500 to-yellow-600';
-    return 'from-red-500 to-red-600';
+    if (rating >= 4.5) return 'bg-green-500';
+    if (rating >= 4.0) return 'bg-blue-500';
+    if (rating >= 3.5) return 'bg-yellow-500';
+    return 'bg-red-500';
   };
 
   const getRatingTextColor = (rating) => {
-    if (rating >= 4.5) return 'text-emerald-600';
+    if (rating >= 4.5) return 'text-green-600';
     if (rating >= 4.0) return 'text-blue-600';
     if (rating >= 3.5) return 'text-yellow-600';
     return 'text-red-600';
   };
 
+  const getProgressBarColor = (rating) => {
+    if (rating >= 4.5) return 'bg-green-500';
+    if (rating >= 4.0) return 'bg-blue-500';
+    if (rating >= 3.5) return 'bg-yellow-500';
+    return 'bg-red-500';
+  };
+
   const handleBookmarkClick = (e) => {
-    e.stopPropagation(); // Prevent card click when clicking bookmark
+    e.stopPropagation();
     if (onBookmarkToggle) {
       onBookmarkToggle(teacher.id);
     }
@@ -28,11 +36,8 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
     navigate(`/teachers/${teacher.id}`);
   };
 
-
-
   const handleReviewClick = (e) => {
-    e.stopPropagation(); // Prevent card click when clicking review button
-    // Navigate to add review with teacher pre-selected and skip to step 2
+    e.stopPropagation();
     navigate('/teachers/add-review', {
       state: {
         preSelectedTeacher: {
@@ -87,13 +92,11 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
   return (
     <div 
       onClick={handleCardClick}
-      className="group bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer relative"
+      className="group bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg hover:border-gray-300 hover:-translate-y-1 transition-all duration-200 overflow-hidden cursor-pointer relative"
     >
-
-
-      {/* Reviewed Badge - Top left positioning */}
+      {/* Reviewed Badge */}
       {hasReviewed && (
-        <div className="absolute top-3 left-3 z-20 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg">
+        <div className="absolute top-3 left-3 z-20 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-sm">
           <svg className="w-3 h-3 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
           </svg>
@@ -101,14 +104,14 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
         </div>
       )}
 
-      {/* Card Header với gradient overlay */}
-      <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 p-6">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-white/20 rounded-full -translate-y-12 translate-x-12"></div>
+      {/* Card Header */}
+      <div className="relative p-6 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="absolute top-0 right-0 w-24 h-24 bg-white/30 rounded-full -translate-y-12 translate-x-12"></div>
         <div className="relative z-10">
           {/* Avatar và Rating Badge */}
           <div className="flex items-start justify-between mb-4 relative">
             <div className="relative">
-              <div className="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center overflow-hidden shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center overflow-hidden shadow-sm">
                 {teacher.image ? (
                   <img 
                     src={teacher.image} 
@@ -120,7 +123,7 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
                     }}
                   />
                 ) : null}
-                <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-xl font-bold">
+                <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold">
                   {teacher.name.charAt(0)}
                 </div>
               </div>
@@ -128,8 +131,8 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
               <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 border-2 border-white rounded-full"></div>
             </div>
             
-            {/* Rating Badge - Positioned to avoid overlap */}
-            <div className={`bg-gradient-to-r ${getRatingColor(teacher.rating)} text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg self-start`}>
+            {/* Rating Badge */}
+            <div className={`${getRatingColor(teacher.rating)} text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-sm`}>
               ⭐ {teacher.rating}
             </div>
           </div>
@@ -151,7 +154,7 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
             </h3>
             <div className="flex flex-col space-y-1.5">
               <div className="flex items-center">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors duration-200">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors duration-200">
                   {teacher.code}
                 </span>
               </div>
@@ -187,7 +190,7 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
               <span className="text-xs text-gray-500 w-16">Chất lượng</span>
               <div className="flex-1 bg-gray-200 rounded-full h-2">
                 <div 
-                  className={`bg-gradient-to-r ${getRatingColor(teacher.rating)} h-2 rounded-full transition-all duration-500`}
+                  className={`${getProgressBarColor(teacher.rating)} h-2 rounded-full transition-all duration-300`}
                   style={{ width: `${(teacher.rating / 5) * 100}%` }}
                 ></div>
               </div>
@@ -198,7 +201,7 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
               <span className="text-xs text-gray-500 w-16">Phổ biến</span>
               <div className="flex-1 bg-gray-200 rounded-full h-2">
                 <div 
-                  className="bg-gradient-to-r from-purple-400 to-purple-500 h-2 rounded-full transition-all duration-500"
+                  className="bg-purple-500 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${Math.min((teacher.reviews / 60) * 100, 100)}%` }}
                 ></div>
               </div>
@@ -209,11 +212,11 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-gray-50 rounded-xl p-3 text-center">
+          <div className="bg-gray-50 rounded-xl p-3 text-center hover:bg-gray-100 transition-colors">
             <div className="text-lg font-bold text-gray-900">{teacher.reviews}</div>
             <div className="text-xs text-gray-500">Đánh giá</div>
           </div>
-          <div className="bg-gray-50 rounded-xl p-3 text-center">
+          <div className="bg-gray-50 rounded-xl p-3 text-center hover:bg-gray-100 transition-colors">
             <div className="text-lg font-bold text-blue-600">{Math.floor(Math.random() * 5) + 1}</div>
             <div className="text-xs text-gray-500">Môn học</div>
           </div>
@@ -223,7 +226,7 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
         <div className="flex space-x-2 pt-2">
           <button 
             onClick={handleReviewClick}
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
+            className="flex-1 bg-primary hover:bg-primary-hover text-white font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 hover:shadow-md flex items-center justify-center space-x-2"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
@@ -234,7 +237,7 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
           <button 
             onClick={handleCardClick}
             className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 flex items-center justify-center"
-            title="Đánh giá nhanh"
+            title="Xem chi tiết"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -259,7 +262,7 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
       </div>
 
       {/* Hover overlay effect */}
-      <div className="absolute inset-0 bg-gradient-to-t from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-blue-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"></div>
     </div>
   );
 };

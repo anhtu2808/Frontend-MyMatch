@@ -10,7 +10,7 @@ const Sidebar = () => {
   const navItems = [
     {
       id: 'dashboard',
-      name: 'Bảng điều khiển',
+      name: 'Trang chủ',
       path: '/dashboard',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,7 +96,7 @@ const Sidebar = () => {
                   className={({ isActive }) =>
                     `group flex items-center w-full p-3 rounded-xl transition-all duration-200 relative ${
                       isActive
-                        ? 'bg-gray-900 text-white shadow-lg'
+                        ? 'bg-primary text-white shadow-lg'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`
                   }
