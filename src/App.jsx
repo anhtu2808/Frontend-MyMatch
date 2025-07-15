@@ -19,6 +19,8 @@ import AiRecommendation from './pages/AiRecommendation';
 import PremiumStudyPlan from './pages/PremiumStudyPlan';
 import StudyMaterialDetail from './pages/StudyMaterialDetail';
 import ReviewSubmissionSuccess from './pages/ReviewSubmissionSuccess';
+import ColorPreview from './pages/ColorPreview';
+import ButtonPreview from './pages/ButtonPreview';
 
 function App() {
   return (
@@ -42,6 +44,8 @@ function App() {
         <Route path="/ai-recommendation" element={<AiRecommendation />} />
         <Route path="/premium/study-plan" element={<PremiumStudyPlan />} />
         <Route path="/study-material-detail" element={<StudyMaterialDetail />} />
+        <Route path="/dev" element={<ColorPreview />} />
+        <Route path="/dev/buttons" element={<ButtonPreview />} />
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
