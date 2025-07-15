@@ -208,7 +208,7 @@ const TeacherCard = ({ teacher, isBookmarked = false, onBookmarkToggle, hasRevie
             <div className="text-xs text-slate-500">Đánh giá</div>
           </div>
           <div className="bg-slate-50 rounded-xl p-3 text-center hover:bg-slate-100 transition-colors">
-            <div className="text-lg font-bold text-slate-600">{Math.floor(Math.random() * 5) + 1}</div>
+            <div className="text-lg font-bold text-slate-600">{teacher?.subjectCodes?.length}</div>
             <div className="text-xs text-slate-500">Môn học</div>
           </div>
         </div>

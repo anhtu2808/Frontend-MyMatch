@@ -54,15 +54,33 @@ body {
 .bg-primary { background-color: var(--color-primary); }
 .bg-primary-hover { background-color: var(--color-primary-hover); }
 .bg-accent { background-color: var(--color-accent); }
+.bg-error { background-color: var(--color-error); }
+.bg-warning { background-color: var(--color-warning); }
+.bg-info { background-color: var(--color-info); }
+.bg-success { background-color: var(--color-success); }
+
+
+
 .text-primary { color: var(--color-primary); }
 .text-primary-hover { color: var(--color-primary-hover); }
 .text-accent { color: var(--color-accent); }
+.text-error { color: var(--color-error); }
+.text-warning { color: var(--color-warning); }
+.text-info { color: var(--color-info); }
+.text-success { color: var(--color-success); }
+
 .border-primary { border-color: var(--color-primary); }
 .border-accent { border-color: var(--color-accent); }
+.border-error { border-color: var(--color-error); }
+.border-warning { border-color: var(--color-warning); }
+.border-info { border-color: var(--color-info); }
 
 /* Hover utilities */
 .hover\:bg-primary-hover:hover { background-color: var(--color-primary-hover); }
 .hover\:text-primary-hover:hover { color: var(--color-primary-hover); }
+.hover\:bg-error:hover { background-color: var(--color-error); }
+.hover\:bg-warning:hover { background-color: var(--color-warning); }
+.hover\:bg-info:hover { background-color: var(--color-info); }
 
 /* Custom spacing for main content */
 .px-25 {

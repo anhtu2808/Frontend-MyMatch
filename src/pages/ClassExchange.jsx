@@ -105,7 +105,7 @@ const requestsToMe = [
     requesterAvatar: '👨‍💼',
     myClass: 'SWE201-02',
     myLecturer: 'Lê Văn Cường',
-    myLecturerCode: 'CuongLV22', 
+    myLecturerCode: 'CuongLV22',
     myDay: 'Thứ 3',
     mySlot: 2,
     myTime: 'Thứ 3 10:00',
@@ -365,7 +365,7 @@ const ClassExchange = () => {
 
         dayOfWeekMatch = filters.dayOfWeek === '' ||
           (dayMapping[filters.dayOfWeek] && (item.fromDay === dayMapping[filters.dayOfWeek] ||
-          item.toDay === dayMapping[filters.dayOfWeek]));
+            item.toDay === dayMapping[filters.dayOfWeek]));
       } else if (dataType === 'requestsToMe') {
         subjectMatch = filters.subject === '' ||
           item.myClass.toLowerCase().includes(filters.subject.toLowerCase()) ||
@@ -386,7 +386,7 @@ const ClassExchange = () => {
 
         dayOfWeekMatch = filters.dayOfWeek === '' ||
           (dayMapping[filters.dayOfWeek] && (item.myDay === dayMapping[filters.dayOfWeek] ||
-          item.theirDay === dayMapping[filters.dayOfWeek]));
+            item.theirDay === dayMapping[filters.dayOfWeek]));
       } else if (dataType === 'marketplaceRequests') {
         subjectMatch = filters.subject === '' ||
           item.currentClass.toLowerCase().includes(filters.subject.toLowerCase()) ||
@@ -407,7 +407,7 @@ const ClassExchange = () => {
 
         dayOfWeekMatch = filters.dayOfWeek === '' ||
           (dayMapping[filters.dayOfWeek] && (item.currentDay === dayMapping[filters.dayOfWeek] ||
-          item.wantedDay === dayMapping[filters.dayOfWeek]));
+            item.wantedDay === dayMapping[filters.dayOfWeek]));
       }
 
       return subjectMatch && classMatch && lecturerMatch && timeSlotMatch && dayOfWeekMatch;
@@ -470,12 +470,10 @@ const ClassExchange = () => {
 
   const getStatusBadge = (status) => {
     switch (status) {
-      case 'active':
-        return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Đang hoạt động</span>;
       case 'pending':
-        return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Đang chờ</span>;
+        return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Đang chờ phản hồi</span>;
       case 'accepted':
-        return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Đã được chấp nhận</span>;
+        return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Đã chấp nhận</span>;
       case 'completed':
         return <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Hoàn thành</span>;
       default:
@@ -559,48 +557,30 @@ const ClassExchange = () => {
   const getSlotDisplay = (slot, day) => {
     const slotTimes = {
       1: '7:00 - 9:00',
-      2: '9:30 - 11:45', 
+      2: '9:30 - 11:45',
       3: '12:30 - 15:00',
       4: '15:00 - 17:15'
     };
-    
+
     return `${day} - Slot ${slot} (${slotTimes[slot]})`;
   };
 
   return (
-    <Layout 
+    <Layout
       title="Đổi chéo lớp"
       description="Quản lý yêu cầu chuyển lớp một cách dễ dàng"
     >
       <div className="space-y-8">
-        {/* Header Section with gradient */}
-        <div className="relative bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 rounded-3xl p-8 text-white overflow-hidden">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -translate-y-24 translate-x-24"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-16 -translate-x-16"></div>
-          <div className="relative z-10">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">Yêu cầu chuyển lớp</h2>
-                <p className="text-blue-100">Quản lý và theo dõi các yêu cầu đổi chéo lớp của bạn</p>
-              </div>
-              <div className="text-right">
-                <div className="text-3xl font-bold">{filteredAndSortedRequests.length}</div>
-                <div className="text-sm text-blue-100">Yêu cầu hiện tại</div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Navigation Tabs với improved design */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-1">
           <nav className="flex space-x-1">
             <button
               onClick={() => setActiveTab('my-requests')}
-              className={`flex-1 py-3 px-6 rounded-xl font-medium text-sm transition-all duration-200 ${
-                activeTab === 'my-requests'
-                  ? 'bg-blue-600 text-white shadow-lg'
+              className={`flex-1 py-3 px-6 rounded-xl font-medium text-sm transition-all duration-200 ${activeTab === 'my-requests'
+                  ? 'bg-primary text-white shadow-lg'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-              }`}
+                }`}
             >
               <div className="flex items-center justify-center space-x-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -611,11 +591,10 @@ const ClassExchange = () => {
             </button>
             <button
               onClick={() => setActiveTab('requests-to-me')}
-              className={`flex-1 py-3 px-6 rounded-xl font-medium text-sm transition-all duration-200 ${
-                activeTab === 'requests-to-me'
-                  ? 'bg-blue-600 text-white shadow-lg'
+              className={`flex-1 py-3 px-6 rounded-xl font-medium text-sm transition-all duration-200 ${activeTab === 'requests-to-me'
+                  ? 'bg-primary text-white shadow-lg'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-              }`}
+                }`}
             >
               <div className="flex items-center justify-center space-x-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -626,11 +605,10 @@ const ClassExchange = () => {
             </button>
             <button
               onClick={() => setActiveTab('marketplace')}
-              className={`flex-1 py-3 px-6 rounded-xl font-medium text-sm transition-all duration-200 ${
-                activeTab === 'marketplace'
-                  ? 'bg-blue-600 text-white shadow-lg'
+              className={`flex-1 py-3 px-6 rounded-xl font-medium text-sm transition-all duration-200 ${activeTab === 'marketplace'
+                  ? 'bg-primary text-white shadow-lg'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-              }`}
+                }`}
             >
               <div className="flex items-center justify-center space-x-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -653,7 +631,7 @@ const ClassExchange = () => {
             </h3>
             <button onClick={handleResetFilters} className="text-sm text-blue-600 hover:text-blue-700 font-medium">Đặt lại bộ lọc</button>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
             {/* Subject Filter */}
             <div className="space-y-2">
@@ -717,10 +695,10 @@ const ClassExchange = () => {
               <label className="block text-sm font-semibold text-gray-700">
                 Slot *
               </label>
-              <Select 
-                placeholder="Chọn slot" 
-                value={filters.timeSlot} 
-                onChange={(value) => handleFilterChange('timeSlot', value)} 
+              <Select
+                placeholder="Chọn slot"
+                value={filters.timeSlot}
+                onChange={(value) => handleFilterChange('timeSlot', value)}
                 className="w-full"
                 size="large"
                 allowClear
@@ -774,7 +752,7 @@ const ClassExchange = () => {
                 <option value="Lecturer">Giảng viên</option>
               </select>
             </div>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-xl transition-colors duration-200 flex items-center space-x-2">
+            <button className="bg-primary hover:bg-primary-hover text-white font-medium px-6 py-2 rounded-xl transition-colors duration-200 flex items-center space-x-2">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -797,7 +775,7 @@ const ClassExchange = () => {
               {activeTab === 'marketplace' && `Hiển thị ${filteredMarketplaceRequests.length} yêu cầu`}
             </div>
           </div>
-          
+
           {/* My Requests Tab */}
           {activeTab === 'my-requests' && filteredAndSortedRequests.map((request) => (
             <div key={request.id} className="group bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
@@ -805,12 +783,12 @@ const ClassExchange = () => {
                 <div className="flex-1">
                   <div className="flex items-center space-x-4 mb-6">
                     {/* Priority Icon */}
-                    <div className={`w-12 h-12 bg-gradient-to-br ${getPriorityColor(request.priority)} rounded-xl flex items-center justify-center shadow-lg`}>
+                    <div className={`w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg`}>
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                       </svg>
                     </div>
-                    
+
                     {/* Status Badge */}
                     {getStatusBadge(request.status)}
                   </div>
@@ -824,7 +802,7 @@ const ClassExchange = () => {
                         <div className="text-sm text-gray-600">{request.fromLecturer} - {request.fromLecturerCode}</div>
                         <div className="text-sm text-blue-600 font-medium">{getSlotDisplay(request.fromSlot, request.fromDay)}</div>
                       </div>
-                      
+
                       <div className="mx-8 flex items-center">
                         <div className="w-8 h-0.5 bg-gray-300"></div>
                         <div className="mx-2 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
@@ -834,7 +812,7 @@ const ClassExchange = () => {
                         </div>
                         <div className="w-8 h-0.5 bg-gray-300"></div>
                       </div>
-                      
+
                       <div className="text-center">
                         <div className="text-xs text-green-600 font-medium">{request.subjectCode} - {request.subjectName}</div>
                         <div className="text-lg font-bold text-gray-900">{request.toClass}</div>
@@ -865,7 +843,7 @@ const ClassExchange = () => {
                 {/* Action Buttons */}
                 <div className="flex flex-col space-y-3 ml-8">
                   {request.status !== 'accepted' && (
-                    <button 
+                    <button
                       onClick={() => handleDeleteRequest(request.id)}
                       className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2"
                     >
@@ -875,9 +853,9 @@ const ClassExchange = () => {
                       <span>Xóa yêu cầu</span>
                     </button>
                   )}
-                  
+
                   {request.status === 'accepted' ? (
-                    <button 
+                    <button
                       onClick={() => navigate('/messages')}
                       className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2"
                     >
@@ -885,9 +863,9 @@ const ClassExchange = () => {
                       <span>Nhắn tin</span>
                     </button>
                   ) : (
-                    <button 
+                    <button
                       onClick={() => handleEditRequest(request)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2"
+                      className="bg-primary hover:bg-primary-hover text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center space-x-2"
                     >
                       <EditOutlined className="w-4 h-4" />
                       <span>Chỉnh sửa</span>
@@ -904,7 +882,7 @@ const ClassExchange = () => {
               <div className="flex items-start space-x-6">
                 {/* Requester Avatar */}
                 <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center text-2xl shadow-lg">
+                  <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-2xl shadow-lg">
                     {request.requesterAvatar}
                   </div>
                 </div>
@@ -918,7 +896,7 @@ const ClassExchange = () => {
                       <p className="text-sm text-gray-600">{request.requesterEmail}</p>
                       <p className="text-xs text-gray-500 mt-1">{request.requestDate}</p>
                     </div>
-                    
+
                     {getRequestStatusBadge(request.status)}
                     <div className="text-right">
                       <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
@@ -929,7 +907,7 @@ const ClassExchange = () => {
                   </div>
 
                   {/* Class Exchange Visualization */}
-                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-6">
+                  <div className="bg-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-6">
                     <div className="flex items-center justify-center space-x-8">
                       {/* Their Class */}
                       <div className="text-center">
@@ -943,8 +921,8 @@ const ClassExchange = () => {
 
                       {/* Exchange Arrow */}
                       <div className="flex items-center">
-                        <div className="w-8 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400"></div>
-                        <div className="mx-3 w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
+                        <div className="w-8 h-0.5 bg-primary"></div>
+                        <div className="mx-3 w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-lg">
                           <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                           </svg>
@@ -987,14 +965,14 @@ const ClassExchange = () => {
                     <div className="flex space-x-4">
                       {!acceptedRequests.has(request.id) ? (
                         <>
-                          <button 
+                          <button
                             onClick={() => handleAcceptRequest(request.id)}
                             className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
                           >
                             <CheckOutlined />
                             <span>Chấp nhận đổi</span>
                           </button>
-                          <button 
+                          <button
                             onClick={() => handleDeclineRequest(request.id)}
                             className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
                           >
@@ -1003,14 +981,14 @@ const ClassExchange = () => {
                         </>
                       ) : (
                         <div className="flex w-full space-x-4">
-                          <button 
+                          <button
                             onClick={() => window.open(`tel:${request.phone}`)}
                             className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
                           >
                             <PhoneOutlined />
                             <span>Gọi điện</span>
                           </button>
-                          <button 
+                          <button
                             onClick={() => navigate(`/messages`)}
                             className="flex-1 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
                           >
@@ -1043,17 +1021,16 @@ const ClassExchange = () => {
               <div className="flex items-start space-x-6">
                 {/* Student Avatar & Info */}
                 <div className="flex-shrink-0">
-                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg">
+                  <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center text-3xl shadow-lg">
                     {request.studentAvatar}
                   </div>
                   <div className="text-center mt-3">
-                    <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                      request.priority === 'high' ? 'bg-red-100 text-red-700' :
-                      request.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-green-100 text-green-700'
-                    }`}>
-                      {request.priority === 'high' ? '🔥 Gấp' : 
-                       request.priority === 'medium' ? '⚡ Trung bình' : '😌 Bình thường'}
+                    <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${request.priority === 'high' ? 'bg-red-100 text-red-700' :
+                        request.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                          'bg-green-100 text-green-700'
+                      }`}>
+                      {request.priority === 'high' ? '🔥 Gấp' :
+                        request.priority === 'medium' ? '⚡ Trung bình' : '😌 Bình thường'}
                     </div>
                   </div>
                 </div>
@@ -1135,16 +1112,16 @@ const ClassExchange = () => {
 
                   {/* Action Buttons */}
                   <div className="flex space-x-4">
-                    <button 
+                    <button
                       onClick={() => handleSendSwapRequest(request.id, request.studentName)}
-                      className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
+                      className="flex-1 bg-primary hover:bg-primary-hover text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:shadow-lg flex items-center justify-center space-x-2"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                       </svg>
                       <span>Gửi yêu cầu đổi</span>
                     </button>
-                    
+
                   </div>
 
                   {/* Additional Info */}
@@ -1192,9 +1169,9 @@ const ClassExchange = () => {
 
         {/* Add New Request Button với improved design */}
         <div className="flex justify-center pt-8">
-          <button 
+          <button
             onClick={() => navigate('/exchange/swap-request')}
-            className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-12 py-4 rounded-2xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex items-center space-x-3"
+            className="group bg-primary hover:bg-primary-hover text-white font-bold px-12 py-4 rounded-2xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex items-center space-x-3"
           >
             <svg className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -1224,7 +1201,7 @@ const ClassExchange = () => {
               {/* From Class Section */}
               <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
                 <h3 className="text-lg font-semibold text-blue-900 mb-4">Lớp hiện tại</h3>
-                
+
                 <Form.Item
                   label="Tên lớp"
                   name="fromClass"
@@ -1253,7 +1230,7 @@ const ClassExchange = () => {
               {/* To Class Section */}
               <div className="bg-green-50 rounded-xl p-4 border border-green-200">
                 <h3 className="text-lg font-semibold text-green-900 mb-4">Lớp muốn đổi</h3>
-                
+
                 <Form.Item
                   label="Tên lớp"
                   name="toClass"
@@ -1303,7 +1280,7 @@ const ClassExchange = () => {
 
             {/* Modal Actions */}
             <div className="flex justify-end space-x-3 pt-4">
-              <Button 
+              <Button
                 onClick={() => {
                   setIsEditModalOpen(false);
                   setEditingRequest(null);
@@ -1313,7 +1290,7 @@ const ClassExchange = () => {
               >
                 Hủy
               </Button>
-              <Button 
+              <Button
                 type="primary"
                 htmlType="submit"
                 className="bg-blue-600 hover:bg-blue-700 rounded-xl px-6"
