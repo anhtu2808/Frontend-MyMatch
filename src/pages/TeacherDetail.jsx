@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Card, Tag, Input, Typography, Avatar, Rate, Progress, Badge, Select, Modal, Form, Radio, Dropdown, Menu } from 'antd';
-import { ArrowLeftOutlined, BookOutlined, ShareAltOutlined, ThunderboltOutlined, UserOutlined, StarFilled, EyeOutlined, MessageOutlined, EditOutlined, FilterOutlined, SortAscendingOutlined, FlagOutlined, CrownOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, BookOutlined, ShareAltOutlined, ThunderboltOutlined, UserOutlined, StarFilled, EyeOutlined, MessageOutlined, EditOutlined, FilterOutlined, SortAscendingOutlined, FlagOutlined, CrownOutlined, HeartOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
+import Layout from '../components/Layout';
 import { useSelector } from 'react-redux';
 
 const { Title, Text, Paragraph } = Typography;
+
 // Mock data - in real app, this would come from API
 const teacherData2 = {
   id: 1,
@@ -165,6 +166,7 @@ const teacherData2 = {
     }
   ]
 };
+
 const randomAddSubjectCode = (subjectCodeArray, reviews) => {
   return reviews.map(review => {
     return {
@@ -173,6 +175,7 @@ const randomAddSubjectCode = (subjectCodeArray, reviews) => {
     }
   })
 };
+
 const TeacherDetail = () => {
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState('newest');
@@ -190,7 +193,7 @@ const TeacherDetail = () => {
     console.log(teacher);
     if (teacher) {
       setTeacherData({
-        ...teacherData,                       // copy toàn bộ field gốc
+        ...teacherData,
         name: teacher.name,
         avatar: teacher.avatar,
         department: teacher.department,
@@ -206,16 +209,14 @@ const TeacherDetail = () => {
   }, [teacherId, teachers]);
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/teachers');
   };
 
   const handleSaveTeacher = () => {
-    // Logic to save teacher to favorites
     console.log('Teacher saved to favorites');
   };
 
   const handlePremiumPlan = () => {
-    // Navigate to premium study plan feature
     navigate('/premium/study-plan', { state: { teacherId: teacherData.id, teacherName: teacherData.name } });
   };
 
@@ -227,7 +228,6 @@ const TeacherDetail = () => {
           name: teacherData.name,
           code: teacherData.code,
           department: teacherData.department
-
         },
         step: 2
       }
@@ -249,7 +249,6 @@ const TeacherDetail = () => {
   useEffect(() => {
     let filtered = [...teacherData.reviews];
 
-    // Apply filter
     switch (filterBy) {
       case 'positive':
         filtered = filtered.filter(review => review.rating >= 4);
@@ -264,14 +263,12 @@ const TeacherDetail = () => {
         filtered = filtered.filter(review => review.verified);
         break;
       default:
-        // 'all' - no filtering
         break;
     }
     if (subjectCode) {
       filtered = filtered.filter(review => review.subjectCode === subjectCode);
     }
 
-    // Apply sort
     switch (sortBy) {
       case 'oldest':
         filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -285,7 +282,7 @@ const TeacherDetail = () => {
       case 'helpful':
         filtered.sort((a, b) => b.helpful - a.helpful);
         break;
-      default: // 'newest'
+      default:
         filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
         break;
     }
@@ -305,611 +302,379 @@ const TeacherDetail = () => {
     setFilterBy(value);
   };
 
+  const ReviewCard = ({ review }) => {
+    // AI score cố định cho demo MVP - hiển thị % sinh viên cùng ý kiến
+  const getFixedAIScore = (reviewId) => {
+    const aiScores = {
+      1: { score: 92, label: "AI cho biết có 92% sinh viên có cùng đánh giá", color: "bg-green-500" },
+      2: { score: 88, label: "AI cho biết có 88% sinh viên có cùng đánh giá", color: "bg-green-500" },
+      3: { score: 15, label: "AI cho biết có 15% sinh viên có cùng đánh giá", color: "bg-red-500" },
+      4: { score: 95, label: "AI cho biết có 95% sinh viên có cùng đánh giá", color: "bg-green-500" },
+      5: { score: 67, label: "AI cho biết có 67% sinh viên có cùng đánh giá", color: "bg-blue-500" },
+      6: { score: 98, label: "AI cho biết có 98% sinh viên có cùng đánh giá", color: "bg-green-500" },
+      7: { score: 23, label: "AI cho biết có 23% sinh viên có cùng đánh giá", color: "bg-red-500" },
+      8: { score: 91, label: "AI cho biết có 91% sinh viên có cùng đánh giá", color: "bg-green-500" }
+    };
+    
+    return aiScores[reviewId] || { score: 75, label: "75% sinh viên có cùng đánh giá", color: "bg-blue-500" };
+  };
 
-
-  const ReviewCard = ({ review }) => (
-    <Card
-      style={{
-        borderRadius: '16px',
-        background: 'white',
-        border: '1px solid #e2e8f0',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-        marginBottom: '20px',
-        transition: 'all 0.3s ease',
-        cursor: 'pointer'
-      }}
-      bodyStyle={{ padding: '24px' }}
-      hoverable
-    >
-      {/* Review Header */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '20px' }}>
-        <Avatar
-          size={48}
-          style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
-            fontWeight: '600'
-          }}
-        >
-          SV
-        </Avatar>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-            <Title level={4} style={{ margin: '0', color: '#1e293b', fontSize: '18px', fontWeight: '600' }}>
-              {review.title}
-            </Title>
-            <Rate
-              disabled
-              defaultValue={review.teachingCriteria}
-              style={{ fontSize: '14px' }}
-            />
-            <div>
-              <Tag color="blue" size="small" style={{ marginLeft: '8px' }}>
-                {review.subjectCode}
-              </Tag>
-
-            </div>
-          </div>
-          <Text style={{ color: '#64748b', fontSize: '14px', display: 'block', marginBottom: '4px' }}>
-            Sinh viên K17 • {new Date(review.date).toLocaleDateString('vi-VN')}
-            {review.verified && <Tag color="green" size="small" style={{ marginLeft: '8px' }}>✓ Đã xác thực</Tag>}
-          </Text>
-          <Paragraph style={{ color: '#475569', fontSize: '15px', margin: '0', lineHeight: '1.6' }}>
-            {review.content}
-          </Paragraph>
-        </div>
-      </div>
-
-      {/* Rating Metrics */}
-
-      <div style={{
-        background: '#f8fafc',
-        borderRadius: '12px',
-        padding: '20px',
-        marginBottom: '20px'
-      }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-          <div style={{ textAlign: 'center' }}>
-            <Text style={{ color: '#667eea', fontSize: '14px', fontWeight: '600', display: 'block' }}>
-              Tiêu chí giảng dạy
-            </Text>
-            <Title level={3} style={{ margin: '8px 0 0 0', color: '#1e293b', fontSize: '24px' }}>
-              {review.teachingCriteria}/5.0
-            </Title>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <Text style={{ color: '#667eea', fontSize: '14px', fontWeight: '600', display: 'block' }}>
-              Chất lượng giảng dạy
-            </Text>
-            <Title level={3} style={{ margin: '8px 0 0 0', color: '#1e293b', fontSize: '24px' }}>
-              {review.teachingQuality}/5.0
-            </Title>
-          </div>
-        </div>
-
-        {/* Detailed Metrics */}
-        <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid #e2e8f0' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px' }}>
-            <div>
-              <Text style={{ color: '#64748b', fontSize: '13px', display: 'block' }}>Cấu trúc bài giảng</Text>
-              <Text style={{ color: '#1e293b', fontSize: '16px', fontWeight: '600' }}>{review.structure}/5</Text>
-            </div>
-            <div>
-              <Text style={{ color: '#64748b', fontSize: '13px', display: 'block' }}>Khả năng truyền đạt</Text>
-              <Text style={{ color: '#1e293b', fontSize: '16px', fontWeight: '600' }}>{review.communication}/5</Text>
-            </div>
-            <div>
-              <Text style={{ color: '#64748b', fontSize: '13px', display: 'block' }}>Điểm tổng</Text>
-              <Text style={{ color: '#667eea', fontSize: '16px', fontWeight: '600' }}>{review.score}/10</Text>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tags */}
-      <div style={{ marginBottom: '20px' }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          {review.tags.map((tag, index) => (
-            <Tag
-              key={index}
-              style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '16px',
-                padding: '4px 12px',
-                fontSize: '13px'
-              }}
-            >
-              {tag}
-            </Tag>
-          ))}
-        </div>
-      </div>
-
-      {/* Actions */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <Button
-            type="text"
-            size="small"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              color: '#10b981',
-              padding: '4px 12px',
-              borderRadius: '8px'
-            }}
-          >
-            👍 {review.helpful}
-          </Button>
-          <Button
-            type="text"
-            size="small"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              color: '#ef4444',
-              padding: '4px 12px',
-              borderRadius: '8px'
-            }}
-          >
-            👎 {review.notHelpful}
-          </Button>
-        </div>
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item
-                key="report"
-                icon={<FlagOutlined />}
-                onClick={() => handleReportReview(review.id)}
-              >
-                Báo cáo vi phạm
-              </Menu.Item>
-            </Menu>
-          }
-          trigger={['click']}
-        >
-          <Button
-            type="text"
-            size="small"
-            style={{ color: '#64748b', fontSize: '13px' }}
-          >
-            ⋯
-          </Button>
-        </Dropdown>
-      </div>
-    </Card>
-  );
+  const aiScore = getFixedAIScore(review.id);
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
-      <Sidebar />
-
-      <div style={{ flex: 1, marginLeft: '256px', padding: '0' }}>
-        {/* Hero Section */}
-        <div style={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          padding: '2rem',
-          color: 'white',
-          position: 'relative',
-          overflow: 'hidden'
-        }}>
-          <div style={{
-            position: 'absolute',
-            top: '-50px',
-            right: '-50px',
-            width: '200px',
-            height: '200px',
-            background: 'rgba(255,255,255,0.1)',
-            borderRadius: '50%'
-          }}></div>
-
-          <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-            {/* Breadcrumb */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2rem' }}>
-              <Button
-                type="text"
-                icon={<ArrowLeftOutlined />}
-                onClick={handleGoBack}
-                style={{
-                  padding: '8px 16px',
-                  color: 'white',
-                  fontSize: '14px',
-                  borderRadius: '8px',
-                  background: 'rgba(255,255,255,0.1)',
-                  border: 'none'
-                }}
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 mb-6">
+      <div className="p-6">
+        {/* Review Header */}
+        <div className="flex items-start gap-4 mb-5">
+          <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-semibold">
+            SV
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-2">
+              <h4 className="text-lg font-semibold text-gray-900">{review.title}</h4>
+              <Rate disabled defaultValue={review.rating} className="text-sm" />
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                {review.subjectCode}
+              </span>
+              
+              {/* AI Badge - hiển thị % đồng tình */}
+              <div className="flex items-center gap-1">
+                <span className="text-xs">🤖</span>
+                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium text-white ${aiScore.color}`}>
+                 AI cho biết có {aiScore.score}% sinh viên có cùng đánh giá
+                </span>
+              </div>
+            </div>
+            <div className="text-sm text-gray-500 mb-2">
+              Sinh viên K17 • {new Date(review.date).toLocaleDateString('vi-VN')}
+              {review.verified && (
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-success/10 text-success ml-2">
+                  ✓ Đã xác thực
+                </span>
+              )}
+             
+            </div>
+            <p className="text-gray-700 leading-relaxed">{review.content}</p>
+          </div>
+        </div>
+  
+          {/* Phần còn lại giữ nguyên */}
+          {/* Rating Metrics */}
+          <div className="bg-gray-50 rounded-xl p-5 mb-5">
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="text-center">
+                <div className="text-sm font-medium text-primary mb-1">Tiêu chí giảng dạy</div>
+                <div className="text-2xl font-bold text-gray-900">{review.teachingCriteria}/5.0</div>
+              </div>
+              <div className="text-center">
+                <div className="text-sm font-medium text-primary mb-1">Chất lượng giảng dạy</div>
+                <div className="text-2xl font-bold text-gray-900">{review.teachingQuality}/5.0</div>
+              </div>
+            </div>
+  
+            <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
+              <div>
+                <div className="text-xs text-gray-500 mb-1">Cấu trúc bài giảng</div>
+                <div className="text-sm font-semibold text-gray-900">{review.structure}/5</div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-500 mb-1">Khả năng truyền đạt</div>
+                <div className="text-sm font-semibold text-gray-900">{review.communication}/5</div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-500 mb-1">Điểm tổng</div>
+                <div className="text-sm font-semibold text-primary">{review.score}/10</div>
+              </div>
+            </div>
+          </div>
+  
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2 mb-5">
+            {review.tags.map((tag, index) => (
+              <span
+                key={index}
+                className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary text-white"
               >
+                {tag}
+              </span>
+            ))}
+          </div>
+  
+          {/* Actions */}
+          <div className="flex items-center justify-between">
+            <div className="flex gap-3">
+              <button className="flex items-center gap-2 text-success hover:text-success text-sm font-medium">
+                👍 {review.helpful}
+              </button>
+              <button className="flex items-center gap-2 text-error hover:text-error text-sm font-medium">
+                👎 {review.notHelpful}
+              </button>
+            </div>
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item
+                    key="report"
+                    icon={<FlagOutlined />}
+                    onClick={() => handleReportReview(review.id)}
+                  >
+                    Báo cáo vi phạm
+                  </Menu.Item>
+                </Menu>
+              }
+              trigger={['click']}
+            >
+              <button className="text-gray-500 hover:text-gray-700 text-sm">⋯</button>
+            </Dropdown>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <Layout
+      title={`Chi tiết giảng viên - ${teacherData.name}`}
+      description="Xem thông tin chi tiết và đánh giá của giảng viên"
+    >
+      <div className="space-y-8">
+        {/* Hero Section với animation */}
+        <div className="rounded-2xl p-8 text-white bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-primary)] shadow-lg relative overflow-hidden">
+          {/* Animated background elements */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16 animate-pulse"></div>
+          <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full translate-y-10 -translate-x-10 animate-bounce"></div>
+
+          {/* Floating particles */}
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white/30 rounded-full animate-ping"></div>
+          <div className="absolute top-3/4 right-1/3 w-1 h-1 bg-white/40 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/2 left-3/4 w-3 h-3 bg-white/20 rounded-full animate-bounce"></div>
+
+          <div className="relative z-10">
+            {/* Breadcrumb với hover effect */}
+            <div className="flex items-center gap-2 mb-6">
+              <button
+                onClick={handleGoBack}
+                className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/30 rounded-xl transition-all duration-300 text-white hover:scale-105 backdrop-blur-sm"
+              >
+                <ArrowLeftOutlined className="transition-transform duration-300 group-hover:-translate-x-1" />
                 Quay lại
-              </Button>
-              <Text style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>
-                / Chi tiết giảng viên
-              </Text>
+              </button>
+              <span className="text-white/70">/ Chi tiết giảng viên</span>
             </div>
 
-            {/* Teacher Profile */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-              <Badge
-                dot
-                status={teacherData.isOnline ? "success" : "default"}
-                offset={[-10, 45]}
-              >
-                <Avatar
-                  size={120}
-                  src={teacherData.avatar}
-                  icon={<UserOutlined />}
-                  style={{
-                    border: '4px solid rgba(255,255,255,0.3)',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
-                  }}
-                />
-              </Badge>
-
-              <div style={{ flex: 1 }}>
-                <Title level={1} style={{
-                  color: 'white',
-                  fontSize: '2.5rem',
-                  fontWeight: '700',
-                  margin: '0 0 0.5rem 0'
-                }}>
-                  {teacherData.name}
-                </Title>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                  <Tag color="#284CFF" style={{ fontSize: '14px', padding: '4px 12px' }}>
-                    {teacherData.code}
-                  </Tag>
-                  <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: '16px' }}>
-                    {teacherData.department}
-                  </Text>
+            {/* Teacher Profile với animation khi load */}
+            <div className="flex items-center gap-6">
+              <div className="relative group">
+                <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white/20 group-hover:border-white/40 transition-all duration-300 group-hover:scale-105">
+                  {teacherData.avatar ? (
+                    <img src={teacherData.avatar} alt={teacherData.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-white/20 flex items-center justify-center text-white text-2xl font-bold">
+                      {teacherData.name.charAt(0)}
+                    </div>
+                  )}
                 </div>
+                {teacherData.isOnline && (
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-success border-2 border-white rounded-full animate-pulse"></div>
+                )}
+                {/* Glow effect */}
+                <div className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md"></div>
+              </div>
 
-                <Text style={{
-                  color: 'rgba(255,255,255,0.8)',
-                  fontSize: '16px',
-                  display: 'block',
-                  marginBottom: '1rem'
-                }}>
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold mb-2 hover:text-yellow-200 transition-colors duration-300">{teacherData.name}</h1>
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20 text-white hover:bg-white/30 transition-colors duration-300">
+                    {teacherData.code}
+                  </span>
+                  <span className="text-white/90">{teacherData.department}</span>
+                </div>
+                <div className="text-white/80 mb-3">
                   {teacherData.university} • {teacherData.experience} kinh nghiệm
-                </Text>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Rate
-                      disabled
-                      defaultValue={teacherData.overallRating}
-                      style={{ color: '#ffd700' }}
-                    />
-                    <Text style={{ color: 'white', fontSize: '18px', fontWeight: '600' }}>
-                      {teacherData.overallRating}/5.0
-                    </Text>
-                  </div>
-                  <Text style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>
-                    {teacherData.totalRatings} đánh giá
-                  </Text>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Rate disabled defaultValue={teacherData.overallRating} className="text-yellow-400" />
+                  <span className="text-white font-semibold">{teacherData.overallRating}/5.0</span>
+                  <span className="text-white/70">({teacherData.totalRatings} đánh giá)</span>
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <Button
+              {/* Action Buttons với hiệu ứng đặc biệt */}
+              <div className="flex flex-col gap-3">
+                <button
                   onClick={handleSaveTeacher}
-                  type="primary"
-                  icon={<BookOutlined />}
-                  size="large"
-                  style={{
-                    background: 'rgba(255,255,255,0.15)',
-                    borderColor: 'rgba(255,255,255,0.3)',
-                    color: 'white',
-                    borderRadius: '12px',
-                    backdropFilter: 'blur(10px)'
-                  }}
+                  className="bg-white/20 hover:bg-white/30 text-white px-6 py-2 rounded-xl transition-all duration-300 font-medium hover:scale-105 hover:shadow-lg backdrop-blur-sm"
                 >
-                  Lưu lại
-                </Button>
-                <Button
+                  <HeartOutlined /> Lưu lại
+                </button>
+                <button
                   onClick={handleReviewTeacher}
-                  icon={<EditOutlined />}
-                  size="large"
-                  style={{
-                    background: 'rgba(255,255,255,0.15)',
-                    borderColor: 'rgba(255,255,255,0.3)',
-                    color: 'white',
-                    borderRadius: '12px',
-                    backdropFilter: 'blur(10px)'
-                  }}
+                  className="bg-white/20 hover:bg-white/30 text-white px-6 py-2 rounded-xl transition-all duration-300 font-medium hover:scale-105 hover:shadow-lg backdrop-blur-sm"
                 >
                   Đánh giá
-                </Button>
-                <Button
-                  onClick={handlePremiumPlan}
-                  icon={<CrownOutlined />}
-                  size="large"
-                  style={{
-                    background: '#E3D046',
-                    borderColor: '#E3D046',
-                    color: '#000',
-                    borderRadius: '12px',
-                    fontWeight: '600'
-                  }}
-                >
-                  Gợi ý học tập
-                </Button>
+                </button>
+
+                {/* Premium button với hiệu ứng đặc biệt */}
+                <div className="relative group">
+                  <button
+                    onClick={handlePremiumPlan}
+                    className="relative bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black px-6 py-3 rounded-xl transition-all duration-300 font-bold hover:scale-110 shadow-lg hover:shadow-2xl w-full overflow-hidden"
+                  >
+                    {/* Shimmer effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+
+                    <div className="relative flex items-center justify-center gap-2">
+                      <CrownOutlined className="text-lg animate-bounce" />
+                      <span>Gợi ý học tập</span>
+                      <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full animate-pulse">
+                        PRO
+                      </span>
+                    </div>
+                  </button>
+
+                  {/* Glow effect cho premium button */}
+                  <div className="absolute inset-0 rounded-xl bg-yellow-400/50 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Main Content */}
-        <div style={{
-          padding: '2rem',
-          maxWidth: '1200px',
-          margin: '0 auto'
-        }}>
-
-          {/* Quick Info Cards */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '1.5rem',
-            marginBottom: '2rem'
-          }}>
-            {/* Overall Rating Card */}
-            <Card
-              style={{
-                borderRadius: '16px',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white'
-              }}
-              bodyStyle={{ padding: '24px' }}
-            >
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>⭐</div>
-                <Title level={2} style={{ color: 'white', margin: '0 0 0.5rem 0' }}>
-                  {teacherData.overallRating}/5.0
-                </Title>
-                <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: '16px' }}>
-                  Đánh giá tổng thể
-                </Text>
-                <div style={{ marginTop: '0.5rem' }}>
-                  <Text style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px' }}>
-                    Từ {teacherData.totalRatings} đánh giá
-                  </Text>
-                </div>
-              </div>
-            </Card>
-
-            {/* Would Take Again Card */}
-            <Card
-              style={{
-                borderRadius: '16px',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-                background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                color: 'white'
-              }}
-              bodyStyle={{ padding: '24px' }}
-            >
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>📚</div>
-                <Title level={2} style={{ color: 'white', margin: '0 0 0.5rem 0' }}>
-                  {teacherData.wouldTakeAgain}%
-                </Title>
-                <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: '16px' }}>
-                  Sẽ học lại
-                </Text>
-                <div style={{ marginTop: '0.5rem' }}>
-                  <Text style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px' }}>
-                    Sinh viên đồng ý
-                  </Text>
-                </div>
-              </div>
-            </Card>
-
-            {/* Difficulty Card */}
-            <Card
-              style={{
-                borderRadius: '16px',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-                background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                color: 'white'
-              }}
-              bodyStyle={{ padding: '24px' }}
-            >
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>📊</div>
-                <Title level={2} style={{ color: 'white', margin: '0 0 0.5rem 0' }}>
-                  {teacherData.difficulty}/5.0
-                </Title>
-                <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: '16px' }}>
-                  Mức độ khó
-                </Text>
-                <div style={{ marginTop: '0.5rem' }}>
-                  <Progress
-                    percent={(teacherData.difficulty / 5) * 100}
-                    showInfo={false}
-                    strokeColor="rgba(255,255,255,0.8)"
-                    trailColor="rgba(255,255,255,0.2)"
-                  />
-                </div>
-              </div>
-            </Card>
+        {/* Quick Info Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-gradient-primary-accent rounded-2xl p-6 text-white text-center">
+            <div className="text-4xl mb-2">⭐</div>
+            <div className="text-2xl font-bold mb-1">{teacherData.overallRating}/5.0</div>
+            <div className="text-white/80">Đánh giá tổng thể</div>
+            <div className="text-white/60 text-sm mt-1">Từ {teacherData.totalRatings} đánh giá</div>
           </div>
 
-          {/* Subject Tags */}
-          <Card
-            style={{
-              borderRadius: '16px',
-              border: '1px solid #e2e8f0',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-              marginBottom: '2rem'
-            }}
-            bodyStyle={{ padding: '24px' }}
-          >
-            <Title level={4} style={{ marginBottom: '1rem', color: '#1A237E' }}>
-              Môn học giảng dạy
-            </Title>
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              {teacherData.subjects.map((subject, index) => (
-                <Tag
-                  key={index}
-                  color="#667eea"
-                  style={{
-                    fontSize: '14px',
-                    padding: '8px 16px',
-                    borderRadius: '20px',
-                    border: 'none'
-                  }}
-                >
-                  {subject}
-                </Tag>
-              ))}
+          <div className="bg-gradient-info-primary rounded-2xl p-6 text-white text-center">
+            <div className="text-4xl mb-2">📚</div>
+            <div className="text-2xl font-bold mb-1">{teacherData.wouldTakeAgain}%</div>
+            <div className="text-white/80">Sẽ học lại</div>
+            <div className="text-white/60 text-sm mt-1">Sinh viên đồng ý</div>
+          </div>
+
+          <div className="bg-gradient-warning-accent rounded-2xl p-6 text-white text-center">
+            <div className="text-4xl mb-2">📊</div>
+            <div className="text-2xl font-bold mb-1">{teacherData.difficulty}/5.0</div>
+            <div className="text-white/80">Mức độ khó</div>
+            <div className="w-full bg-white/20 rounded-full h-2 mt-2">
+              <div
+                className="bg-white/80 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${(teacherData.difficulty / 5) * 100}%` }}
+              ></div>
             </div>
-          </Card>
+          </div>
+        </div>
 
-          {/* Reviews Section */}
-          <Card
-            style={{
-              borderRadius: '16px',
-              border: '1px solid #e2e8f0',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-              marginBottom: '2rem'
-            }}
-            bodyStyle={{ padding: '24px' }}
-          >
-            <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                <div>
-                  <Title level={3} style={{
-                    color: '#1A237E',
-                    fontSize: '24px',
-                    fontWeight: '700',
-                    margin: '0 0 0.5rem 0'
-                  }}>
-                    Đánh giá từ sinh viên
-                  </Title>
-                  <Text style={{ color: '#64748b', fontSize: '16px' }}>
-                    {teacherData.totalRatings} đánh giá • Cập nhật gần nhất: hôm nay
-                  </Text>
-                </div>
-                <Input
-                  placeholder="Tìm kiếm đánh giá..."
-                  prefix={<EyeOutlined style={{ color: '#94a3b8' }} />}
-                  style={{
-                    width: '280px',
-                    borderRadius: '12px',
-                    background: '#f8fafc',
-                    border: '1px solid #e2e8f0'
-                  }}
-                />
-              </div>
-
-              {/* Sort and Filter Controls */}
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <FilterOutlined style={{ color: '#64748b' }} />
-                  <Text style={{ color: '#64748b', fontSize: '14px' }}>Môn học:</Text>
-                  <div>
-                    <Select
-                      value={subjectCode}
-                      onChange={handleSubjectCodeChange}
-                      style={{ width: '160px' }}
-                      size="small"
-                    >
-                      {teacherData.subjectCodeArray.map((subjectCode, index) => (
-                        <Select.Option key={index} value={subjectCode}>{subjectCode}</Select.Option>
-                      ))}
-                    </Select>
-
-                  </div>
-                  <Select
-                    value={sortBy}
-                    onChange={handleSortChange}
-                    style={{ width: '160px' }}
-                    size="small"
-                    options={[
-                      { value: 'newest', label: 'Mới nhất' },
-                      { value: 'oldest', label: 'Cũ nhất' },
-                      { value: 'highest', label: 'Đánh giá cao nhất' },
-                      { value: 'lowest', label: 'Đánh giá thấp nhất' },
-                      { value: 'helpful', label: 'Hữu ích nhất' }
-                    ]}
-                  />
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <FilterOutlined style={{ color: '#64748b' }} />
-                  <Text style={{ color: '#64748b', fontSize: '14px' }}>Lọc:</Text>
-                  <Select
-                    value={filterBy}
-                    onChange={handleFilterChange}
-                    style={{ width: '160px' }}
-                    size="small"
-                    options={[
-                      { value: 'all', label: 'Tất cả' },
-                      { value: 'positive', label: 'Tích cực (4-5⭐)' },
-                      { value: 'neutral', label: 'Trung tính (3⭐)' },
-                      { value: 'negative', label: 'Tiêu cực (1-2⭐)' },
-                      { value: 'verified', label: 'Đã xác thực' }
-                    ]}
-                  />
-                </div>
-
-                <Tag color="#667eea" style={{ marginLeft: '8px' }}>
-                  {filteredReviews.length} kết quả
-                </Tag>
-              </div>
-            </div>
-
-            {/* Review Cards */}
-            <div>
-              {filteredReviews.length > 0 ? (
-                filteredReviews.map((review) => (
-                  <ReviewCard key={review.id} review={review} />
-                ))
-              ) : (
-                <div style={{
-                  textAlign: 'center',
-                  padding: '60px 20px',
-                  color: '#64748b'
-                }}>
-                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔍</div>
-                  <Title level={4} style={{ color: '#64748b', marginBottom: '8px' }}>
-                    Không tìm thấy đánh giá nào
-                  </Title>
-                  <Text style={{ color: '#94a3b8' }}>
-                    Thử thay đổi bộ lọc hoặc tiêu chí sắp xếp để xem thêm kết quả
-                  </Text>
-                </div>
-              )}
-            </div>
-
-            {/* Load More Button */}
-            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-              <Button
-                type="primary"
-                size="large"
-                style={{
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  borderColor: 'transparent',
-                  borderRadius: '12px',
-                  padding: '12px 32px',
-                  height: 'auto',
-                  fontSize: '16px',
-                  fontWeight: '600'
-                }}
+        {/* Subject Tags */}
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+          <h3 className="text-xl font-semibold text-gray-900 mb-4">Môn học giảng dạy</h3>
+          <div className="flex flex-wrap gap-2">
+            {teacherData.subjects.map((subject, index) => (
+              <span
+                key={index}
+                className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary/10 text-primary"
               >
-                Xem thêm đánh giá
-              </Button>
+                {subject}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-1">Đánh giá từ sinh viên</h3>
+                <p className="text-gray-600">{teacherData.totalRatings} đánh giá • Cập nhật gần nhất: hôm nay</p>
+              </div>
+              <Input
+                placeholder="Tìm kiếm đánh giá..."
+                prefix={<EyeOutlined className="text-gray-400" />}
+                className="w-72"
+              />
             </div>
-          </Card>
+
+            {/* Sort and Filter Controls */}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <FilterOutlined className="text-gray-500" />
+                <span className="text-sm text-gray-600">Môn học:</span>
+                <Select
+                  value={subjectCode}
+                  onChange={handleSubjectCodeChange}
+                  style={{ width: 160 }}
+                  size="small"
+                  placeholder="Tất cả"
+                >
+                  <Select.Option value="">Tất cả</Select.Option>
+                  {teacherData.subjectCodeArray.map((code, index) => (
+                    <Select.Option key={index} value={code}>{code}</Select.Option>
+                  ))}
+                </Select>
+              </div>
+
+              <Select
+                value={sortBy}
+                onChange={handleSortChange}
+                style={{ width: 160 }}
+                size="small"
+                options={[
+                  { value: 'newest', label: 'Mới nhất' },
+                  { value: 'oldest', label: 'Cũ nhất' },
+                  { value: 'highest', label: 'Đánh giá cao nhất' },
+                  { value: 'lowest', label: 'Đánh giá thấp nhất' },
+                  { value: 'helpful', label: 'Hữu ích nhất' }
+                ]}
+              />
+
+              <Select
+                value={filterBy}
+                onChange={handleFilterChange}
+                style={{ width: 160 }}
+                size="small"
+                options={[
+                  { value: 'all', label: 'Tất cả' },
+                  { value: 'positive', label: 'Tích cực (4-5⭐)' },
+                  { value: 'neutral', label: 'Trung tính (3⭐)' },
+                  { value: 'negative', label: 'Tiêu cực (1-2⭐)' },
+                  { value: 'verified', label: 'Đã xác thực' }
+                ]}
+              />
+
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                {filteredReviews.length} kết quả
+              </span>
+            </div>
+          </div>
+
+          {/* Review Cards */}
+          <div>
+            {filteredReviews.length > 0 ? (
+              filteredReviews.map((review) => (
+                <ReviewCard key={review.id} review={review} />
+              ))
+            ) : (
+              <div className="text-center py-12">
+                <div className="text-4xl mb-4">🔍</div>
+                <h4 className="text-lg font-medium text-gray-600 mb-2">Không tìm thấy đánh giá nào</h4>
+                <p className="text-gray-500">Thử thay đổi bộ lọc hoặc tiêu chí sắp xếp để xem thêm kết quả</p>
+              </div>
+            )}
+          </div>
+
+          {/* Load More Button */}
+          {filteredReviews.length > 0 && (
+            <div className="text-center mt-8">
+              <button className="bg-primary hover:bg-primary-hover text-white px-8 py-3 rounded-xl font-semibold transition-colors">
+                Xem thêm đánh giá
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -932,7 +697,7 @@ const TeacherDetail = () => {
             rules={[{ required: true, message: 'Vui lòng chọn lý do báo cáo!' }]}
           >
             <Radio.Group>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div className="flex flex-col gap-2">
                 <Radio value="spam">Spam hoặc quảng cáo</Radio>
                 <Radio value="inappropriate">Nội dung không phù hợp</Radio>
                 <Radio value="false">Thông tin sai lệch</Radio>
@@ -953,28 +718,25 @@ const TeacherDetail = () => {
             />
           </Form.Item>
 
-          <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
-            <Button
+          <Form.Item className="mb-0 text-right">
+            <button
+              type="button"
               onClick={() => setIsReportModalVisible(false)}
-              style={{ marginRight: '8px' }}
+              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg mr-3 transition-colors"
             >
               Hủy
-            </Button>
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{
-                background: '#ef4444',
-                borderColor: '#ef4444'
-              }}
+            </button>
+            <button
+              type="submit"
+              className="bg-error hover:bg-error text-white px-4 py-2 rounded-lg transition-colors"
             >
               Gửi báo cáo
-            </Button>
+            </button>
           </Form.Item>
         </Form>
       </Modal>
-    </div>
+    </Layout>
   );
 };
 
-export default TeacherDetail; 
+export default TeacherDetail;

@@ -33,20 +33,7 @@ export default {
           900: 'var(--color-gray-900)',
         },
       },
-      backgroundImage: theme => ({
-        // Gradient từ accent sang primary
-        'gradient-accent-primary': `linear-gradient(
-          to right,
-          ${theme('colors.accent.DEFAULT')},
-          ${theme('colors.primary.DEFAULT')}
-        )`,
-        // Nếu muốn góc 45°, bỏ comment dưới đây:
-        // 'gradient-accent-primary-45': `linear-gradient(
-        //   45deg,
-        //   ${theme('colors.accent.DEFAULT')},
-        //   ${theme('colors.primary.DEFAULT')}
-        // )`,
-      }),
+      // Loại bỏ backgroundImage vì không work với CSS variables
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],

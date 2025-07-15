@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Layout from '../components/Layout';
 import SearchFilters from '../components/SearchFilters';
 import TeacherCard from '../components/TeacherCard';
-import {motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 const TeacherReview = () => {
   const navigate = useNavigate();
 
@@ -424,18 +424,62 @@ const TeacherReview = () => {
           </div>
         )}
 
-        {/* Quick Add Review Button */}
-        <div className="fixed bottom-8 right-8">
-          <button
-            onClick={() => {
-              navigate('/teachers/add-review');
-            }}
-            className="group bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent text-white font-medium p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+        {/* Quick Add Review Button - Simplified version */}
+        <div className="fixed bottom-8 right-8 z-50">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, delay: 1 }}
+            className="relative"
           >
-            <svg className="w-6 h-6 group-hover:rotate-45 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-          </button>
+            {/* Pulsing background */}
+            <motion.div
+              animate={{
+                scale: [1, 1.3, 1],
+                opacity: [0.5, 0.8, 0.5]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity
+              }}
+              className="absolute inset-0 bg-yellow-400 rounded-full blur-md"
+            />
+
+            <motion.button
+              onClick={() => navigate('/teachers/add-review')}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold px-6 py-4 rounded-full shadow-xl transition-all duration-300 flex items-center gap-3 border-2 border-yellow-300"
+            >
+              <motion.span
+                animate={{
+                  scale: [1, 1.2, 1],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-xl"
+              >
+
+              </motion.span>
+
+
+              <div className="text-left">
+                <div className="text-sm font-bold">+100 Coin</div>
+                <div className="text-xs opacity-90">Viết đánh giá</div>
+              </div>
+
+              <motion.svg
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1, repeat: Infinity }}
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </motion.svg>
+            </motion.button>
+          </motion.div>
         </div>
       </div>
     </Layout>
