@@ -1,0 +1,254 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# MyMatch - Teacher Review Website Rules
+
+## Project Overview
+MyMatch is an MVP frontend website for teacher review system. This is a React + Vite project with Tailwind CSS, focused on clean, modern UI/UX design.
+
+## Core Technologies
+- React 19.1.0
+- Vite build tool
+- Tailwind CSS 4.1.10
+- React Router DOM 7.6.2
+- Redux Toolkit 2.8.2
+- Ant Design 5.26.2
+
+## Design System & Color Scheme
+
+### Predefined Colors (Use ONLY these from index.css)
+```css
+/* Primary Colors */
+--color-primary: #155BC8
+--color-primary-hover: #1247A3
+
+/* Accent Colors */
+--color-accent: #FF6600
+
+/* Base Colors */
+--color-white: #FFFFFF
+--color-black: #000000
+
+/* Semantic Colors */
+--color-success: #16A34A
+--color-warning: #F59E0B
+--color-error: #DC2626
+--color-info: #0EA5E9
+
+/* Gray Scale */
+--color-gray-50 to --color-gray-900 (10 levels)
+```
+
+### Usage Guidelines
+- Use CSS variables: `var(--color-primary)` or Tailwind classes: `bg-primary`, `text-primary`
+- Primary color for main actions, buttons, links
+- Accent color for secondary elements, highlights
+- Gray scale for text hierarchy, backgrounds, borders
+
+## Design Principles
+
+
+
+### 2. Minimalism
+- Clean, uncluttered interfaces
+- Generous white space
+- Focus on essential elements only
+- Typography hierarchy with Inter font family
+- Subtle shadows and borders
+
+### 3. Responsive Design
+- Mobile-first approach
+- Breakpoints: `sm:`, `md:`, `lg:`, `xl:`, `2xl:`
+- Fluid typography and spacing
+- Touch-friendly on mobile (min 44px touch targets)
+
+## Code Standards
+
+### Component Structure
+```jsx
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Layout from '../components/Layout';
+
+const ComponentName = () => {
+  // State and hooks
+  const [state, setState] = useState();
+  const navigate = useNavigate();
+
+  // Event handlers
+  const handleAction = () => {
+    // Implementation
+  };
+
+  // Render
+  return (
+    <Layout>
+      <div className="container mx-auto px-4">
+        {/* Content */}
+      </div>
+    </Layout>
+  );
+};
+
+export default ComponentName;
+```
+
+### CSS Classes Priority
+1. Use predefined color variables from index.css
+2. Use Tailwind utility classes
+3. Custom CSS only when Tailwind insufficient
+4. Responsive prefixes for all layouts
+
+### File Organization
+```
+src/
+├── components/     # Reusable UI components
+├── pages/         # Page components
+├── hooks/         # Custom React hooks
+├── store/         # Redux store and slices
+├── utils/         # Utility functions
+└── assets/        # Static assets
+```
+
+## Coding Rules
+
+### 1. Color Usage
+- NEVER use hardcoded hex colors in className
+- ALWAYS use predefined CSS variables or Tailwind color classes
+- Example: `bg-primary hover:bg-primary-hover` NOT `bg-[#155BC8]`
+
+### 2. Responsive Design
+- ALWAYS include mobile-first responsive classes
+- Test on mobile, tablet, desktop breakpoints
+- Use `hidden lg:block` for desktop-only elements
+- Use `block lg:hidden` for mobile-only elements
+
+### 3. Layout Patterns
+```jsx
+// Asymmetrical Grid Example
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <div className="md:col-span-2">Main content</div>
+  <div className="md:col-span-1">Sidebar</div>
+</div>
+
+// Card Layout with Offset
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div className="md:col-start-1 md:col-end-3 lg:col-end-2">
+    Featured card
+  </div>
+  <div className="lg:col-start-3 lg:row-start-1">
+    Offset card
+  </div>
+</div>
+```
+
+### 4. Component Guidelines
+- Keep components small and focused (max 200 lines)
+- Use React hooks for state management
+- Implement proper loading states
+- Handle error states gracefully
+- Use TypeScript-style prop validation with defaultProps
+
+### 5. Mock Data
+- Store mock data in separate files under `src/data/`
+- Use realistic Vietnamese teacher/student names
+- Include proper data structure for reviews, ratings, etc.
+- Make data easily modifiable for testing
+
+### 6. State Management
+- Use Redux Toolkit for global state
+- Local state with useState for component-specific data
+- Use custom hooks for reusable logic
+
+## UI/UX Guidelines
+
+### Typography
+- Font family: Inter (already configured)
+- Heading hierarchy: text-3xl, text-2xl, text-xl, text-lg
+- Body text: text-base (16px)
+- Secondary text: text-sm, text-gray-600
+- Use font-weight: 400, 500, 600, 700
+
+### Spacing
+- Consistent spacing scale: 4, 8, 12, 16, 20, 24, 32, 48, 64px
+- Use p-4, p-6, p-8 for padding
+- Use gap-4, gap-6, gap-8 for grid/flex gaps
+
+### Interactions
+- Hover states for all clickable elements
+- Smooth transitions: `transition-all duration-200`
+- Loading states with skeleton screens
+- Form validation with clear error messages
+
+### Accessibility
+- Semantic HTML elements
+- Alt text for images
+- Focus states for keyboard navigation
+- ARIA labels where needed
+
+## Performance Guidelines
+- Lazy load images and components
+- Optimize bundle size
+- Use React.memo for expensive components
+- Implement proper error boundaries
+
+## File Naming
+- Components: PascalCase (e.g., `TeacherCard.jsx`)
+- Pages: PascalCase (e.g., `TeacherReview.jsx`)
+- Utilities: camelCase (e.g., `formatDate.js`)
+- Constants: UPPER_SNAKE_CASE
+
+## Git Commit Messages
+- feat: new feature
+- fix: bug fix
+- style: formatting, missing semicolons, etc.
+- refactor: code restructuring
+- docs: documentation
+- test: adding tests
+
+## Example Implementation Patterns
+
+### Teacher Card Component
+```jsx
+const TeacherCard = ({ teacher }) => {
+  return (
+    <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 border border-gray-200">
+      <div className="flex items-start space-x-4">
+        <img 
+          src={teacher.avatar} 
+          alt={teacher.name}
+          className="w-16 h-16 rounded-full object-cover"
+        />
+        <div className="flex-1 min-w-0">
+          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+            {teacher.name}
+          </h3>
+          <p className="text-sm text-gray-600 mb-2">
+            {teacher.department}
+          </p>
+          <div className="flex items-center space-x-2">
+            <div className="flex text-yellow-400">
+              {/* Rating stars */}
+            </div>
+            <span className="text-sm text-gray-600">
+              ({teacher.reviewCount} reviews)
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+```
+
+## Testing Guidelines
+- Test responsive design on multiple screen sizes
+- Verify color consistency across components
+- Check accessibility with screen readers
+- Test form submissions and error handling
+
+
+Remember: This is an MVP, focus on core functionality first, then enhance. Keep code clean, maintainable, and scalable for future development. 

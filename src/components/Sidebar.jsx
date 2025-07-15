@@ -13,8 +13,8 @@ const Sidebar = () => {
       name: 'Bảng điều khiển',
       path: '/dashboard',
       icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 00-2 2z" />
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
         </svg>
       )
     },
@@ -23,8 +23,8 @@ const Sidebar = () => {
       name: 'Review Giảng viên',
       path: '/teachers',
       icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443a55.381 55.381 0 0 1 5.25 2.882V15" />
         </svg>
       )
     },
@@ -33,8 +33,8 @@ const Sidebar = () => {
       name: 'Đổi chéo lớp',
       path: '/exchange',
       icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
         </svg>
       )
     },
@@ -43,8 +43,8 @@ const Sidebar = () => {
       name: 'Tìm nhóm',
       path: '/team-finder',
       icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6 0 3.375 3.375 0 0 1 6 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
         </svg>
       )
     },
@@ -53,132 +53,118 @@ const Sidebar = () => {
       name: 'Tin nhắn',
       path: '/messages',
       icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
         </svg>
       )
     },
     {
       id: 'materials',
-      name: 'Tài liệu học tập',
+      name: 'Tài liệu',
       path: '/materials',
       icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        // Better materials icon - folder with document
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25H13.19l-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25H13.19Z" />
         </svg>
       )
     }
   ];
 
   return (
-    <div className="fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 shadow-lg z-50 flex flex-col">
-      {/* Header */}
-      <div className="p-6 border-b border-gray-100 flex-shrink-0">
-        <h1 className="text-2xl font-bold text-primary-500">My Match</h1>
-      </div>
-
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto p-4">
-        <ul className="space-y-2">
-          {navItems.map((item) => (
-            <li key={item.id}>
-              <NavLink
-                to={item.path}
-                className={({ isActive }) =>
-                  `flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-                    isActive
-                      ? 'bg-primary-500 text-white shadow-lg'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-primary-500'
-                  }`
-                }
-              >
-                <span className="flex-shrink-0">
-                  {item.icon}
-                </span>
-                <span className="font-medium">{item.name}</span>
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-
-        {/* Suggestion Section */}
-        <div className="mt-8 p-4 bg-blue-50 rounded-xl">
-          <div className="flex items-center space-x-3 mb-3">
-            <div className="relative group">
-              <div className="w-6 h-6 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center cursor-pointer hover:from-yellow-500 hover:to-yellow-600 transition-all duration-200 hover:scale-110">
-                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-              </div>
-              {/* Tooltip */}
-              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50">
-                Premium
-              </div>
-            </div>
-            <span className="font-medium text-blue-800">Gợi ý giảng viên</span>
+    <>
+      {/* Sidebar - Always collapsed */}
+      <div className="fixed left-0 top-0 h-screen bg-white z-50 flex flex-col shadow-xl border-r border-gray-200 w-16">
+        {/* Logo Section */}
+        <div className="py-6 px-4 border-b border-gray-100">
+          <div className="flex items-center justify-center">
+            <img 
+              src="/mymatch_logo.jpg" 
+              alt="MyMatch Logo" 
+              className="w-8 h-8 rounded-lg object-cover"
+            />
           </div>
-          <p className="text-sm text-blue-600 mb-3">
-            Khám phá các giảng viên được đánh giá cao
-          </p>
-          <NavLink 
-            to="/profile-detail" 
-            className="text-xs font-medium text-blue-700 hover:text-blue-800 underline"
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 px-2 py-4">
+          <ul className="space-y-2">
+            {navItems.map((item) => (
+              <li key={item.id}>
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `group flex items-center w-full p-3 rounded-xl transition-all duration-200 relative ${
+                      isActive
+                        ? 'bg-gray-900 text-white shadow-lg'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`
+                  }
+                >
+                  <div className="flex items-center justify-center min-w-[24px]">
+                    {item.icon}
+                  </div>
+                  
+                  {/* Tooltip */}
+                  <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+                    {item.name}
+                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45"></div>
+                  </div>
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Settings */}
+        <div className="px-2 pb-4">
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              `group flex items-center w-full p-3 rounded-xl transition-all duration-200 relative ${
+                isActive
+                  ? 'bg-primary text-white shadow-lg'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`
+            }
           >
-            Xem ngay →
+            <div className="flex items-center justify-center min-w-[24px]">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a6.759 6.759 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+            </div>
+            
+            {/* Tooltip */}
+            <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+              Cài đặt
+              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45"></div>
+            </div>
           </NavLink>
         </div>
-      </nav>
 
-      {/* Settings Section */}
-      <div className="p-4 border-t border-gray-100 flex-shrink-0">
-        <NavLink
-          to="/settings"
-          className={({ isActive }) =>
-            `flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              isActive
-                ? 'bg-primary-500 text-white'
-                : 'text-gray-600 hover:bg-gray-50 hover:text-primary-500'
-            }`
-          }
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <span className="font-medium">Cài đặt</span>
-        </NavLink>
-      </div>
-
-      {/* User Profile */}
-      <div className="p-4 border-t border-gray-100 flex-shrink-0">
-        <div className="flex items-center px-4 py-2">
-          <img 
-            src="/src/assets/figma/avatar.png" 
-            alt="User Avatar" 
-            className="w-10 h-10 rounded-full object-cover"
-            onError={(e) => {
-              e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGM0Y0RjYiLz4KPHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4PSI4IiB5PSI4Ij4KPHBhdGggZD0iTTEyIDEyQzE0LjIwOTEgMTIgMTYgMTAuMjA5MSAxNiA4QzE2IDUuNzkwODYgMTQuMjA5MSA0IDEyIDRDOS43OTA4NiA0IDggNS43OTA4NiA4IDhDOCAxMC4yMDkxIDkuNzkwODYgMTIgMTIgMTJaIiBmaWxsPSIjOUI5Qjk5Ii8+CjxwYXRoIGQ9Ik0xMiAxNEM5LjMzIDIwIDQgMTguNjcgNCAxNkM0IDEzLjMzIDYuNjcgMTIgMTIgMTJDMTcuMzMgMTIgMjAgMTMuMzMgMjAgMTZDMjAgMTguNjcgMTcuMzMgMjAgMTIgMjBaIiBmaWxsPSIjOUI5Qjk5Ii8+Cjwvc3ZnPgo8L3N2Zz4K';
-            }}
-          />
-          <div className="ml-3 flex-1 min-w-0">
-            <div className="flex items-center space-x-2">
-              <span className="text-sm font-medium text-gray-900">
-                {currentUser?.name || 'Alex Johnson'}
+        {/* User Profile */}
+        <div className="px-2 pb-4 border-t border-gray-100 pt-4">
+          <div className="group flex items-center w-full p-3 rounded-xl hover:bg-gray-100 transition-all duration-200 cursor-pointer relative">
+            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-pink-400 to-purple-600 flex items-center justify-center min-w-[24px]">
+              <span className="text-white text-xs font-semibold">
+                {(currentUser?.name || 'Alex Johnson').charAt(0).toUpperCase()}
               </span>
-              <div className="flex items-center space-x-1 bg-yellow-50/50 px-2 py-0.5 rounded-full">
-                <span className="text-yellow-600 text-xs">¥</span>
-                <span className="text-sm text-gray-600">
-                  {(typeof coinsBalance === 'number' ? coinsBalance : 0).toLocaleString()}
-                </span>
-              </div>
             </div>
-            <p className="text-xs text-gray-500 truncate mt-0.5">
-              {currentUser?.email || 'alex.johnson@student.university.edu'}
-            </p>
+            
+            {/* Tooltip */}
+            <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+              <div className="font-medium">{currentUser?.name || 'Alex Johnson'}</div>
+              <div className="text-xs text-gray-300">¥{(typeof coinsBalance === 'number' ? coinsBalance : 0).toLocaleString()}</div>
+              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Sidebar width provider for layout */}
+      <div className="w-16" aria-hidden="true" />
+    </>
   );
 };
 
