@@ -235,7 +235,7 @@ const TeacherReview = () => {
                 transition={{ duration: 0.6, delay: 0.7 }}
                 className="text-white/90"
               >
-                Tìm kiếm giảng viên phù hợp nhất với tính cách và nhu cầu học tập của bạn
+               Tìm kiếm giảng viên phù hợp nhất với tính cách và nhu cầu học tập của bạn
               </motion.p>
             </div>
 

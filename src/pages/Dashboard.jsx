@@ -14,7 +14,7 @@ const Dashboard = () => {
   return (
     <Layout
       title="Bảng điều khiển"
-      description="Theo dõi và quản lý hoạt động học tập của bạn"
+      description="Quản lý hoạt động của bạn"
     >
       <div className="space-y-8">
         {/* Welcome Section */}
