@@ -8,44 +8,20 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#eff6ff',
-          500: '#1A237E',
-          600: '#2563eb',
-          700: '#1d4ed8',
+          DEFAULT: '#155BC8',
+          hover: '#1247A3',
         },
-        gray: {
-          50: '#FBFAF9',
-          100: '#F8F8F7',
-          200: '#E8E8E8',
-          400: '#949494',
-          800: '#0A0A0A',
+        accent: {
+          DEFAULT: '#293241',
         },
-        blue: {
-          500: '#284CFF',
-          600: '#1e3ccc',
-        },
-        green: {
-          50: '#E6F4EA',
-          700: '#1B5E20',
-        },
-        yellow: {
-          50: '#FFF8E1',
-          600: '#A5B969',
-        },
-        red: {
-          50: '#FFEBEE',
-          700: '#9F1414',
-        },
-        purple: {
-          100: '#D4DBFF',
+        base: {
+          white: '#FFFFFF',
+          black: '#000000',
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
       },
-      spacing: {
-        '25': '6.25rem',
-      }
     },
   },
   plugins: [],

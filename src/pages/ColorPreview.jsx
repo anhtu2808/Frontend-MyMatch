@@ -24,7 +24,7 @@ const ColorPreview = () => {
     },
     {
       name: 'Accent (call-to-action)',
-      hex: '#FF6600',
+      hex: '#293241',
       usage: 'Nút phụ, highlights, notification badge'
     }
   ];
@@ -70,7 +70,7 @@ const ColorPreview = () => {
                 <button className="w-full px-4 py-2 bg-[#155BC8] text-white rounded-md hover:bg-[#1247A3] transition-colors font-medium">
                   Primary Button
                 </button>
-                <button className="w-full px-4 py-2 bg-[#FF6600] text-white rounded-md hover:opacity-90 transition-opacity font-medium">
+                <button className="w-full px-4 py-2 bg-[#293241] text-white rounded-md hover:opacity-90 transition-opacity font-medium">
                   Accent Button
                 </button>
                 <button className="w-full px-4 py-2 border border-[#155BC8] text-[#155BC8] rounded-md hover:bg-[#155BC8] hover:text-white transition-colors font-medium">
