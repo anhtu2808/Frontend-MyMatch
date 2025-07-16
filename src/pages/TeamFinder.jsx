@@ -841,7 +841,7 @@ const TeamFinder = () => {
                   </div>
                 </div>
 
-                
+
               </div>
             ) : (
               <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
@@ -910,39 +910,226 @@ const TeamFinder = () => {
           open={viewTeamModalOpen}
           onCancel={() => setViewTeamModalOpen(false)}
           footer={null}
-          width={800}
+          width={900}
         >
           {selectedTeam && (
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold">{selectedTeam.name}</h3>
-              <p className="text-sm text-gray-600">{selectedTeam.subject}</p>
-              <p>Trạng thái: <strong>{selectedTeam.status}</strong></p>
-              <p>Số thành viên tối đa: {selectedTeam.maxMembers}</p>
+            <div className="space-y-6">
+              {/* Header thông tin nhóm */}
+              <div className="bg-primary/5 rounded-xl p-6 border border-primary/20">
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{selectedTeam.name}</h3>
+                    <div className="flex items-center space-x-3">
+                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-lg text-sm font-medium">
+                        {selectedTeam.subject}
+                      </span>
+                      <span className={`px-3 py-1 rounded-lg text-sm font-medium ${selectedTeam.status === 'Mở'
+                          ? 'bg-success/10 text-success'
+                          : 'bg-gray-100 text-gray-600'
+                        }`}>
+                        {selectedTeam.status}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-primary">{selectedTeam.memberCount}/{selectedTeam.maxMembers}</div>
+                    <div className="text-sm text-gray-500">Thành viên</div>
+                  </div>
+                </div>
 
-              <div>
-                <h4 className="font-medium">Mô tả nhóm</h4>
-                <p>{selectedTeam.description}</p>
+                <p className="text-gray-700 leading-relaxed">{selectedTeam.description}</p>
               </div>
 
-              <div>
-                <h4 className="font-medium">Kỹ năng nhóm</h4>
-                <div className="flex flex-wrap gap-2">
-                  {selectedTeam.skills?.map((skill, i) => (
-                    <span key={i} className="px-3 py-1 bg-blue-50 text-primary border border-blue-200 rounded-lg text-sm">
-                      {skill}
-                    </span>
-                  ))}
+              {/* Thông tin chi tiết */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Cột trái */}
+                <div className="space-y-6">
+                  {/* Thông tin cơ bản */}
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-4 flex items-center">
+                      <div className="w-6 h-6 bg-info rounded-lg flex items-center justify-center mr-2">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      Thông tin cơ bản
+                    </h4>
+                    <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Ngày tạo:</span>
+                        <span className="font-medium">{new Date(selectedTeam.createdDate).toLocaleDateString('vi-VN')}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Hạn chót:</span>
+                        <span className="font-medium">{new Date(selectedTeam.deadline).toLocaleDateString('vi-VN')}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Người tạo:</span>
+                        <span className="font-medium">Nguyễn Văn A</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Loại dự án:</span>
+                        <span className="font-medium">Thực tập tốt nghiệp</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Kỹ năng nhóm */}
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-4 flex items-center">
+                      <div className="w-6 h-6 bg-accent rounded-lg flex items-center justify-center mr-2">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                      </div>
+                      Kỹ năng nhóm
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedTeam.skills?.map((skill, i) => (
+                        <span key={i} className="px-3 py-1 bg-primary/10 text-primary border border-primary/20 rounded-lg text-sm font-medium">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Yêu cầu tham gia */}
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-4 flex items-center">
+                      <div className="w-6 h-6 bg-warning rounded-lg flex items-center justify-center mr-2">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      Yêu cầu tham gia
+                    </h4>
+                    <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <svg className="w-4 h-4 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="text-sm">Có kinh nghiệm làm việc nhóm</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <svg className="w-4 h-4 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="text-sm">Cam kết thời gian tham gia đầy đủ</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <svg className="w-4 h-4 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="text-sm">Có thể học hỏi và chia sẻ kiến thức</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <svg className="w-4 h-4 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="text-sm">Tích cực tham gia các buổi họp nhóm</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Cột phải */}
+                <div className="space-y-6">
+                  {/* Thành viên hiện tại */}
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-4 flex items-center">
+                      <div className="w-6 h-6 bg-success rounded-lg flex items-center justify-center mr-2">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                        </svg>
+                      </div>
+                      Thành viên hiện tại
+                    </h4>
+                    <div className="space-y-3">
+                      {selectedTeam.members?.map((member, i) => (
+                        <div key={i} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                            {member.charAt(0)}
+                          </div>
+                          <div className="flex-1">
+                            <div className="font-medium text-gray-900">{member}</div>
+                            <div className="text-sm text-gray-500">
+                              {i === 0 ? 'Trưởng nhóm' : i === 1 ? 'Frontend Developer' : 'Backend Developer'}
+                            </div>
+                          </div>
+                          <div className="w-3 h-3 bg-success rounded-full"></div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Đang tìm kiếm */}
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-4 flex items-center">
+                      <div className="w-6 h-6 bg-error rounded-lg flex items-center justify-center mr-2">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+                      Đang tìm kiếm ({selectedTeam.lookingFor?.length || 0} vị trí)
+                    </h4>
+                    <div className="space-y-3">
+                      {selectedTeam.lookingFor?.map((role, i) => (
+                        <div key={i} className="p-3 border border-accent/20 rounded-lg bg-accent/5">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-medium text-gray-900">{role}</span>
+                            <span className="px-2 py-1 bg-accent/10 text-accent rounded text-xs font-medium">Cần gấp</span>
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            {role === 'Backend Developer' ? 'Cần có kinh nghiệm Node.js, Express, MongoDB' :
+                              role === 'UI/UX Designer' ? 'Thành thạo Figma, Adobe XD, có eye về design' :
+                                'Có kinh nghiệm testing, viết test case'}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Lịch họp */}
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-4 flex items-center">
+                      <div className="w-6 h-6 bg-info rounded-lg flex items-center justify-center mr-2">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      Lịch họp nhóm
+                    </h4>
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-sm text-gray-600 mb-2">Họp định kỳ:</div>
+                      <div className="font-medium text-gray-900 mb-3">Thứ 3, Thứ 6 hàng tuần - 19:00-21:00</div>
+                      <div className="text-sm text-gray-600 mb-2">Họp sắp tới:</div>
+                      <div className="font-medium text-primary">Thứ 3, 18/07/2025 - 19:00</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div>
-                <h4 className="font-medium">Đang tìm kiếm</h4>
-                <div className="flex flex-wrap gap-2">
-                  {selectedTeam.lookingFor?.map((role, i) => (
-                    <span key={i} className="px-3 py-1 bg-success/10 text-success rounded-lg text-sm">
-                      {role}
-                    </span>
-                  ))}
+              {/* Nút hành động */}
+              <div className="flex justify-between items-center pt-6 border-t border-gray-200">
+                <div className="text-sm text-gray-500">
+                  Cập nhật lần cuối: {new Date().toLocaleDateString('vi-VN')} lúc {new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+                </div>
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => setViewTeamModalOpen(false)}
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors"
+                  >
+                    Đóng
+                  </button>
+                  <button
+                    onClick={() => {
+                      setViewTeamModalOpen(false);
+                      navigate('/messages');
+                    }}
+                    className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover font-medium transition-colors"
+                  >
+                    Liên hệ tham gia
+                  </button>
                 </div>
               </div>
             </div>
