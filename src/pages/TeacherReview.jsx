@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import SearchFilters from '../components/SearchFilters';
 import TeacherCard from '../components/TeacherCard';
 import { motion } from 'framer-motion';
+import AIChatBox from '../components/AIChatBox';
 const TeacherReview = () => {
   const navigate = useNavigate();
 
@@ -21,6 +22,20 @@ const TeacherReview = () => {
     subjectCode: '',
     sortBy: 'Highest Rating'
   });
+  const [showAIChatbox, setShowAIChatbox] = useState(false);
+
+
+
+  // Thêm handler cho chatbox
+  const handleChatboxClose = () => {
+    setShowAIChatbox(false);
+  };
+
+  const handleTeacherSelect = (teacherId) => {
+    // Navigate to teacher detail
+    navigate(`/teachers/${teacherId}`);
+    setShowAIChatbox(false);
+  };
 
   // Transform teachers data to match TeacherCard component expectations
   const transformedTeachers = teachers.map(teacher => ({
@@ -36,7 +51,7 @@ const TeacherReview = () => {
     image: teacher.avatar
   }));
   const handlePremiumClick = () => {
-    navigate('/ai-recommendation');
+    setShowAIChatbox(true);
   };
 
   // Handlers for search filter changes
@@ -485,6 +500,11 @@ const TeacherReview = () => {
           </motion.div>
         </div>
       </div>
+      <AIChatBox
+        isOpen={showAIChatbox}
+        onClose={handleChatboxClose}
+        onTeacherSelect={handleTeacherSelect}
+      />
     </Layout>
   );
 };
