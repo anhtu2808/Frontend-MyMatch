@@ -166,7 +166,7 @@ const initialState = {
       experience: "10 năm",
       degree: "Thạc sĩ ATTT",
       specializations: ["Network Security", "Cryptography", "Ethical Hacking"],
-      avatar: "https://randomuser.me/api/portraits/men/45.jpg",
+      avatar: "https://randomuser.me/api/portraits/men/44.jpg",
       isOnline: true,
       // Additional fields for TeacherDetail
       overallRating: 4.9,
@@ -234,7 +234,7 @@ const initialState = {
       experience: "5 năm",
       degree: "Thạc sĩ Kỹ thuật",
       specializations: ["IoT", "Embedded Systems", "Sensor Networks"],
-      avatar: "https://randomuser.me/api/portraits/women/22.jpg",
+      avatar: "https://randomuser.me/api/portraits/women/2.jpg",
       isOnline: true,
       // Additional fields for TeacherDetail
       overallRating: 4.7,

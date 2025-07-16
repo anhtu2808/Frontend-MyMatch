@@ -882,7 +882,7 @@ const ClassExchange = () => {
               <div className="flex items-start space-x-6">
                 {/* Requester Avatar */}
                 <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-2xl shadow-lg">
+                  <div className="w-16 h-16 bg-blue-50 border border-blue-200 rounded-xl p-3 flex items-center justify-center text-2xl ">
                     {request.requesterAvatar}
                   </div>
                 </div>
@@ -912,7 +912,7 @@ const ClassExchange = () => {
                       {/* Their Class */}
                       <div className="text-center">
                         <div className="text-sm text-gray-600 mb-2">Họ muốn đổi</div>
-                        <div className="bg-white rounded-xl p-4 shadow-sm">
+                        <div className="bg-white rounded-xl p-4 shadow-sm border-2 border-blue-200">
                           <div className="text-lg font-bold text-gray-900">{request.theirClass}</div>
                           <div className="text-sm text-gray-600">{request.theirLecturer} - {request.theirLecturerCode}</div>
                           <div className="text-sm text-orange-600 font-medium">{getSlotDisplay(request.theirSlot, request.theirDay)}</div>
@@ -921,7 +921,7 @@ const ClassExchange = () => {
 
                       {/* Exchange Arrow */}
                       <div className="flex items-center">
-                        <div className="w-8 h-0.5 bg-primary"></div>
+                        <div className="w-8 h-0.5 bg-primary rounded-full"></div>
                         <div className="mx-3 w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-lg">
                           <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
@@ -943,23 +943,7 @@ const ClassExchange = () => {
                     </div>
                   </div>
 
-                  {/* Reason */}
-                  <div className="mb-6">
-                    <h5 className="text-sm font-semibold text-gray-900 mb-2">Lý do muốn đổi:</h5>
-                    <div className="bg-gray-50 rounded-xl p-4">
-                      <p className="text-gray-700 italic">"{request.reason}"</p>
-                    </div>
-                  </div>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {request.tags.map((tag, index) => (
-                      <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-
+               
                   {/* Action Buttons */}
                   {request.status === 'pending' && (
                     <div className="flex space-x-4">
@@ -1021,7 +1005,7 @@ const ClassExchange = () => {
               <div className="flex items-start space-x-6">
                 {/* Student Avatar & Info */}
                 <div className="flex-shrink-0">
-                  <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center text-3xl shadow-lg">
+                  <div className="w-20 h-20 bg-blue-50 border border-blue-200 rounded-xl p-3 flex items-center justify-center text-3xl ">
                     {request.studentAvatar}
                   </div>
                   <div className="text-center mt-3">
@@ -1088,27 +1072,6 @@ const ClassExchange = () => {
                     </div>
                   </div>
 
-                  {/* Reason */}
-                  <div className="mb-6">
-                    <h5 className="text-sm font-semibold text-gray-900 mb-2 flex items-center">
-                      <svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Lý do muốn đổi:
-                    </h5>
-                    <div className="bg-gray-50 rounded-xl p-4 border-l-4 border-blue-500">
-                      <p className="text-gray-700 italic">"{request.reason}"</p>
-                    </div>
-                  </div>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {request.tags.map((tag, index) => (
-                      <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
 
                   {/* Action Buttons */}
                   <div className="flex space-x-4">
@@ -1124,17 +1087,7 @@ const ClassExchange = () => {
 
                   </div>
 
-                  {/* Additional Info */}
-                  <div className="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-200">
-                    <div className="flex items-center space-x-2 text-blue-700">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span className="text-sm font-medium">
-                        💡 Tip: Kiểm tra lịch học của bạn trước khi gửi yêu cầu đổi lớp
-                      </span>
-                    </div>
-                  </div>
+                  
                 </div>
               </div>
             </div>

@@ -81,7 +81,7 @@ const Sidebar = () => {
             <img 
               src="/mymatch_logo.jpg" 
               alt="MyMatch Logo" 
-              className="w-8 h-8 rounded-lg object-cover"
+              className="w-10 h-10 rounded-lg object-cover"
             />
           </div>
         </div>
