@@ -23,7 +23,6 @@ import {
   BookOutlined, 
   StarOutlined,
   StarFilled,
-  UpOutlined,
   UserOutlined,
   UploadOutlined,
   PlusOutlined,
@@ -44,77 +43,77 @@ const Materials = () => {
   const [favorites, setFavorites] = useState([1, 3]);
   const [form] = Form.useForm();
 
-  // Dữ liệu tài liệu mẫu
+  // Dữ liệu tài liệu mẫu với môn học FPT
   const allMaterialsData = [
     {
       id: 1,
-      title: 'CS101 Lecture Notes',
-      uploadedBy: 'Jamie',
-      timeAgo: '2 days ago',
+      title: 'EXE101 - Tài liệu thực tập tốt nghiệp',
+      uploadedBy: 'anhtu2808',
+      timeAgo: '2 ngày trước',
       type: 'pdf',
-      course: 'CS101',
-      instructor: 'Dr. Smith',
+      course: 'EXE101',
+      instructor: 'Thầy Nguyễn Văn A',
       category: 'all',
       downloaded: true,
       rating: 4.5,
       downloads: 125,
-      icon: <FileTextOutlined className="text-blue-500 text-xl" />
+      icon: <FileTextOutlined className="text-primary text-xl" />
     },
     {
       id: 2,
-      title: 'PHYS110 Formula Sheet',
-      uploadedBy: 'Sam',
-      timeAgo: '3 days ago',
+      title: 'PRN212 - Bài tập lập trình C#',
+      uploadedBy: 'student123',
+      timeAgo: '3 ngày trước',
       type: 'pdf',
-      course: 'PHYS110',
-      instructor: 'Dr. Johnson',
+      course: 'PRN212',
+      instructor: 'Cô Trần Thị B',
       category: 'all',
       downloaded: false,
       rating: 4.2,
       downloads: 89,
-      icon: <FileTextOutlined className="text-blue-500 text-xl" />
+      icon: <FileTextOutlined className="text-primary text-xl" />
     },
     {
       id: 3,
-      title: 'HIST202 Reading Guide',
-      uploadedBy: 'Taylor',
-      timeAgo: '5 days ago',
+      title: 'SWE201 - Tài liệu kỹ thuật phần mềm',
+      uploadedBy: 'devmaster',
+      timeAgo: '5 ngày trước',
       type: 'book',
-      course: 'HIST202',
-      instructor: 'Dr. Emily Carter',
+      course: 'SWE201',
+      instructor: 'Thầy Lê Văn C',
       category: 'all',
       downloaded: true,
       rating: 4.8,
       downloads: 203,
-      icon: <BookOutlined className="text-blue-500 text-xl" />
+      icon: <BookOutlined className="text-primary text-xl" />
     },
     {
       id: 4,
-      title: 'MATH101 Practice Problems',
-      uploadedBy: 'Alex',
-      timeAgo: '1 week ago',
+      title: 'DBI202 - Bài tập cơ sở dữ liệu',
+      uploadedBy: 'dbexpert',
+      timeAgo: '1 tuần trước',
       type: 'pdf',
-      course: 'MATH101',
-      instructor: 'Dr. Wilson',
+      course: 'DBI202',
+      instructor: 'Thầy Phạm Văn D',
       category: 'all',
       downloaded: false,
       rating: 4.0,
       downloads: 67,
-      icon: <FileTextOutlined className="text-blue-500 text-xl" />
+      icon: <FileTextOutlined className="text-primary text-xl" />
     },
     {
       id: 5,
-      title: 'ENG201 Essay Guidelines',
-      uploadedBy: 'Jordan',
-      timeAgo: '4 days ago',
+      title: 'WED201 - Hướng dẫn thiết kế web',
+      uploadedBy: 'webdev',
+      timeAgo: '4 ngày trước',
       type: 'book',
-      course: 'ENG201',
-      instructor: 'Dr. Brown',
+      course: 'WED201',
+      instructor: 'Cô Hoàng Thị E',
       category: 'all',
       downloaded: true,
       rating: 4.3,
       downloads: 156,
-      icon: <BookOutlined className="text-blue-500 text-xl" />
+      icon: <BookOutlined className="text-primary text-xl" />
     }
   ];
 
@@ -184,192 +183,217 @@ const Materials = () => {
     },
     {
       key: '3',
-      label: 'Tài liệu được tôi yêu thích',
+      label: 'Tài liệu yêu thích',
     },
   ];
 
   const filteredMaterials = getFilteredMaterials();
 
   return (
-    <Layout title="Materials" description="Tài nguyên học tập và giảng viên">
-      <div className="min-h-screen bg-white">
+    <Layout title="Tài liệu học tập" description="Tài nguyên học tập và tài liệu môn học">
+      <div className="space-y-6">
         {/* Header Section */}
-        <div className="px-6 py-4 border-b border-gray-200">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <Title level={2} className="!text-blue-600 !mb-0">
-                Materials
-              </Title>
-              <Text className="text-gray-600">
-                Nguồn tài liệu
-              </Text>
+              <h1 className="text-2xl font-bold text-gray-900 mb-1">Tài liệu học tập</h1>
+              <p className="text-gray-600">Nguồn tài liệu và tài nguyên học tập</p>
             </div>
-            <Text className="text-gray-600">
-              Tài nguyên học tập
-            </Text>
+            <Button 
+              type="primary" 
+              icon={<PlusOutlined />}
+              onClick={() => setIsUploadModalVisible(true)}
+              className="bg-primary hover:bg-primary-hover font-medium"
+            >
+              Tải tài liệu lên
+            </Button>
           </div>
 
           {/* Navigation Tabs */}
-          <Tabs
-            activeKey={activeTab}
-            onChange={setActiveTab}
-            items={tabItems}
-            className="materials-tabs"
-            size="large"
-          />
+          <div className="bg-gray-100 rounded-xl p-1">
+            <div className="flex space-x-1">
+              {tabItems.map((item) => (
+                <button
+                  key={item.key}
+                  onClick={() => setActiveTab(item.key)}
+                  className={`flex-1 py-3 px-6 rounded-lg font-medium text-sm transition-colors ${
+                    activeTab === item.key
+                      ? 'bg-white  text-primary border  shadow-sm'
+                      : 'text-gray-800 hover:text-gray-800'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Search Section */}
-        <div className="px-6 py-6 bg-gray-50">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">Tìm kiếm tài liệu</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search Input */}
             <div>
-              <Text strong className="block mb-2 text-gray-700">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Tên tài liệu
-              </Text>
+              </label>
               <Input
-                placeholder="Tên tài liệu"
+                placeholder="Nhập tên tài liệu..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 suffix={<SearchOutlined className="text-gray-400" />}
-                size="large"
-                className="w-full"
+                className="rounded-lg"
               />
             </div>
 
             {/* Course Code */}
             <div>
-              <Text strong className="block mb-2 text-gray-700">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Mã môn học
-              </Text>
+              </label>
               <Input
-                placeholder="e.g. CS101"
+                placeholder="VD: EXE101, PRN212"
                 value={courseCode}
                 onChange={(e) => setCourseCode(e.target.value)}
-                size="large"
-                className="w-full"
+                className="rounded-lg"
               />
             </div>
 
             {/* Instructor */}
             <div>
-              <Text strong className="block mb-2 text-gray-700">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Tên giảng viên
-              </Text>
+              </label>
               <Input
-                placeholder="e.g. Dr. Emily Carter"
+                placeholder="VD: Thầy Nguyễn Văn A"
                 value={instructor}
                 onChange={(e) => setInstructor(e.target.value)}
                 prefix={<UserOutlined className="text-gray-400" />}
-                size="large"
-                className="w-full"
+                className="rounded-lg"
               />
             </div>
           </div>
 
-          {/* Filter Section */}
-          <div className="mt-6">
-            <div className="flex items-center space-x-4">
-              <Text strong className="text-gray-700">
-                Nhóm của tôi
-              </Text>
-              <Select
-                defaultValue="settings"
-                size="large"
-                className="w-32"
-                suffixIcon={<SettingOutlined />}
+          {/* Quick Filters */}
+          <div className="mt-6 flex items-center space-x-4">
+            <span className="text-sm font-medium text-gray-700">Bộ lọc nhanh:</span>
+            <div className="flex space-x-2">
+              <button 
+                onClick={() => setCourseCode('EXE101')}
+                className="px-3 py-1 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/20 transition-colors"
               >
-                <Option value="settings">Cài đặt</Option>
-                <Option value="group1">Nhóm 1</Option>
-                <Option value="group2">Nhóm 2</Option>
-              </Select>
+                EXE101
+              </button>
+              <button 
+                onClick={() => setCourseCode('PRN212')}
+                className="px-3 py-1 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/20 transition-colors"
+              >
+                PRN212
+              </button>
+              <button 
+                onClick={() => setCourseCode('SWE201')}
+                className="px-3 py-1 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/20 transition-colors"
+              >
+                SWE201
+              </button>
+              <button 
+                onClick={() => {
+                  setSearchTerm('');
+                  setCourseCode('');
+                  setInstructor('');
+                }}
+                className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+              >
+                Xóa bộ lọc
+              </button>
             </div>
           </div>
         </div>
 
         {/* Materials List Section */}
-        <div className="px-6 py-6">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-6">
-            <Title level={4} className="!mb-0 text-gray-900">
-              Tài liệu cá nhân đầu
-            </Title>
-            <Button 
-              type="primary" 
-              icon={<PlusOutlined />}
-              onClick={() => setIsUploadModalVisible(true)}
-              className="bg-blue-600 hover:bg-blue-700"
-            >
-              Tải tài liệu lên
-            </Button>
+            <h2 className="text-lg font-bold text-gray-900">
+              {activeTab === '1' && `Tất cả tài liệu (${filteredMaterials.length})`}
+              {activeTab === '2' && `Tài liệu đã tải (${filteredMaterials.length})`}
+              {activeTab === '3' && `Tài liệu yêu thích (${filteredMaterials.length})`}
+            </h2>
           </div>
           
           <div className="space-y-4">
             {filteredMaterials.length > 0 ? (
               filteredMaterials.map((material) => (
-                <Card
+                <div
                   key={material.id}
-                  className="hover:shadow-md transition-shadow border border-gray-200"
-                  bodyStyle={{ padding: '16px' }}
+                  className="border border-gray-200 rounded-xl p-4 hover:shadow-md hover:border-primary/20 transition-all"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                         {material.icon}
                       </div>
                       <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-1">
-                          <Title level={5} className="!mb-0 text-gray-900">
+                        <div className="flex items-center space-x-3 mb-2">
+                          <h3 className="font-bold text-gray-900">
                             {material.title}
-                          </Title>
+                          </h3>
                           <Rate 
                             disabled 
                             defaultValue={material.rating} 
                             allowHalf 
                             className="text-xs"
                           />
-                          <Text className="text-gray-500 text-xs">
-                            ({material.downloads} downloads)
-                          </Text>
+                          <span className="text-gray-500 text-xs">
+                            ({material.downloads} lượt tải)
+                          </span>
                         </div>
-                        <Text className="text-gray-500 text-sm">
-                          Uploaded by {material.uploadedBy}, {material.timeAgo} • {material.course} • {material.instructor}
-                        </Text>
+                        <p className="text-gray-600 text-sm">
+                          Tải lên bởi {material.uploadedBy} • {material.timeAgo} • {material.course} • {material.instructor}
+                        </p>
                       </div>
                     </div>
                     
-                    <Space>
-                      <Button
-                        type="text"
-                        icon={<EyeOutlined />}
-                        className="text-gray-400 hover:text-blue-600"
+                    <div className="flex items-center space-x-2">
+                      <button
                         onClick={() => handleViewDetail(material.id)}
-                      />
-                      <Button
-                        type="text"
-                        icon={<DownloadOutlined />}
-                        className="text-gray-400 hover:text-green-600"
-                      />
-                      <Button
-                        type="text"
-                        icon={favorites.includes(material.id) ? <StarFilled /> : <StarOutlined />}
-                        className={`${
-                          favorites.includes(material.id) 
-                            ? 'text-yellow-500' 
-                            : 'text-gray-400 hover:text-yellow-500'
-                        }`}
+                        className="p-2 text-gray-400 hover:text-info hover:bg-info/10 rounded-lg transition-all"
+                        title="Xem chi tiết"
+                      >
+                        <EyeOutlined />
+                      </button>
+                      <button
+                        className="p-2 text-gray-400 hover:text-success hover:bg-success/10 rounded-lg transition-all"
+                        title="Tải xuống"
+                      >
+                        <DownloadOutlined />
+                      </button>
+                      <button
                         onClick={() => handleToggleFavorite(material.id)}
-                      />
-                    </Space>
+                        className={`p-2 rounded-lg transition-all ${
+                          favorites.includes(material.id) 
+                            ? 'text-warning bg-warning/10' 
+                            : 'text-gray-400 hover:text-warning hover:bg-warning/10'
+                        }`}
+                        title={favorites.includes(material.id) ? 'Bỏ yêu thích' : 'Thêm yêu thích'}
+                      >
+                        {favorites.includes(material.id) ? <StarFilled /> : <StarOutlined />}
+                      </button>
+                    </div>
                   </div>
-                </Card>
+                </div>
               ))
             ) : (
               <div className="text-center py-12">
-                <Text className="text-gray-500">
-                  {activeTab === '2' && 'Chưa có tài liệu đã tải'}
-                  {activeTab === '3' && 'Chưa có tài liệu yêu thích'}
-                  {activeTab === '1' && 'Không tìm thấy tài liệu phù hợp'}
-                </Text>
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileTextOutlined className="text-2xl text-gray-400" />
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2">Không tìm thấy tài liệu</h3>
+                <p className="text-gray-500">
+                  {activeTab === '2' && 'Bạn chưa tải xuống tài liệu nào'}
+                  {activeTab === '3' && 'Bạn chưa có tài liệu yêu thích nào'}
+                  {activeTab === '1' && 'Không có tài liệu phù hợp với bộ lọc hiện tại'}
+                </p>
               </div>
             )}
           </div>
@@ -383,162 +407,111 @@ const Materials = () => {
           footer={null}
           width={600}
           centered
-          className="upload-modal"
-          bodyStyle={{ padding: '40px' }}
         >
-          <div className="text-center mb-8">
-            <Title level={3} className="!text-blue-600 !mb-2">
-              Tải lên tài liệu
-            </Title>
-            <Text className="text-gray-600">
-              Thêm nguồn tài liệu mới
-            </Text>
-          </div>
+          <div className="p-6">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-4">
+                <UploadOutlined className="text-white text-2xl" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Tải lên tài liệu</h2>
+              <p className="text-gray-600">Chia sẻ tài liệu học tập với cộng đồng</p>
+            </div>
 
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={handleUpload}
-            className="upload-form"
-          >
-            <Form.Item
-              name="title"
-              label={<span className="text-gray-700 font-medium">Tiêu đề</span>}
-              rules={[{ required: true, message: 'Vui lòng nhập tiêu đề!' }]}
-              className="mb-6"
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={handleUpload}
             >
-              <Input 
-                placeholder="Nhập tiêu đề tài liệu" 
-                size="large" 
-                className="rounded-lg border-gray-300"
-              />
-            </Form.Item>
+              <Form.Item
+                name="title"
+                label={<span className="text-gray-700 font-medium">Tiêu đề tài liệu</span>}
+                rules={[{ required: true, message: 'Vui lòng nhập tiêu đề!' }]}
+              >
+                <Input 
+                  placeholder="VD: EXE101 - Tài liệu thực tập tốt nghiệp" 
+                  className="rounded-lg"
+                />
+              </Form.Item>
 
-            <Form.Item
-              name="course"
-              label={<span className="text-gray-700 font-medium">Mã môn học</span>}
-              rules={[{ required: true, message: 'Vui lòng nhập mã môn học!' }]}
-              className="mb-6"
-            >
-              <Input 
-                placeholder="e.g. CS101" 
-                size="large" 
-                className="rounded-lg border-gray-300"
-              />
-            </Form.Item>
+              <Form.Item
+                name="course"
+                label={<span className="text-gray-700 font-medium">Mã môn học</span>}
+                rules={[{ required: true, message: 'Vui lòng nhập mã môn học!' }]}
+              >
+                <Input 
+                  placeholder="VD: EXE101, PRN212, SWE201" 
+                  className="rounded-lg"
+                />
+              </Form.Item>
 
-            <Form.Item
-              name="instructor"
-              label={<span className="text-gray-700 font-medium">Tên giảng viên</span>}
-              rules={[{ required: true, message: 'Vui lòng nhập tên giảng viên!' }]}
-              className="mb-6"
-            >
-              <Input 
-                placeholder="e.g. Dr. Emily Carter" 
-                size="large" 
-                className="rounded-lg border-gray-300"
-              />
-            </Form.Item>
+              <Form.Item
+                name="instructor"
+                label={<span className="text-gray-700 font-medium">Tên giảng viên</span>}
+                rules={[{ required: true, message: 'Vui lòng nhập tên giảng viên!' }]}
+              >
+                <Input 
+                  placeholder="VD: Thầy Nguyễn Văn A, Cô Trần Thị B" 
+                  className="rounded-lg"
+                />
+              </Form.Item>
 
-            <Form.Item
-              name="description"
-              label={<span className="text-gray-700 font-medium">Mô tả</span>}
-              className="mb-8"
-            >
-              <Input.TextArea 
-                placeholder="Mô tả ngắn về tài liệu (tùy chọn)"
-                rows={3}
-                className="rounded-lg border-gray-300"
-              />
-            </Form.Item>
+              <Form.Item
+                name="description"
+                label={<span className="text-gray-700 font-medium">Mô tả (không bắt buộc)</span>}
+              >
+                <Input.TextArea 
+                  placeholder="Mô tả ngắn về nội dung tài liệu..."
+                  rows={3}
+                  className="rounded-lg"
+                />
+              </Form.Item>
 
-            {/* Upload File Section */}
-            <div className="mb-8">
-              <Text className="text-blue-600 font-medium block mb-4">
-                Upload File
-              </Text>
+              {/* Upload File Section */}
               <Form.Item
                 name="file"
+                label={<span className="text-gray-700 font-medium">Tệp tài liệu</span>}
                 rules={[{ required: true, message: 'Vui lòng chọn tệp!' }]}
               >
                 <Upload.Dragger
                   name="file"
                   multiple={false}
                   beforeUpload={() => false}
-                  className="upload-dragger-custom"
-                  style={{
-                    background: '#f8fafc',
-                    border: '2px dashed #cbd5e1',
-                    borderRadius: '12px',
-                    padding: '40px 20px'
-                  }}
+                  className="rounded-xl border-2 border-dashed border-gray-300 hover:border-primary bg-gray-50 hover:bg-primary/5"
                 >
-                  <div className="text-center">
-                    <UploadOutlined className="text-3xl text-blue-500 mb-3" />
-                    <p className="text-gray-600 mb-1">
-                      <span className="text-blue-600 font-medium cursor-pointer">
-                        Choose file
+                  <div className="py-8">
+                    <UploadOutlined className="text-3xl text-primary mb-4" />
+                    <p className="text-gray-600 mb-2">
+                      <span className="text-primary font-medium cursor-pointer">
+                        Chọn tệp
                       </span>
-                      {' '}or drag it here
+                      {' '}hoặc kéo thả vào đây
                     </p>
                     <p className="text-gray-400 text-sm">
-                      PDF, DOC, DOCX, PPT, PPTX up to 10MB
+                      Hỗ trợ PDF, DOC, DOCX, PPT, PPTX tối đa 10MB
                     </p>
                   </div>
                 </Upload.Dragger>
               </Form.Item>
-            </div>
 
-            {/* Action Buttons */}
-            <div className="flex justify-center space-x-4">
-              <Button 
-                type="primary" 
-                htmlType="submit" 
-                size="large"
-                className="bg-blue-600 hover:bg-blue-700 border-blue-600 px-8 rounded-lg font-medium"
-              >
-                Submit
-              </Button>
-              <Button 
-                onClick={() => setIsUploadModalVisible(false)}
-                size="large"
-                className="px-8 rounded-lg font-medium border-gray-300 text-gray-600 hover:border-gray-400"
-              >
-                Cancel
-              </Button>
-            </div>
-          </Form>
+              {/* Action Buttons */}
+              <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+                <Button 
+                  onClick={() => setIsUploadModalVisible(false)}
+                  className="px-6 border-gray-300 text-gray-700 hover:border-gray-400"
+                >
+                  Hủy
+                </Button>
+                <Button 
+                  type="primary" 
+                  htmlType="submit" 
+                  className="bg-primary hover:bg-primary-hover px-6 font-medium"
+                >
+                  Tải lên
+                </Button>
+              </div>
+            </Form>
+          </div>
         </Modal>
-
-        <style jsx>{`
-          .materials-tabs .ant-tabs-tab {
-            font-weight: 500;
-            color: #9CA3AF;
-          }
-          .materials-tabs .ant-tabs-tab-active {
-            color: #000000 !important;
-            font-weight: 600;
-          }
-          .materials-tabs .ant-tabs-ink-bar {
-            background: #000000;
-            height: 2px;
-          }
-          
-          .upload-modal .ant-modal-content {
-            border-radius: 16px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-          }
-          
-          .upload-form .ant-form-item-label > label {
-            font-weight: 500;
-            color: #374151;
-          }
-          
-          .upload-dragger-custom.ant-upload-drag:hover {
-            border-color: #3b82f6;
-            background: #eff6ff;
-          }
-        `}</style>
       </div>
     </Layout>
   );
