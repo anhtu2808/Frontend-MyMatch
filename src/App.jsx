@@ -21,10 +21,12 @@ import StudyMaterialDetail from './pages/StudyMaterialDetail';
 import ReviewSubmissionSuccess from './pages/ReviewSubmissionSuccess';
 import ColorPreview from './pages/ColorPreview';
 import ButtonPreview from './pages/ButtonPreview';
+import { ScrollToTop } from './components/ScroolToTop';
 
 function App() {
   return (
     <div className="App">
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<Dashboard />} />
@@ -49,6 +51,7 @@ function App() {
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <ScrollToTop />
       </div>
   );
 }

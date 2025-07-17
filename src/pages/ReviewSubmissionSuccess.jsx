@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { CheckCircleOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { earnCoins } from '../store/slices/userSlice';
@@ -7,22 +7,34 @@ import Layout from '../components/Layout';
 
 const ReviewSubmissionSuccess = () => {
     const navigate = useNavigate();
+    const { pathname } = useLocation();
     const dispatch = useDispatch();
-    const coins = useSelector(state => state.user.currentUser.coins);
+    const currentUser = useSelector(state => state.user.currentUser);
+    const coins = currentUser?.coins || 0;
 
+    // Scroll to top khi component mount
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    // Thưởng xu và auto redirect
+    useEffect(() => {
+        // Thưởng 100 xu cho việc review giảng viên
         dispatch(earnCoins(100));
+        
+        
+
         // Auto redirect after 5 seconds
         const timer = setTimeout(() => {
-            navigate('/teachers');
+          
         }, 5000);
 
         return () => clearTimeout(timer);
-    }, [navigate]);
+    }, [dispatch, navigate]);
 
     return (
-        <Layout title="Review Submission Success">
-            <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center px-4">
+        <Layout title="Gửi đánh giá thành công" description="Đánh giá giảng viên đã được gửi thành công">
+            <div className="min-h-screen x to-purple-50 flex items-center justify-center px-4">
                 <div className="max-w-md w-full">
                     {/* Success Animation Container */}
                     <div className="bg-white rounded-3xl shadow-xl p-8 text-center relative overflow-hidden">
@@ -50,10 +62,10 @@ const ReviewSubmissionSuccess = () => {
 
                             {/* Success Message */}
                             <h1 className="text-2xl font-bold text-gray-800 mb-3">
-                                🎉 Review đã được gửi thành công!
+                                🎉 Đánh giá đã được gửi thành công!
                             </h1>
                             <p className="text-gray-600 mb-6 leading-relaxed">
-                                Cảm ơn bạn đã chia sẻ review về giảng viên. Review của bạn sẽ giúp ích rất nhiều cho cộng đồng sinh viên!
+                                Cảm ơn bạn đã chia sẻ đánh giá về giảng viên. Đánh giá của bạn sẽ giúp ích rất nhiều cho cộng đồng sinh viên!
                             </p>
 
                             {/* Coin Reward Section */}
@@ -63,14 +75,14 @@ const ReviewSubmissionSuccess = () => {
                                         <span className="text-2xl">🪙</span>
                                     </div>
                                     <div className="text-center">
-                                        <h3 className="text-xl font-bold text-orange-800">+100 Coins</h3>
-                                        <p className="text-sm text-orange-600">Phần thưởng cho review!</p>
+                                        <h3 className="text-xl font-bold text-orange-800">+100 Xu</h3>
+                                        <p className="text-sm text-orange-600">Phần thưởng cho đánh giá!</p>
                                     </div>
                                 </div>
                                 <div className="bg-white rounded-xl p-4 border border-yellow-200">
                                     <div className="flex items-center justify-between text-sm">
-                                        <span className="text-gray-600">Số coin hiện tại:</span>
-                                        <span className="font-bold text-orange-600">{coins} coins</span>
+                                        <span className="text-gray-600">Số xu hiện tại:</span>
+                                        <span className="font-bold text-orange-600">{coins} xu</span>
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +99,7 @@ const ReviewSubmissionSuccess = () => {
                                         <span className="text-blue-600 font-medium">+5 XP</span>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-blue-700">• Badge "Reviewer" (nếu chưa có)</span>
+                                        <span className="text-blue-700">• Badge "Người đánh giá" (nếu chưa có)</span>
                                         <span className="text-blue-600 font-medium">🏆</span>
                                     </div>
                                 </div>
@@ -133,4 +145,4 @@ const ReviewSubmissionSuccess = () => {
     );
 };
 
-export default ReviewSubmissionSuccess; 
+export default ReviewSubmissionSuccess;
